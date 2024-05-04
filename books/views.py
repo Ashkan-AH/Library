@@ -13,7 +13,9 @@ def about(request, slug):
     return render(request, "about.html", context)
 
 def category(request, slug):
+    selected_category = get_object_or_404(Category, slug=slug)
     context = {
-        "category": get_object_or_404(Category, slug=slug)
+        "category": selected_category,
+        "books": selected_category.books.all()
     }
-    return render(request, "category.html", context)
+    return render(request, "index.html", context)
