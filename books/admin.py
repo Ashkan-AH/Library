@@ -4,7 +4,7 @@ from .models import Books, Category
 @admin.register(Books)
 class BooksAdmin(admin.ModelAdmin):
     prepopulated_fields={"slug": ["name", "author"]}
-    list_display = ("id", "name", "translator", "persian_date", "language", "pub_year", "number_of_pages", "edition", "category_str", "age_category")
+    list_display = ("html_img", "id", "name", "translator", "persian_date", "language", "pub_year", "number_of_pages", "edition", "category_str", "age_category")
     list_filter = ["language", "age_category"]
     search_fields = ["name", "author", "translator"]
     ordering = ["-date_edited"]

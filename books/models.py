@@ -1,6 +1,7 @@
 from extentions.utils import jalali_converter
 from django.db import models
 from author.models import Author
+from django.utils.html import format_html
 
 class Category(models.Model):
     category_id = models.AutoField(primary_key=True, unique=True, blank=False)
@@ -65,8 +66,12 @@ class Books(models.Model):
     def persian_date(self):
         return jalali_converter(self.date_edited)
     
+    def html_img(self):
+        return format_html(f"<img src='{self.picture.url}' width = 100px height=auto style='border-radius: 10px;'>")
+    
     def __str__(self) -> str:
         return self.name
     
     persian_date.short_description = "آخرین ویرایش"
+    html_img.short_description = "تصویر"
 
