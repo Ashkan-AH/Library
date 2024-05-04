@@ -4,13 +4,13 @@ def home(request):
     context = {
         "books": Books.objects.all(),
         }
-    return render(request, "index.html", context)
+    return render(request, "books/index.html", context)
 
 def about(request, slug):
     context = {
         "book": get_object_or_404(Books, slug=slug),
     }
-    return render(request, "about.html", context)
+    return render(request, "books/about.html", context)
 
 def category(request, slug):
     selected_category = get_object_or_404(Category, slug=slug)
@@ -18,4 +18,4 @@ def category(request, slug):
         "category": selected_category,
         "books": selected_category.books.all()
     }
-    return render(request, "index.html", context)
+    return render(request, "books/index.html", context)
