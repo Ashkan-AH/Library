@@ -1,0 +1,48 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <title>ورود</title>
+    <link rel="stylesheet" href="{% static 'main/assets/css/login.css' %}">
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form method="post">{% csrf_token %}
+        {% if form.non_field_errors %}
+          <div>
+            {% for error in form.non_field_errors %}
+              <span class="persian-font error">{{error}}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <h3 class="persian-font">وارد شوید</h3>
+        {% if form.username.errors %}
+          <div>
+            {% for error in form.username.errors %}
+              <span class="persian-font error">{{error}}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <label for="username" class="persian-font">نام کاربری</label>
+        {{form.username|add_class:"persian-font"}}
+        {% if form.password.errors %}
+          <div>
+            {% for error in form.password.errors %}
+              <span class="persian-font error">{{error}}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <label for="password" class="persian-font">گذرواژه</label>
+        {{form.password|add_class:"persian-font"}}
+        <button class="persian-font">ورود</button>
+        <!-- <div class="social">
+          <div class="go"><i class="fab fa-google"></i>  Google</div>
+          <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
+        </div> -->
+    </form>
+</body>
+</html>

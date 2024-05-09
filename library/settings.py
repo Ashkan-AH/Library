@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "extentions",
     "author.apps.AuthorConfig",
     "account.apps.AccountConfig",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "books:home"
+LOGIN_URL = "account:login"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

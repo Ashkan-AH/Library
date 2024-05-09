@@ -46,7 +46,7 @@ https://templatemo.com/tm-580-woox-travel
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="{% url 'account:signup' %}">Signup</a></li>
+                        {% comment %} <!-- <li><a href="{% url 'account:signup' %}">Signup</a></li> --> {% endcomment %}
                         <li><a href="{% url 'account:login' %}">Login</a></li>
                         <li><a href="{% url 'books:home' %}">کتاب‌ها</a></li>
                         <li><a href="{% url 'author:authors' %}">نویسندگان</a></li>
