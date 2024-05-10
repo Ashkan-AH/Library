@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = "books:home"
+LOGIN_REDIRECT_URL = "account:profile"
 LOGIN_URL = "account:login"
 
 # Internationalization
