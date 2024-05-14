@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 app_name = "books"
 urlpatterns = [
-    path("", views.home, name="home"),
-    path("<str:slug>/", views.about, name="about"),
-    path("category/<str:slug>/", views.category, name="category"),
+    path("", views.BookList.as_view(), name="home"),
+    path("<str:slug>/", views.BookDetail.as_view(), name="about"),
+    path("category/<str:slug>/", views.CategoryList.as_view(), name="category"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

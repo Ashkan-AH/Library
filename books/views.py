@@ -1,26 +1,22 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 from .models import Books, Category
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
-@login_required
-def home(request):
-    context = {
-        "books": Books.objects.all(),
-        }
-    return render(request, "books/index.html", context)
 
-@login_required
-def about(request, slug):
-    context = {
-        "book": get_object_or_404(Books, slug=slug),
-    }
-    return render(request, "books/about.html", context)
+class BookList(LoginRequiredMixin, ListView):
+    model = Books
 
-@login_required
-def category(request, slug):
-    selected_category = get_object_or_404(Category, slug=slug)
-    context = {
-        "category": selected_category,
-        "books": selected_category.books.all()
-    }
-    return render(request, "books/index.html", context)
+
+class BookDetail(LoginRequiredMixin, DetailView):
+    def get_object(self):
+        slug = self.kwargs.get("slug")
+        return get_object_or_404(Books, slug=slug)
+
+
+class CategoryList(LoginRequiredMixin, ListView):
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        selected_category = get_object_or_404(Category, slug=slug)
+        return selected_category.books.all()
