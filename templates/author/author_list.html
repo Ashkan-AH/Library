@@ -5,12 +5,6 @@
   نویسندگان
 {% endblock title %}
 {% block content %}
-  <!-- ***** Main Banner Area Start ***** -->
-  <!-- <section id="section-1">
-    <div class="content-slider">
-      <img style="display:inline" src="{% static 'assets/images/banner.jpg'%}">
-    </div>
-  </section> -->
   <div class="about-main-content" style="background-image:url({% static 'main/assets/images/writing-with-pen.jpg' %});">
     <div class="container">
       <div class="row">
@@ -33,7 +27,7 @@
         <div class="col-lg-8">
           <div class="items">
             <div class="row">
-            {% for author in authors %}
+            {% for author in object_list %}
             <div class="col-lg-12">
                 <div class="item">
                   <div class="row">

@@ -4,6 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 app_name = "author"
 urlpatterns = [
-    path("", views.authors, name="authors"),
-    path("<str:slug>/", views.author, name="author"),
+    path("", views.AuthorList.as_view(), name="authors"),
+    path("<str:slug>/", views.AuthorDetail.as_view(), name="author"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
