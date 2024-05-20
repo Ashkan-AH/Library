@@ -34,5 +34,7 @@ urlpatterns = [
     # ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [
-    path("profile/", v.profile, name="profile")
+    path("books/", v.BookList.as_view() , name="books"),
+    path("create-update-book/", v.BookCreate.as_view() , name="create-update-book"),
+    path("home/", v.home , name="home"), 
 ]

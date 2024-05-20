@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     "author.apps.AuthorConfig",
     "account.apps.AccountConfig",
     "widget_tweaks",
+    "crispy_forms",
+    "crispy_bootstrap4",
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -104,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = "account:profile"
+LOGIN_REDIRECT_URL = "account:home"
 LOGIN_URL = "account:login"
 
 # Internationalization
@@ -129,6 +132,7 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
 
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

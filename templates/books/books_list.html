@@ -47,7 +47,7 @@
                         <a href="{% url 'author:author' author.slug %}">{{author.name}} ,</a>
                         {% endfor %}</span>
                         <span style="font-size: 18px;">ناشر :{{book.publisher}}</span>
-                        <b><p>{{book.description|truncatewords:50}}</p></b>
+                        <b><p>{{book.description|striptags|truncatewords:50}}</p></b>
                         <ul class="info" style="text-align: center;">
                           <li>موجودی: {{book.in_stock}}</li>
                           <li>سری چاپ: {{book.edition}}</li>

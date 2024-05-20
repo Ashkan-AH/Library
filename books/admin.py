@@ -8,12 +8,7 @@ class BooksAdmin(admin.ModelAdmin):
     list_filter = ["language", "age_category"]
     search_fields = ["name", "author", "translator"]
     ordering = ["-date_edited"]
-    def author_str(self, obj):
-        return ", ".join([author.name for author in obj.author.all()])
-    author_str.short_description = "نویسندگان"
-    def category_str(self, obj):
-        return ", ".join([category.name for category in obj.category.all()])
-    category_str.short_description = "دسته‌بندی‌ها"
+    
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

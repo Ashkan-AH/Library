@@ -1,0 +1,11 @@
+{% extends "account/base.html" %}
+{% block title %}
+  صفحه اصلی
+{% endblock title %}
+{% block home_active %}
+  active
+{% endblock home_active %}
+{% block content %}
+  <h1>صفحه اصلی</h1>
+  <h3>خوش آمدید {{user.get_full_name}}</h3>
+{% endblock content %}
