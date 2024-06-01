@@ -67,6 +67,8 @@ class Books(models.Model):
     def persian_date(self):
         return jalali_converter(self.date_edited)
     
+    
+
     def get_absolute_url(self):
         return reverse("account:books")
     def html_img(self):

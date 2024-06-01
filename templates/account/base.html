@@ -50,6 +50,14 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'admin:index' %}" class="nav-link">پنل ادمین</a>
       </li>
+      
+      
+    </ul>
+    <ul class="navbar-nav mr-auto-navbav">
+      <li class="nav-item"><form id="logout-form" method="post" action="{% url 'account:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="fas fa-sign-out-alt" style="border: none;padding: 0px;background-color: transparent;"></button>
+      </form></li>
     </ul>
 
   </nav>
@@ -98,7 +106,7 @@
                 </li>
               
               <li class="nav-item">
-                <a href="{% url 'account:create-update-book' %}" class="nav-link {% block add_book_active %}{% endblock add_book_active %}">
+                <a href="{% url 'account:create-book' %}" class="nav-link {% block add_book_active %}{% endblock add_book_active %}">
                   <i class="fa fa-plus nav-icon"></i>
                   <p>افزودن کتاب</p>
                 </a>

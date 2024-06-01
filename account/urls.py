@@ -7,7 +7,7 @@ from . import views as v
 app_name = "account"
 urlpatterns = [
     path("login/", views.LoginView.as_view(), name="login"),
-    # path("logout/", views.LogoutView.as_view(), name="logout"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
     # path(
     #     "password_change/", views.PasswordChangeView.as_view(), name="password_change"
     # ),
@@ -35,6 +35,10 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [
     path("books/", v.BookList.as_view() , name="books"),
-    path("create-update-book/", v.BookCreate.as_view() , name="create-update-book"),
-    path("home/", v.home , name="home"), 
+    path("books/<str:slug>/", v.BookDetail.as_view() , name="book-detail"),
+    path("create/", v.BookCreate.as_view() , name="create-book"),
+    path("update/<str:slug>/", v.BookUpdate.as_view() , name="update-book"),
+    path("delete/<str:slug>/", v.BookDelete.as_view() , name="delete-book"),
+    path("preview/<str:slug>/", v.BookPreview.as_view() , name="preview-book"),
+    path("", v.home , name="home"), 
 ]
