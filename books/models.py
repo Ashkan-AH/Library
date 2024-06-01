@@ -59,7 +59,7 @@ class Books(models.Model):
     date_uploaded = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت")
     date_edited = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)
-    
+    keep_duration = models.IntegerField(verbose_name="حداکثر میزان نگهداری", default=7)    
     class Meta:
         verbose_name = "کتاب"
         verbose_name_plural = "کتاب ها"

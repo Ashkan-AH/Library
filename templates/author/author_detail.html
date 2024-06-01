@@ -49,6 +49,9 @@
               </div>
               <h2 style="margin-bottom: 20px;color: #FFFFFF;">کتاب های نوشته شده از {{author.name}}</h2>
               {% for book in author.books.all %}
+              {% if book.in_stock != 0 %}
+                
+              
               <div class="col-lg-12">
                 <div class="item">
                   <div class="row">
@@ -84,6 +87,10 @@
                   </div>
                 </div>
               </div>
+              {% else %}
+              <h4 style="margin-bottom: 12px;color: rgb(241, 136, 101);">متاسفانه کتابی از این نویسنده در دیتابیس موجود نیست.</h4>
+              {% endif %}
+              
                 {% endfor %}
             </div>
           </div>
