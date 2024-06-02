@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path("authors/", include("author.urls")),
     path("account/", include("account.urls")),
     path("", include("books.urls")),

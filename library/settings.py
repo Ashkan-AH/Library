@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "extentions",
     "widget_tweaks",
     "ckeditor",
+    "ckeditor_uploader",
 ]
 
 
@@ -137,6 +138,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account.User'
 
+CKEDITOR_UPLOAD_PATH = "uploads/books/description/"
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js' 
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono',
