@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from author.models import Author
 from django.utils.html import format_html
+from ckeditor
 
 class Category(models.Model):
     category_id = models.AutoField(primary_key=True, unique=True, blank=False)

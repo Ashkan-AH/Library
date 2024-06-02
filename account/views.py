@@ -31,7 +31,7 @@ class BookCreate(LoginRequiredMixin, StaffAccessMixin, SuperuserAccessMixin,  Cr
 
 class BookUpdate(LoginRequiredMixin, StaffAccessMixin, SuperuserAccessMixin,  UpdateView):
     model = Books
-    fields = ["name", "author", "publisher", "translator", "number_of_pages", "in_stock", "category", "pub_year", "edition", "language", "picture", "age_category", "description", "slug"]
+    fields = ["name", "author", "publisher", "translator", "number_of_pages", "in_stock", "category", "pub_year", "edition", "language", "picture", "age_category", "description"]
     template_name = "account/book-create-update.html"
     success_url = reverse_lazy("account:book-detail")
 
