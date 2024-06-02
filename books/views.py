@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
 
-class BookList(LoginRequiredMixin, ListView):
+class BookList(ListView):
     def get_queryset(self):
         return Books.objects.filter(in_stock= not 0)
 
@@ -19,7 +19,7 @@ class BookDetail(LoginRequiredMixin, DetailView):
         raise Http404("چنین کتابی موجود نیست!")
 
 
-class CategoryList(LoginRequiredMixin, ListView):
+class CategoryList(ListView):
     def get_queryset(self):
         slug = self.kwargs.get("slug")
         selected_category = get_object_or_404(Category, slug=slug)

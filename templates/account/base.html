@@ -1,4 +1,5 @@
 {% load static %}
+{% load link %}
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
@@ -88,8 +89,12 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="text-align: right; padding-right: 0;">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview {% block book_open %}{% endblock book_open %}">
-            <a href="#" class="nav-link {% block book_section_active %}{% endblock book_section_active %}">
+          <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'delete-book' or request.resolver_match.url_name == 'update-book' or request.resolver_match.url_name == 'create-book' or request.resolver_match.url_name == 'book-detail' %}
+          menu-open
+          {% endif %}">
+            <a href="#" class="nav-link {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'delete-book' or request.resolver_match.url_name == 'update-book' or request.resolver_match.url_name == 'create-book' or request.resolver_match.url_name == 'book-detail' %}
+            active
+            {% endif %}">
               <i class="nav-icon fa fa-book"></i>
               <p>
                 کتاب ها
@@ -99,18 +104,11 @@
             <ul class="nav nav-treeview">
               {% if user.is_superuser %}
                 <li class="nav-item">
-                  <a href="{% url 'account:books' %}" class="nav-link {% block book_active %}{% endblock book_active %}">
-                    <i class="fa fa-th-list nav-icon"></i>
-                    <p>لیست کتاب ها</p>
-                  </a>
+                  {% link request "books" "لیست کتاب ها" "fa-th-list" %}
                 </li>
-              
-              <li class="nav-item">
-                <a href="{% url 'account:create-book' %}" class="nav-link {% block add_book_active %}{% endblock add_book_active %}">
-                  <i class="fa fa-plus nav-icon"></i>
-                  <p>افزودن کتاب</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                  {% link request 'create-book' 'افزودن کتاب' "fa-plus" %}
+                </li>
               {% endif %}
               
             </ul>
