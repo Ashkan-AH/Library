@@ -16,8 +16,7 @@
   <img src="{{object.picture.url}}">
   <p>{{object.age_category}}</p>
   <p>{{object.description}}</p>
-  <p>{{object.date_uploaded}}</p>
-  <p>{{object.date_edited}}</p>
+  <p>{{object.persian_date}}</p>
   <p>{{object.slug}}</p>
   <a href="{% url 'account:update-book' object.slug %}" class="btn bg-warning">ویرایش کتاب</a>
   <a href="{% url 'account:delete-book' object.slug %}" class="btn bg-danger">حذف کتاب</a>

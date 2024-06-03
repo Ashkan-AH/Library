@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from author.models import Author
 from django.utils.html import format_html
-from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category_id = models.AutoField(primary_key=True, unique=True, blank=False)
@@ -56,7 +56,7 @@ class Books(models.Model):
     language = models.CharField(max_length=25, choices=LANGUAGE_CHOICES, verbose_name="زبان", default="فارسی", blank=True)
     picture = models.ImageField(upload_to="uploads/books/", verbose_name="عکس کتاب", blank=False)
     age_category = models.CharField(max_length=15, choices=AGE_CATEGORY_CHOICES,verbose_name="گروه سنی", blank=True, default="کودک")
-    description = models.TextField(verbose_name="توضیحات", blank=True)
+    description = RichTextField(verbose_name="توضیحات", blank=True)
     date_uploaded = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت")
     date_edited = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)

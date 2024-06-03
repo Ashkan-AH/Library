@@ -1,8 +1,8 @@
-from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
+from .forms import BookForm
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from books.models import Books
 from .mixins import StaffAccessMixin, SuperuserAccessMixin
@@ -21,17 +21,42 @@ class BookList(LoginRequiredMixin, StaffAccessMixin, SuperuserAccessMixin,  List
     template_name = "account/books_list.html"
     queryset = Books.objects.all()
 
+# def bookCreate(request):
+#     if request.method == "POST":
+#         bookForm = BookForm(request.POST)
+#         if bookForm.is_valid():
+#             bookForm.save()
+#             return HttpResponseRedirect(reverse("account:books"))
+#     else:
+#         bookForm = BookForm()
+
+#     context = {"bookForm": bookForm, }
+#     return render(request, "account/book-create-update.html", context)
+
+
+# def bookUpdate(request, slug):
+#     book = Books.objects.get(slug=slug)
+#     if request.method == "POST":
+#         bookForm = BookForm(request.POST, instance=book)
+#         if bookForm.is_valid():
+#             bookForm.save()
+#             return HttpResponseRedirect(reverse("account:books"))
+#     else:
+#         bookForm = BookForm(instance=book)
+
+#     context = {"bookForm": bookForm, }
+#     return render(request, "account/book-create-update.html", context)
 
 class BookCreate(LoginRequiredMixin, StaffAccessMixin, SuperuserAccessMixin,  CreateView):
     model = Books
-    fields = ["name", "author", "publisher", "translator", "number_of_pages", "in_stock", "category", "pub_year", "edition", "language", "picture", "age_category", "description", "slug"]
-    template_name = "account/book-create-update.html"
+    form_class = BookForm
     success_url = reverse_lazy("account:books")
+    template_name = "account/book-create-update.html"
 
 
 class BookUpdate(LoginRequiredMixin, StaffAccessMixin, SuperuserAccessMixin,  UpdateView):
     model = Books
-    fields = ["name", "author", "publisher", "translator", "number_of_pages", "in_stock", "category", "pub_year", "edition", "language", "picture", "age_category", "description"]
+    form_class = BookForm
     template_name = "account/book-create-update.html"
     success_url = reverse_lazy("account:book-detail")
 
