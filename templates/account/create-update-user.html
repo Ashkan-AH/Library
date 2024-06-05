@@ -1,0 +1,33 @@
+{% extends "account/base.html" %}
+{% block title%}
+{% if request.resolver_match.url_name == "user-create" %}
+  افزودن کاربر
+{% elif request.resolver_match.url_name == "user-update" %}
+  ویرایش {{user.get_full_name}}
+{% endif %}
+
+{% endblock title %}
+{% block content %}
+  <div class="card card-primary">
+    <div class="card-header">
+        {% if request.resolver_match.url_name == "user-create" %}
+          <h3 class="card-title float-left">افزودن کاربر</h3>
+        {% elif request.resolver_match.url_name == "user-update" %}
+          <h3 class="card-title float-left">ویرایش {{user.get_full_name}}</h3>
+        {% endif %}
+      
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form role="form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+      <div class="row" style="padding: 20px;">
+        {{form.as_p}}
+      </div>
+      <!-- /.card-body -->
+
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">تایید</button>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

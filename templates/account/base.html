@@ -48,9 +48,12 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'books:home' %}" class="nav-link">مشاهده سایت</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      {% if request.user.is_superuser %}
+        <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'admin:index' %}" class="nav-link">پنل ادمین</a>
       </li>
+      {% endif %}
+      
       
       
     </ul>
@@ -80,7 +83,7 @@
           <img src="{% static 'user/assets/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="{% url 'account:home' %}" class="d-block">{{user.get_full_name}}</a>
+          <a href="{% url 'account:home' %}" class="d-block">{{request.user.get_full_name}}</a>
         </div>
       </div>
 
@@ -102,7 +105,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              {% if user.is_superuser %}
+              {% if request.user.is_superuser or request.user.is_staff %}
                 <li class="nav-item">
                   {% link request "books" "لیست کتاب ها" "fa-th-list" %}
                 </li>
@@ -110,10 +113,34 @@
                   {% link request 'create-book' 'افزودن کتاب' "fa-plus" %}
                 </li>
               {% endif %}
+            </ul>
+          </li>  
+          {% if request.user.is_superuser %}
+          <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
+          menu-open
+          {% endif %}">
+            <a href="#" class="nav-link {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
+            active
+            {% endif %}">
+              <i class="nav-icon fa fa-user"></i>
+              <p>
+                کاربران
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              
+                <li class="nav-item">
+                  {% link request 'users' 'لیست کاربران' "fa-th-list" %}
+                </li>
+                <li class="nav-item">
+                  {% link request 'user-create' 'افزودن کاربر' "fa-plus" %}
+                </li>
+              
               
             </ul>
           </li>
-          
+          {% endif %}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

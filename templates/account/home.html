@@ -4,5 +4,19 @@
 {% endblock title %}
 {% block content %}
   <h1>صفحه اصلی</h1>
-  <h3>خوش آمدید {{user.get_full_name}}</h3>
+  <h3>خوش آمدید {{request.user.get_full_name}}</h3>
+  <img src="{{request.user.picture.url}}" width="150px">
+  <p>{{request.user.username}}</p>
+  <p>{{request.user.first_name}}</p>
+  <p>{{request.user.last_name}}</p>
+  <p>{{request.user.email}}</p>
+  <p>{{request.user.address}}</p>
+  <p>{{request.user.national_code}}</p>
+  <p>{{request.user.sel_number}}</p>
+  <p>{{request.user.home_number}}</p>
+  <p>{{request.user.birth_date}}</p>
+  <p>{{request.user.is_superuser}}</p>
+  <p>{{request.user.is_staff}}</p>
+  <p>{{request.user.is_active}}</p>
+  <a href="{% url 'account:profile-update' request.user.id %}" class="btn bg-warning">ویرایش مشخصات</a>
 {% endblock content %}
