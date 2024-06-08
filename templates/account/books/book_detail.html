@@ -1,0 +1,24 @@
+{% extends "account/base.html" %}
+{% block title %}
+{{object.name}}
+{% endblock title %}
+{% block content %}
+  <h1>{{object.name}}</h1>
+  <h1>{{object.id}}</h1>
+  <p>{{object.author_str}}</p>
+  <p>{{object.publisher}}</p>
+  <p>{{object.translator}}</p>
+  <p>{{object.number_of_pages}}</p>
+  <p>{{object.in_stock}}</p>
+  <p>{{object.category_str}}</p>
+  <p>{{object.pub_year}}</p>
+  <p>{{object.edition}}</p>
+  <p>{{object.language}}</p>
+  <img src="{{object.picture.url}}" width="100px">
+  <p>{{object.age_category}}</p>
+  <p>{{object.description|safe}}</p>
+  <p>{{object.persian_date}}</p>
+  <p>{{object.slug}}</p>
+  <a href="{% url 'account:book-update' object.slug %}" class="btn bg-warning">ویرایش کتاب</a>
+  <a href="{% url 'account:book-delete' object.slug %}" class="btn bg-danger">حذف کتاب</a>
+{% endblock content %}

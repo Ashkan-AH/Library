@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from ckeditor.fields import RichTextField
 
 class Category(models.Model):
-    category_id = models.AutoField(primary_key=True, unique=True, blank=False)
+    id = models.AutoField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=100, blank=False, verbose_name="نام دسته بندی")
     date_created = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True, allow_unicode=True, blank=False, verbose_name="لینک")

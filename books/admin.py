@@ -15,4 +15,4 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields={"slug": ["name"]}
     search_fields = ["name"]
     ordering = ["-date_created"]
-    list_display = ("category_id", "name", "persian_date_created")
+    list_display = ("id", "name", "persian_date_created")

@@ -34,17 +34,34 @@ urlpatterns = [
     # ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [
-    path("books/", v.BookList.as_view() , name="books"),
+    path("books/create/", v.BookCreate.as_view() , name="book-create"),
+    path("books/update/<str:slug>/", v.BookUpdate.as_view() , name="book-update"),
+    path("books/delete/<str:slug>/", v.BookDelete.as_view() , name="book-delete"),
+    path("books/preview/<str:slug>/", v.BookPreview.as_view() , name="book-preview"),
     path("books/<str:slug>/", v.BookDetail.as_view() , name="book-detail"),
-    path("books/create/", v.BookCreate.as_view() , name="create-book"),
-    path("books/update/<str:slug>/", v.BookUpdate.as_view() , name="update-book"),
-    path("books/delete/<str:slug>/", v.BookDelete.as_view() , name="delete-book"),
-    path("books/preview/<str:slug>/", v.BookPreview.as_view() , name="preview-book"),
-    path("users/", v.UserList.as_view() , name="users"),
-    path("users/<int:pk>/", v.UserDetail.as_view() , name="user-detail"),
+    path("books/", v.BookList.as_view() , name="books"),
+
+
+    path("categories/create/", v.CategoryCreate.as_view() , name="category-create"),
+    path("categories/update/<str:slug>/", v.CategoryUpdate.as_view() , name="category-update"),
+    path("categories/delete/<str:slug>/", v.CategoryDelete.as_view() , name="category-delete"),
+    path("categories/", v.CategoryList.as_view() , name="categories"),
+
+
+    path("authors/create/", v.AuthorCreate.as_view() , name="author-create"),
+    path("authors/update/<str:slug>/", v.AuthorUpdate.as_view() , name="author-update"),
+    path("authors/delete/<str:slug>/", v.AuthorDelete.as_view() , name="author-delete"),
+    path("authors/<str:slug>/", v.AuthorDetail.as_view() , name="author-detail"),
+    path("authors/", v.AuthorList.as_view() , name="authors"),
+
+
     path("users/create/", v.UserCreate.as_view() , name="user-create"),
     path("users/update/<int:pk>/", v.UserUpdate.as_view() , name="user-update"),
     path("users/delete/<int:pk>/", v.UserDelete.as_view() , name="user-delete"),
-    path("profile/<int:pk>/", v.ProfileUpdate.as_view() , name="profile-update"), 
-    path("", v.home , name="home"), 
+    path("users/<int:pk>/", v.UserDetail.as_view() , name="user-detail"),
+    path("users/", v.UserList.as_view() , name="users"),
+
+
+    path("profile-update/", v.ProfileUpdate.as_view() , name="profile-update"),
+    path("", v.Profile.as_view() , name="profile"), 
 ]

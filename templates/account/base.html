@@ -69,21 +69,17 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link" style="text-align: right;">
-      <img src="{% static 'user/assets/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">سرزمین کتاب</span>
-    </a>
+    
 
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'user/assets/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{request.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 45px !important; height: 45px !important;">
         </div>
         <div class="info">
-          <a href="{% url 'account:home' %}" class="d-block">{{request.user.get_full_name}}</a>
+          <a href="{% url 'account:profile' %}" class="d-block">{{request.user.get_full_name}}</a>
         </div>
       </div>
 
@@ -91,55 +87,101 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="text-align: right; padding-right: 0;">
           <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'delete-book' or request.resolver_match.url_name == 'update-book' or request.resolver_match.url_name == 'create-book' or request.resolver_match.url_name == 'book-detail' %}
-          menu-open
-          {% endif %}">
-            <a href="#" class="nav-link {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'delete-book' or request.resolver_match.url_name == 'update-book' or request.resolver_match.url_name == 'create-book' or request.resolver_match.url_name == 'book-detail' %}
-            active
-            {% endif %}">
-              <i class="nav-icon fa fa-book"></i>
-              <p>
-                کتاب ها
-                <i class="right fa fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              {% if request.user.is_superuser or request.user.is_staff %}
-                <li class="nav-item">
-                  {% link request "books" "لیست کتاب ها" "fa-th-list" %}
-                </li>
-                <li class="nav-item">
-                  {% link request 'create-book' 'افزودن کتاب' "fa-plus" %}
-                </li>
-              {% endif %}
-            </ul>
-          </li>  
+            with font-awesome or any other icon font library -->
+          {% if request.user.is_superuser or request.user.is_staff %}
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'book-delete' or request.resolver_match.url_name == 'book-update' or request.resolver_match.url_name == 'book-create' or request.resolver_match.url_name == 'book-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'book-delete' or request.resolver_match.url_name == 'book-update' or request.resolver_match.url_name == 'book-create' or request.resolver_match.url_name == 'book-detail' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fa fa-book"></i>
+                  <p>
+                    کتاب ها
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "books" "لیست کتاب ها" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'book-create' 'افزودن کتاب' "fa-plus" %}
+                    </li>
+                </ul>
+              </li>  
+
+
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'categories' or request.resolver_match.url_name == 'category-delete' or request.resolver_match.url_name == 'category-update' or request.resolver_match.url_name == 'category-create' or request.resolver_match.url_name == 'category-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'categories' or request.resolver_match.url_name == 'category-delete' or request.resolver_match.url_name == 'category-update' or request.resolver_match.url_name == 'category-create' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    دسته بندی‌ها
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "categories" "لیست دسته بندی‌ها" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'category-create' 'افزودن دسته بندی' "fa-plus" %}
+                    </li>
+                </ul>
+              </li>  
+
+
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'authors' or request.resolver_match.url_name == 'author-delete' or request.resolver_match.url_name == 'author-update' or request.resolver_match.url_name == 'author-create' or request.resolver_match.url_name == 'author-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'authors' or request.resolver_match.url_name == 'author-delete' or request.resolver_match.url_name == 'author-update' or request.resolver_match.url_name == 'author-create' or request.resolver_match.url_name == 'author-detail' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fa fa-users"></i>
+                  <p>
+                    نویسندگان
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "authors" "لیست نویسندگان" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'author-create' 'افزودن نویسنده' "fa-user-plus" %}
+                    </li>
+                </ul>
+              </li>  
+            {% endif %}
           {% if request.user.is_superuser %}
-          <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
-          menu-open
-          {% endif %}">
-            <a href="#" class="nav-link {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
-            active
+            <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
+            menu-open
             {% endif %}">
-              <i class="nav-icon fa fa-user"></i>
-              <p>
-                کاربران
-                <i class="right fa fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              
-                <li class="nav-item">
-                  {% link request 'users' 'لیست کاربران' "fa-th-list" %}
-                </li>
-                <li class="nav-item">
-                  {% link request 'user-create' 'افزودن کاربر' "fa-plus" %}
-                </li>
-              
-              
-            </ul>
-          </li>
+              <a href="#" class="nav-link {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
+              active
+              {% endif %}">
+                <i class="nav-icon fa fa-user"></i>
+                <p>
+                  کاربران
+                  <i class="right fa fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                
+                  <li class="nav-item">
+                    {% link request 'users' 'لیست کاربران' "fa-th-list" %}
+                  </li>
+                  <li class="nav-item">
+                    {% link request 'user-create' 'افزودن کاربر' "fa-user-plus" %}
+                  </li>
+                
+                
+              </ul>
+            </li>
           {% endif %}
         </ul>
       </nav>

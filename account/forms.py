@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from books.models import Books
+from books.models import Books, Category
+from author.models import Author
 from .models import User
 
 class BookForm(forms.ModelForm):
@@ -8,7 +9,21 @@ class BookForm(forms.ModelForm):
         model = Books
         exclude = ["slug"]
 
-    
+
+class SearchForm(forms.Form):
+    search = forms.CharField(required=False, max_length=150, label="جستجو")
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ["name"]
+
+        
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ["name", "picture", "description"]
 
 
 class CreateUserForm(UserCreationForm):

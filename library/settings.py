@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "ckeditor",
     "ckeditor_uploader",
+    "crispy_forms",
+    "crispy_bootstrap4",
 ]
 
 
@@ -107,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = "account:home"
+LOGIN_REDIRECT_URL = "account:profile"
 LOGOUT_REDIRECT_URL = "account:login"
 LOGIN_URL = "account:login"
 

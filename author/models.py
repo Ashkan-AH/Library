@@ -1,11 +1,12 @@
 from django.db import models
 from extentions.utils import jalali_converter
 from django.utils.html import format_html
+from ckeditor.fields import RichTextField
 
 class Author(models.Model):
     name = models.CharField(max_length=75, blank=False, null=False, verbose_name="نام نویسنده")
-    picture = models.ImageField(upload_to="uploads/author", blank=True, verbose_name="عکس")
-    description = models.TextField(blank=True, verbose_name="توضیحات")
+    picture = models.ImageField(upload_to="uploads/author", blank=False, verbose_name="عکس")
+    description = RichTextField(blank=True, verbose_name="توضیحات")
     slug = models.SlugField(blank=False, null=False, verbose_name="لینک", allow_unicode=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
