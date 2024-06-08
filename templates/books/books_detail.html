@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-  {{book.name}}
+  {{books.name}}
 {% endblock title %}
 {% block content %}
 <div class="about-main-content" style="background-image:url({{books.picture.url}});">
@@ -38,6 +38,16 @@
                   <div class="col-lg-8 col-sm-7">
                     <div class="right-content">
                       <h3 style="color:#FFFFFF; margin-bottom: 20px;">{{books.name}}</h3>
+                      {% if request.user.is_authenticated %}
+                        {% if not bookmark %}
+                          <a href="{% url 'books:bookmark-add' books.id %}" class="btn btn-warning">ذخیره</a>
+                        {% else %}
+                          <a href="{% url 'books:bookmark-add' books.id %}" class="btn btn-outline-warning">ذخیره شده</a>
+                        {% endif %}
+                      {% else %}
+                        <a href="{% url 'account:login' %}?next={{request.path}} " class="btn btn-warning">ذخیره</a>
+                      {% endif %}
+                      
                       <span style="font-size: 18px;">اثری از 
                       {% for author in books.author.all %}
                       <a href="{% url 'author:author' author.slug %}">{{author.name}} ,</a>

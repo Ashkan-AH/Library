@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-from books.models import Books
 from extentions.utils import jalali_converter
 
 class User(AbstractUser):
@@ -11,7 +10,6 @@ class User(AbstractUser):
     home_number = models.CharField(max_length=11, blank=True, verbose_name="تلفن ثابت")
     picture = models.ImageField(upload_to="uploads/profile/", verbose_name="تصویر", blank=False)
     birth_date = models.DateField(verbose_name="تاریخ تولد", default=timezone.now, blank=False)
-    bookmarks = models.ManyToManyField(Books, verbose_name="ذخیره شده ها", blank=True)
     reservation_limit = models.IntegerField(default=5, verbose_name="محدودیت رزرو")
 
 

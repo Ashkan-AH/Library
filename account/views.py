@@ -2,8 +2,8 @@ from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from books.models import Books, Category
 from author.models import Author
@@ -272,3 +272,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
         kwargs.update({"user": self.request.user})
         return kwargs
     
+
+class BookmarkList(LoginRequiredMixin, ListView):
+    template_name = "account/bookmarks_list.html"
+    def get_queryset(self):
+        return Books.objects.filter(bookmarks__in=[self.request.user.id])

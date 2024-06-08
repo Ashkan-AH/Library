@@ -41,7 +41,7 @@
                       <div class="right-content">
                         
                         <a href="{% url 'author:author' author.slug %}"><h3 style="color:#FFFFFF">{{author.name}}</h3></a>
-                        <b><p>{{author.description|truncatewords:50}}</p></b>
+                        <b><p>{{author.description|truncatewords:50|striptags}}</p></b>
                         
                         <span style="font-size: 15px; margin-top: 15px;">آخرین ویرایش در {{author.persian_date}}</span>
                         <div class="text-button">

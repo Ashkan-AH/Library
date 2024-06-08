@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+{% block title %}
+کتاب ها
+{% endblock title %}
+{% block content %}
+
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">لیست کتاب ها</h3>
+
+          <div class="card-tools float-right">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              
+            </div>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>نام کتاب</th>
+                <th>عکس</th>
+                <th>کد کتاب</th>
+                <th>نویسنده</th>
+                <th>ناشر</th>
+                <th>مترجم</th>
+                <th>توصیحات</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in object_list %}
+              
+              <tr>
+                <td><a href="{% url 'account:book-detail' book.slug %}">{{book.name}}</a></td>
+                <td>{{book.html_img}}</td>
+                <td>{{book.id}}</td>
+                <td>{{book.author_str}}</td>
+                <td>{{book.publisher}}</td>
+                <td>{{book.translator}}</td>
+                <td>{{book.description|striptags|truncatewords:10}}</td>
+                <td><a href="{% url 'books:bookmark-add' book.id %}" class="btn btn-danger">حذف</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  
+{% endblock content %}

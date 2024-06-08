@@ -1,9 +1,10 @@
 from extentions.utils import jalali_converter
 from django.db import models
 from django.urls import reverse
-from author.models import Author
 from django.utils.html import format_html
 from ckeditor.fields import RichTextField
+from author.models import Author
+from account.models import User
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True, unique=True, blank=False)
@@ -60,6 +61,7 @@ class Books(models.Model):
     date_uploaded = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت")
     date_edited = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)
+    bookmarks = models.ManyToManyField(User, related_name="bookmarks", verbose_name="ذخیره شده ها", blank=True)
     keep_duration = models.IntegerField(verbose_name="حداکثر میزان نگهداری", default=7)    
     class Meta:
         verbose_name = "کتاب"

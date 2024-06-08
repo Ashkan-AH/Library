@@ -62,6 +62,7 @@ urlpatterns += [
     path("users/", v.UserList.as_view() , name="users"),
 
 
+    path("bookmarks/", v.BookmarkList.as_view() , name="bookmarks"),
     path("profile-update/", v.ProfileUpdate.as_view() , name="profile-update"),
     path("", v.Profile.as_view() , name="profile"), 
 ]
