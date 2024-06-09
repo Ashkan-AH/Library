@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from books.models import Books, Category
 from author.models import Author
 from .models import User
+from jalali_date.fields import JalaliDateField
+from jalali_date.widgets import AdminJalaliDateWidget
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -30,12 +32,17 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name", "password1", "password2", "email", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active"]
-
+    def __init__(self, *args, **kwargs):
+        super(CreateUserForm, self).__init__(*args, **kwargs)
+        self.fields['birth_date'] = JalaliDateField(label=('تاریخ تولد'),
+            widget=AdminJalaliDateWidget
+        )
 
 class UpdateUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(UpdateUserForm, self).__init__(*args, **kwargs)
+        self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget, input_formats=["%Y/%M/%D"])
         self.fields["username"].help_text = True
         if not user.is_superuser:
             self.fields['username'].disabled = True

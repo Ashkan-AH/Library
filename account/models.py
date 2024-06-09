@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-from extentions.utils import jalali_converter
+from jalali_date import date2jalali
 
 class User(AbstractUser):
     address = models.TextField(verbose_name="آدرس منزل", blank=False)
@@ -14,4 +14,4 @@ class User(AbstractUser):
 
 
     def persian_birthdate(self):
-        return jalali_converter(self.birth_date)
+        return date2jalali(self.birth_date).strftime("%Y %B %d")

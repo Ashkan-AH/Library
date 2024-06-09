@@ -1,4 +1,4 @@
-from extentions.utils import jalali_converter
+from jalali_date import date2jalali
 from django.db import models
 from django.urls import reverse
 from django.utils.html import format_html
@@ -17,7 +17,7 @@ class Category(models.Model):
         verbose_name_plural = 'دسته‌بندی‌ها'
 
     def persian_date_created(self):
-        return jalali_converter(self.date_created)
+        return date2jalali(self.date_created).strftime("%Y %B %d")
     
     persian_date_created.short_description = "تاریخ ثبت"
 
@@ -68,7 +68,7 @@ class Books(models.Model):
         verbose_name_plural = "کتاب ها"
 
     def persian_date(self):
-        return jalali_converter(self.date_edited)
+        return date2jalali(self.date_uploaded).strftime("%Y %B %d")
     
     
 

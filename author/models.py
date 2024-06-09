@@ -1,5 +1,5 @@
 from django.db import models
-from extentions.utils import jalali_converter
+from jalali_date import date2jalali
 from django.utils.html import format_html
 from ckeditor.fields import RichTextField
 
@@ -23,5 +23,5 @@ class Author(models.Model):
     html_img.short_description = "تصویر"
 
     def persian_date(self):
-        return jalali_converter(self.date_added)
+        return date2jalali(self.date_added).strftime("%Y %B %d")
 # Create your models here.

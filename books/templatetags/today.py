@@ -1,9 +1,9 @@
 from django import template
-from extentions.utils import jalali_converter
+from jalali_date import date2jalali
 from django.utils import timezone
 
 register = template.Library()
 
 @register.simple_tag
 def today():
-    return jalali_converter(timezone.now())
+    return date2jalali(timezone.now()).strftime("%Y %B %d")
