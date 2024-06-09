@@ -110,8 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_REDIRECT_URL = "account:profile"
-LOGOUT_REDIRECT_URL = "account:login"
-LOGIN_URL = "account:login"
+LOGOUT_REDIRECT_URL = "login"
+LOGIN_URL = "login"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -239,3 +239,5 @@ LANGUAGE_CODE = 'fa'
 
 import locale
 locale.setlocale(locale.LC_ALL, "Persian_Iran.UTF-8")
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

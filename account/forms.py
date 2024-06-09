@@ -42,7 +42,7 @@ class UpdateUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(UpdateUserForm, self).__init__(*args, **kwargs)
-        self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget, input_formats=["%Y/%M/%D"])
+        self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
         self.fields["username"].help_text = True
         if not user.is_superuser:
             self.fields['username'].disabled = True

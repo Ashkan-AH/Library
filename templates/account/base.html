@@ -59,7 +59,7 @@
       
     </ul>
     <ul class="navbar-nav mr-auto-navbav">
-      <li class="nav-item"><form id="logout-form" method="post" action="{% url 'account:logout' %}">
+      <li class="nav-item"><form id="logout-form" method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="fas fa-sign-out-alt" style="border: none;padding: 0px;background-color: transparent;"></button>
       </form></li>

@@ -4,6 +4,7 @@ from django.utils import timezone
 from jalali_date import date2jalali
 
 class User(AbstractUser):
+    email = models.EmailField(verbose_name="ایمیل", unique=True, blank=False)
     address = models.TextField(verbose_name="آدرس منزل", blank=False)
     national_code = models.CharField(max_length=10, verbose_name="کدملی", unique=True, blank=False)
     sel_number = models.CharField(max_length=15, verbose_name="تلفن همراه", blank=False)

@@ -4,6 +4,9 @@
 تغییر مشخصات
 {% endblock title %}
 {% block content %}
+  {% if form.birth_date.errors %}
+    {{form.birth_date.errors}}
+  {% endif %}
   <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title float-left">تغییر مشخصات</h3>
@@ -13,6 +16,7 @@
     <form role="form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
       <div class="row" style="padding: 20px;">
         {{form|crispy}}
+        
       </div>
       <!-- /.card-body -->
 

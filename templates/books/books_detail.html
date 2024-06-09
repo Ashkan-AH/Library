@@ -45,7 +45,7 @@
                           <a href="{% url 'books:bookmark-add' books.id %}" class="btn btn-outline-warning">ذخیره شده</a>
                         {% endif %}
                       {% else %}
-                        <a href="{% url 'account:login' %}?next={{request.path}} " class="btn btn-warning">ذخیره</a>
+                        <a href="{% url 'login' %}?next={{request.path}} " class="btn btn-warning">ذخیره</a>
                       {% endif %}
                       
                       <span style="font-size: 18px;">اثری از 
