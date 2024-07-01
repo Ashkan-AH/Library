@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "books.apps.BooksConfig",
     "author.apps.AuthorConfig",
     "account.apps.AccountConfig",
-    "reservation.apps.AccountConfig",
+    "reservation.apps.ReservationConfig",
 ]
 
 

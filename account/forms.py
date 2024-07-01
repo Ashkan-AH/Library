@@ -52,4 +52,4 @@ class UpdateUserForm(forms.ModelForm):
             self.fields['is_active'].disabled = True
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active"]
+        fields = ["username", "first_name", "last_name", "email", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active", "fathers_name", "birth_number", "emergency_number", "role", "st_id", "st_major", "st_grade", "co_id", "co_unit", "co_grade", "pro_id", "pro_major", "pro_grade"]
