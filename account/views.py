@@ -59,12 +59,6 @@ class BookDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
     success_url = reverse_lazy("account:books")
 
 
-class BookPreview(LoginRequiredMixin, StaffAccessMixin, DetailView):
-    template_name = "account/books/book_preview.html"
-    def get_object(self):
-        return get_object_or_404(Books, slug=self.kwargs.get("slug"))
-    
-
 # def bookList(request):
 #     searchForm = BookSearch(request.GET)
 #     if searchForm.is_valid():

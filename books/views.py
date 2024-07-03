@@ -42,4 +42,4 @@ class CategoryList(ListView):
     def get_queryset(self):
         slug = self.kwargs.get("slug")
         selected_category = get_object_or_404(Category, slug=slug)
-        return selected_category.books.filter(in_stock= not 0)
+        return selected_category.books.all()
