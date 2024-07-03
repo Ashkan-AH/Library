@@ -26,6 +26,13 @@ urlpatterns = [
     path("authors/", views.AuthorList.as_view() , name="authors"),
 
 
+    path("reservations/create/", views.ReservationCreate.as_view() , name="reservation-create"),
+    path("reservations/update/<int:pk>/", views.ReservationUpdate.as_view() , name="reservation-update"),
+    path("reservations/delete/<int:pk>/", views.ReservationDelete.as_view() , name="reservation-delete"),
+    path("reservations/<int:pk>/", views.ReservationDetail.as_view() , name="reservation-detail"),
+    path("reservations/", views.ReservationList.as_view() , name="reservations"),
+
+
     path("users/create/", views.UserCreate.as_view() , name="user-create"),
     path("users/update/<int:pk>/", views.UserUpdate.as_view() , name="user-update"),
     path("users/delete/<int:pk>/", views.UserDelete.as_view() , name="user-delete"),

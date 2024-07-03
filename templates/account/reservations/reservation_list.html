@@ -1,0 +1,65 @@
+{% extends "account/base.html" %}
+{% block title %}
+رزرو ها
+{% endblock title %}
+{% block content %}
+
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">لیست رزرو ها</h3>
+
+          <!-- <div class="card-tools float-right">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <form action="" method="get">
+                {{searchForm}}
+                <button type="submit">search</button>
+              </form>
+            </div>
+          </div> -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>شماره رزرو</th>
+                <th>کتاب</th>
+                <th>کاربر</th>
+                <th>تاریخ رزرو</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for reservation in object_list %}
+              
+              <tr>
+                <td><a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a></td>
+                <td>{{reservation.book_id}}</td>
+                <td>{{reservation.user_id}}</td>
+                <td>{{reservation.persian_date_added}}</td>
+                <td>{% if reservation.status == "رزرو شده" %}
+                      <span class="badge bg-indigo" style="font-size: 13px;">رزرو شده</span>
+                    {% elif reservation.status == "تحویل داده شده" %}
+                      <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
+                    {% elif reservation.status == "در انتظار بازگشت" %}
+                      <span class="badge badge-warning" style="font-size: 13px;">در انتظار بازگشت</span>
+                    {% elif reservation.status == "بازگردانده نشده" %}
+                      <span class="badge badge-danger" style="font-size: 13px;">بازگردانده نشده</span>
+                    {% elif reservation.status == "بازگردانده شده" %}
+                      <span class="badge badge-success" style="font-size: 13px;">بازگردانده شده</span>
+                    {% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  
+{% endblock content %}

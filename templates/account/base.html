@@ -160,6 +160,29 @@
                     </li>
                 </ul>
               </li>  
+
+
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'reservations' or request.resolver_match.url_name == 'reservation-delete' or request.resolver_match.url_name == 'reservation-update' or request.resolver_match.url_name == 'reservation-create' or request.resolver_match.url_name == 'reservation-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'reservations' or request.resolver_match.url_name == 'reservation-delete' or request.resolver_match.url_name == 'reservation-update' or request.resolver_match.url_name == 'reservation-create' or request.resolver_match.url_name == 'reservation-detail' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fa fa-address-book"></i>
+                  <p>
+                    رزرو ها
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "reservations" "لیست رزرو ها" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'reservation-create' 'افزودن رزرو' "fa-plus" %}
+                    </li>
+                </ul>
+              </li>  
             {% endif %}
           {% if request.user.is_superuser %}
             <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}

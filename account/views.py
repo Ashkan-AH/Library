@@ -1,10 +1,12 @@
 from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.db.models import Q
-from django.http import Http404
-from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.core.exceptions import PermissionDenied
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from books.models import Books, Category
 from author.models import Author
 from .models import User
@@ -277,3 +279,81 @@ class BookmarkList(LoginRequiredMixin, ListView):
     template_name = "account/bookmarks_list.html"
     def get_queryset(self):
         return Books.objects.filter(bookmarks__in=[self.request.user.id])
+    
+# ---------------------------------Reservation------------------------------
+
+
+class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
+    model = Reservation
+    template_name = "account/reservations/reservation_create_update.html"
+    form_class = ReservationForm
+    success_url = reverse_lazy("account:reservations")
+   
+
+
+class ReservationUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateView):
+    model = Reservation
+    template_name = "account/reservations/reservation_create_update.html"
+    form_class = ReservationForm
+    success_url = reverse_lazy("account:reservations")
+
+# @login_required
+# def reservationCreate(request):
+#     if request.user.is_staff or request.user.is_superuser:
+#         if request.method == "POST":
+#             reservationForm = ReservationForm(request.POST)
+#             if reservationForm.is_valid():
+#                 book_id = reservationForm.cleaned_data["book_id"]
+#                 book = Books.objects.get(id=book_id.id)
+#                 if book.in_stock > 0:
+#                     book.in_stock -= 1
+#                     book.save()
+#                     reservationForm.save()
+#                     return HttpResponseRedirect(reverse("account:reservations"))
+#                 else:
+#                     raise Http404("این کتاب موجود نیست.")
+#         else:
+#             reservationForm = ReservationForm()
+#     else:
+#         raise PermissionDenied("You can't see this page.")
+
+#     context = {"reservationForm": reservationForm, }
+#     return render(request, "account/reservations/reservation_create_update.html", context)
+
+# @login_required
+# def reservationUpdate(request, pk):
+#     if request.user.is_staff or request.user.is_superuser:
+#         reservation = Reservation.objects.get(pk=pk)
+#         if request.method == "POST":
+#             reservationForm = ReservationForm(request.POST, instance=reservation)
+#             if reservationForm.is_valid():
+#                 reservationForm.save()
+#                 return HttpResponseRedirect(reverse("account:reservations"))
+#         else:
+#             reservationForm = ReservationForm(instance=reservation)
+#     else:
+#         raise PermissionDenied("You can't see this page.")
+
+#     context = {"reservationForm": reservationForm, }
+#     return render(request, "account/reservations/reservation_create_update.html", context)
+
+
+class ReservationDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
+    model = Reservation
+    template_name = "account/reservations/reservation_confirm_delete.html"
+    success_url = reverse_lazy("account:reservations")
+
+
+    
+class ReservationDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
+    template_name = "account/reservations/reservation_detail.html"
+    def get_object(self):
+        id = self.kwargs.get("pk")
+        return get_object_or_404(Reservation, reservation_id=id)
+
+
+class ReservationList(LoginRequiredMixin, StaffAccessMixin, ListView):
+    template_name = "account/reservations/reservation_list.html"
+    model = Reservation
+        
+

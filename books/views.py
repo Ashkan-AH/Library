@@ -19,8 +19,7 @@ def bookmark_add(request, id):
 
 
 class BookList(ListView):
-    def get_queryset(self):
-        return Books.objects.filter(in_stock= not 0)
+    model = Books
     
 
 class BookDetail(DetailView):
@@ -28,9 +27,8 @@ class BookDetail(DetailView):
         slug = self.kwargs.get("slug")
         global book
         book = Books.objects.get(slug=slug)
-        if book.in_stock != 0:
-            return book
-        raise Http404("چنین کتابی موجود نیست!")
+        return book
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         bookmark = bool

@@ -1,0 +1,17 @@
+{% extends "account/base.html" %}
+{% block title %}
+{{object.reservation_id}}
+{% endblock title %}
+{% block content %}
+  <h1>{{object.reservation_id}}</h1>
+  <h1>{{object.book_id}}</h1>
+  <p>{{object.user_id}}</p>
+  <p>{{object.status}}</p>
+  <p>{{object.extend_sluts}}</p>
+  <p>{{object.persian_date_added}}</p>
+  <p>{{object.persian_delivery_date}}</p>
+  <p>{{object.deadline}}</p>
+  <p>{{object.delivery_remaining}}</p>
+  <a href="{% url 'account:reservation-update' object.reservation_id %}" class="btn bg-warning">ویرایش رزرو</a>
+  <a href="{% url 'account:reservation-delete' object.reservation_id %}" class="btn bg-danger">حذف رزرو</a>
+{% endblock content %}
