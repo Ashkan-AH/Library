@@ -21,15 +21,16 @@ def create_category(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_unique_slug(instance)
 
+
 @receiver(post_delete, sender=Reservation)
-def create_category(sender, instance, *args, **kwargs):
+def book_delete_increase(sender, instance, *args, **kwargs):
     book = Books.objects.get(id=instance.book_id.id)
     book.in_stock += 1
     book.save()
 
 
 @receiver(pre_save, sender=Reservation)
-def book_reduce(sender, instance, *args, **kwargs):
+def book_reservation_reduce(sender, instance, *args, **kwargs):
     book = Books.objects.get(id=instance.book_id.id)
     if book.in_stock > 0:
         book.in_stock -= 1
