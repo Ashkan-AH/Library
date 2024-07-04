@@ -21,7 +21,7 @@
     </div>
     <!-- /.card-header -->
     <!-- form start -->
-    <form role="form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+    <form role="form" method="post" action="">{% csrf_token %}
       <div class="row" style="padding: 20px;">
         {{form|crispy}}
       </div>
@@ -30,8 +30,7 @@
       <div class="card-footer">
         <button type="submit" class="btn btn-primary">تایید</button>
       </div>
+      {{form.kwargs}}
     </form>
   </div>
-  <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock content %}

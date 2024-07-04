@@ -2,11 +2,13 @@ from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
+from django.utils import timezone
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from jalali_date import date2jalali
 from books.models import Books, Category
 from author.models import Author
 from .models import User
@@ -290,6 +292,57 @@ class ReservationUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateView):
     template_name = "account/reservations/reservation_create_update.html"
     form_class = ReservationForm
     success_url = reverse_lazy("account:reservations")
+    def get_form_kwargs(self):
+        kwargs = super(ReservationUpdate, self).get_form_kwargs()
+        kwargs.update({"update": "update"})
+        return kwargs
+
+@login_required
+def delivered_action(request, pk):
+    if request.user.is_staff or request.user.is_superuser:
+        reservation = get_object_or_404(Reservation, reservation_id=pk)
+        book = get_object_or_404(Books, id=reservation.book_id.id)
+        if reservation.status == "رزرو شده":
+            reservation.status = "تحویل داده شده"
+            book.in_stock -= 1
+            reservation.delivery_date = timezone.now()
+            reservation.save()
+            book.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+    else:
+        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+    
+
+@login_required
+def cancel_action(request, pk):
+    if request.user.is_staff or request.user.is_superuser:
+        reservation = get_object_or_404(Reservation, reservation_id=pk)
+        book = get_object_or_404(Books, id=reservation.book_id.id)
+        if reservation.status == "رزرو شده":
+            reservation.status = "لغو رزرو"
+            book.in_stock_user += 1
+            reservation.save()
+            book.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+    else:
+        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+    
+
+@login_required
+def returned_action(request, pk):
+    if request.user.is_staff or request.user.is_superuser:
+        reservation = get_object_or_404(Reservation, reservation_id=pk)
+        book = get_object_or_404(Books, id=reservation.book_id.id)
+        if reservation.status == "تحویل داده شده":
+            reservation.status = "بازگردانده شده"
+            book.in_stock_user += 1
+            book.in_stock += 1
+            reservation.save()
+            book.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+    else:
+        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+    
 
 # @login_required
 # def reservationCreate(request):
@@ -348,6 +401,21 @@ class ReservationDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
 
 class ReservationList(LoginRequiredMixin, StaffAccessMixin, ListView):
     template_name = "account/reservations/reservation_list.html"
-    model = Reservation
+    def get_queryset(self):
+        reservations = Reservation.objects.all()
+        for reservation in reservations:
+            if reservation.status == "رزرو شده":
+                remaining = timezone.now().date() - reservation.date_added.date()
+                if remaining.days > 7:
+                    reservation.status = "لغو رزرو"
+                    reservation.save()
+            elif reservation.status == "تحویل داده شده":
+                remaining = reservation.delivery_remaining()
+                if remaining is not None and remaining.days <= 0:
+                    reservation.status = "بازگردانده نشده"
+                    reservation.save()
+            else:
+                continue
+        return reservations
         
 

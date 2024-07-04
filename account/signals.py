@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, post_delete
+from django.db.models.signals import pre_save, pre_init, post_delete
 from django.http import Http404
 from django.dispatch import receiver
 from books.models import Books, Category
@@ -25,20 +25,43 @@ def create_category(sender, instance, *args, **kwargs):
 @receiver(post_delete, sender=Reservation)
 def book_delete_increase(sender, instance, *args, **kwargs):
     book = Books.objects.get(id=instance.book_id.id)
-    book.in_stock += 1
-    book.save()
+    if instance.status == "رزرو شده":
+        book.in_stock_user += 1
+        book.save()
+    elif instance.status == "تحویل داده شده" or instance.status == "بازگردانده نشده":
+        book.in_stock_user += 1
+        book.in_stock += 1
+        book.save()
+    
+    
 
 
 @receiver(pre_save, sender=Reservation)
-def book_reservation_reduce(sender, instance, *args, **kwargs):
+def book_update_reservation_reduce(sender, instance, *args, **kwargs):
     book = Books.objects.get(id=instance.book_id.id)
-    if book.in_stock > 0:
-        book.in_stock -= 1
-        book.save()
-    else:
-        raise Http404("این کتاب موجود نیست.")
+    if instance.reservation_id is None:
+        if instance.status == "رزرو شده":
+            if book.in_stock_user > 0:
+                book.in_stock_user -= 1
+                book.save()
+            else:
+                raise Http404("ظرفیت رزرو این کتاب کاملا پر است.")
+        elif instance.status == "لغو رزرو":
+            book.in_stock_user += 1
+            book.save()
+        elif instance.status == "تحویل داده شده" or instance.status == "بازگردانده نشده":
+            if book.in_stock_user > 0 and book.in_stock > 0:
+                book.in_stock_user -= 1
+                book.in_stock -= 1
+                book.save()
+            else:
+                raise Http404("ظرفیت این کتاب کاملا پر است.")
+        elif instance.status == "بازگردانده شده":
+            book.in_stock_user += 1
+            book.in_stock += 1
+            book.save()
 
-
+            
 def create_unique_slug(instance, newslug=None):
     if newslug is not None:
         slug=newslug

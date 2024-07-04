@@ -10,7 +10,7 @@ from jalali_date.widgets import AdminJalaliDateWidget
 class BookForm(forms.ModelForm):
     class Meta:
         model = Books
-        exclude = ["slug"]
+        exclude = ["slug", "bookmarks"]
 
 
 class SearchForm(forms.Form):
@@ -35,10 +35,16 @@ class ReservationForm(forms.ModelForm):
         fields = ["book_id", "user_id", "status", "delivery_date", "extend_sluts"]
 
     def __init__(self, *args, **kwargs):
+        signal = 0
+        if "update" in kwargs:
+            signal = kwargs.pop("update")
+        
         super(ReservationForm, self).__init__(*args, **kwargs)
         self.fields['delivery_date'] = JalaliDateField(required=False, label=('تاریخ تحویل کتاب'),
             widget=AdminJalaliDateWidget
         )
+        if signal:
+            self.fields["status"].disabled = True
 
 class CreateUserForm(UserCreationForm):
     class Meta:

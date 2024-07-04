@@ -63,7 +63,7 @@ class Books(models.Model):
     date_edited = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)
     bookmarks = models.ManyToManyField(User, related_name="bookmarks", verbose_name="ذخیره شده ها", blank=True)
-    keep_duration = models.IntegerField(verbose_name="حداکثر میزان نگهداری", default=7)    
+     
     class Meta:
         verbose_name = "کتاب"
         verbose_name_plural = "کتاب ها"

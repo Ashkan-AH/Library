@@ -29,6 +29,7 @@
                 <th>کاربر</th>
                 <th>تاریخ رزرو</th>
                 <th>وضعیت</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -43,13 +44,22 @@
                       <span class="badge bg-indigo" style="font-size: 13px;">رزرو شده</span>
                     {% elif reservation.status == "تحویل داده شده" %}
                       <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
-                    {% elif reservation.status == "در انتظار بازگشت" %}
-                      <span class="badge badge-warning" style="font-size: 13px;">در انتظار بازگشت</span>
                     {% elif reservation.status == "بازگردانده نشده" %}
                       <span class="badge badge-danger" style="font-size: 13px;">بازگردانده نشده</span>
                     {% elif reservation.status == "بازگردانده شده" %}
                       <span class="badge badge-success" style="font-size: 13px;">بازگردانده شده</span>
+                    {% elif reservation.status == "لغو رزرو" %}
+                      <span class="badge badge-danger" style="font-size: 13px;">لغو رزرو</span>
                     {% endif %}</td>
+                  <td>
+                    {% if reservation.status == "رزرو شده" %}
+                    <a class="btn btn-primary" href="{% url 'account:delivered_action' reservation.reservation_id %}">تحویل داده شد</a>
+                    <a class="btn btn-danger" href="{% url 'account:cancel_action' reservation.reservation_id %}">لغو رزرو</a>
+                    {% elif reservation.status == "تحویل داده شده" %}
+                    <a class="btn btn-success" href="{% url 'account:returned_action' reservation.reservation_id %}">بازگردانده شده</a>
+
+                    {% endif %}
+                  </td>
               </tr>
               {% endfor %}
             </tbody>

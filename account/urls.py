@@ -30,6 +30,9 @@ urlpatterns = [
     path("reservations/delete/<int:pk>/", views.ReservationDelete.as_view() , name="reservation-delete"),
     path("reservations/<int:pk>/", views.ReservationDetail.as_view() , name="reservation-detail"),
     path("reservations/", views.ReservationList.as_view() , name="reservations"),
+    path("delivered/<int:pk>", views.delivered_action , name="delivered_action"),
+    path("cancel/<int:pk>", views.cancel_action , name="cancel_action"),
+    path("returned/<int:pk>", views.returned_action , name="returned_action"),
 
 
     path("users/create/", views.UserCreate.as_view() , name="user-create"),
