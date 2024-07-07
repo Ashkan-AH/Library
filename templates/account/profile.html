@@ -3,7 +3,6 @@
   صفحه اصلی
 {% endblock title %}
 {% block content %}
-  <h1>صفحه اصلی</h1>
   <h3>خوش آمدید {{request.user.get_full_name}}</h3>
   <img src="{{request.user.picture.url}}" width="150px">
   <p>{{request.user.username}}</p>
@@ -14,9 +13,10 @@
   <p>{{request.user.national_code}}</p>
   <p>{{request.user.sel_number}}</p>
   <p>{{request.user.home_number}}</p>
-  <p>{{request.user.birth_date}}</p>
+  <p>{{request.user.persian_birthdate}}</p>
   <p>{{request.user.is_superuser}}</p>
   <p>{{request.user.is_staff}}</p>
   <p>{{request.user.is_active}}</p>
+  <p>{{request.user.reservation_limit}}</p>
   <a href="{% url 'account:profile-update' %}" class="btn bg-warning">ویرایش مشخصات</a>
 {% endblock content %}

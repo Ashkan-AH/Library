@@ -49,7 +49,7 @@
                       <span class="badge badge-danger" style="font-size: 13px;">ناموجود</span>
                     {% else %}
                       <span class="badge badge-success" style="font-size: 13px;">موجود</span>
-                    {% endif %}<a href="{% url 'books:about' book.slug %}" class="btn btn-primary" style="font-size: 11px;">نمایش در سایت</a></td>
+                    {% endif %}<a href="{% url 'books:book-detail' book.slug %}" class="btn btn-primary" style="font-size: 11px;">نمایش در سایت</a></td>
               </tr>
               {% endfor %}
             </tbody>

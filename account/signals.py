@@ -2,6 +2,7 @@ from django.db.models.signals import pre_save, pre_init, post_delete
 from django.http import Http404
 from django.dispatch import receiver
 from books.models import Books, Category
+from .models import User
 from reservation.models import Reservation
 from author.models import Author
 from django.utils.text import slugify
@@ -25,41 +26,60 @@ def create_category(sender, instance, *args, **kwargs):
 @receiver(post_delete, sender=Reservation)
 def book_delete_increase(sender, instance, *args, **kwargs):
     book = Books.objects.get(id=instance.book_id.id)
+    user = User.objects.get(id=instance.user_id.id)
+    
     if instance.status == "رزرو شده":
         book.in_stock_user += 1
         book.save()
+        user.reservation_limit += 1
+        user.save()
     elif instance.status == "تحویل داده شده" or instance.status == "بازگردانده نشده":
         book.in_stock_user += 1
         book.in_stock += 1
         book.save()
+        user.reservation_limit += 1
+        user.save()
     
     
 
 
 @receiver(pre_save, sender=Reservation)
-def book_update_reservation_reduce(sender, instance, *args, **kwargs):
+def book_create_reservation_reduce(sender, instance, *args, **kwargs):
+    user = User.objects.get(id=instance.user_id.id)
     book = Books.objects.get(id=instance.book_id.id)
     if instance.reservation_id is None:
-        if instance.status == "رزرو شده":
-            if book.in_stock_user > 0:
-                book.in_stock_user -= 1
+        if user.reservation_limit > 0:
+            if instance.status == "رزرو شده":
+                if book.in_stock_user > 0:
+                    user.reservation_limit -= 1
+                    user.save()
+                    book.in_stock_user -= 1
+                    book.save()
+                else:
+                    raise Http404("ظرفیت رزرو این کتاب کاملا پر است.")
+            elif instance.status == "لغو رزرو":
+                user.reservation_limit += 1
+                user.save()
+                book.in_stock_user += 1
                 book.save()
-            else:
-                raise Http404("ظرفیت رزرو این کتاب کاملا پر است.")
-        elif instance.status == "لغو رزرو":
-            book.in_stock_user += 1
-            book.save()
-        elif instance.status == "تحویل داده شده" or instance.status == "بازگردانده نشده":
-            if book.in_stock_user > 0 and book.in_stock > 0:
-                book.in_stock_user -= 1
-                book.in_stock -= 1
+            elif instance.status == "تحویل داده شده" or instance.status == "بازگردانده نشده":
+                if book.in_stock_user > 0 and book.in_stock > 0:
+                    user.reservation_limit -= 1
+                    user.is_active = False
+                    user.save()
+                    book.in_stock_user -= 1
+                    book.in_stock -= 1
+                    book.save()
+                else:
+                    raise Http404("این کتاب در انبار موجود نیست یا ظرفیت رزرو تکمیل است.")
+            elif instance.status == "بازگردانده شده":
+                user.reservation_limit += 1
+                user.save()
+                book.in_stock_user += 1
+                book.in_stock += 1
                 book.save()
-            else:
-                raise Http404("ظرفیت این کتاب کاملا پر است.")
-        elif instance.status == "بازگردانده شده":
-            book.in_stock_user += 1
-            book.in_stock += 1
-            book.save()
+        else:
+            raise Http404("این کاربر به حد تعداد رزرو خود رسیده است.")
 
             
 def create_unique_slug(instance, newslug=None):

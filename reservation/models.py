@@ -32,6 +32,25 @@ class Reservation(models.Model):
     def delivery_remaining(self):
         if self.delivery_date is not None and self.deadline is not None:
             return ((self.delivery_date + timedelta(days=14)) - timezone.now().date())
+    def not_returned(self):
+        if self.status == "تحویل داده شده" and self.delivery_remaining() <= -2:
+            user = User.objects.get(id=self.user_id.id)
+            user.is_active = False
+            user.save()
+            self.status = "بازگردانده نشده"
+            self.save()
+    def reservation_expired(self):
+        remaining = timezone.now().date() - self.date_added.date()
+        if remaining.days > 7:
+            user = User.objects.get(id=self.user_id.id)
+            book = Books.objects.get(id=self.book_id.id)
+            user.reservation_limit += 1
+            user.save()
+            self.status = "لغو رزرو"
+            self.save()
+            book.in_stock_user += 1
+            book.save()
+            
     persian_date_added.short_description = "تاریخ رزرو"
     persian_delivery_date.short_description = "تاریخ تحویل کتاب"
     deadline.short_description = "تاریخ بازگشت کتاب"

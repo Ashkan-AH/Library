@@ -26,7 +26,9 @@
               <tr>
                 <th>شماره رزرو</th>
                 <th>کتاب</th>
-                <th>کاربر</th>
+                {% if request.user.is_superuser or request.user.is_staff %}
+                  <th>کاربر</th>
+                {% endif %}
                 <th>تاریخ رزرو</th>
                 <th>وضعیت</th>
                 <th></th>
@@ -37,11 +39,21 @@
               
               <tr>
                 <td><a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a></td>
-                <td>{{reservation.book_id}}</td>
-                <td>{{reservation.user_id}}</td>
+                {% if request.user.is_staff or request.user.is_superuser %}
+                  <td><a href="{% url 'account:book-detail' reservation.book_id.id %}">{{reservation.book_id}}</a></td>
+                {% else %}
+                  <td><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id}}</a></td>
+                {% endif %}
+                {% if reservation.user_id.id == request.user.id %}
+                  {% if request.user.is_staff or request.user.is_superuser %}
+                    <td>{{reservation.user_id}}</td>
+                  {% endif %}
+                {% else %}
+                  <td><a href="{% url 'account:user-detail' reservation.user_id.id %}">{{reservation.user_id}}</a></td>
+                {% endif %}
                 <td>{{reservation.persian_date_added}}</td>
                 <td>{% if reservation.status == "رزرو شده" %}
-                      <span class="badge bg-indigo" style="font-size: 13px;">رزرو شده</span>
+                      <span class="badge badge-info" style="font-size: 13px;">رزرو شده</span>
                     {% elif reservation.status == "تحویل داده شده" %}
                       <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
                     {% elif reservation.status == "بازگردانده نشده" %}
@@ -51,15 +63,20 @@
                     {% elif reservation.status == "لغو رزرو" %}
                       <span class="badge badge-danger" style="font-size: 13px;">لغو رزرو</span>
                     {% endif %}</td>
-                  <td>
-                    {% if reservation.status == "رزرو شده" %}
-                    <a class="btn btn-primary" href="{% url 'account:delivered_action' reservation.reservation_id %}">تحویل داده شد</a>
-                    <a class="btn btn-danger" href="{% url 'account:cancel_action' reservation.reservation_id %}">لغو رزرو</a>
-                    {% elif reservation.status == "تحویل داده شده" %}
-                    <a class="btn btn-success" href="{% url 'account:returned_action' reservation.reservation_id %}">بازگردانده شده</a>
+                  {% if request.user.is_superuser or request.user.is_staff %}
+                    <td>
+                      <a href="{% url 'account:reservation-delete' reservation.reservation_id %}" class="btn btn-danger btn-sm">حذف رزرو</a>
+                      {% if reservation.status == "رزرو شده" %}
+                      <a class="btn btn-primary btn-sm" href="{% url 'account:delivered-action' reservation.reservation_id %}">تحویل داده شد</a>
+                      <a class="btn btn-danger btn-sm" href="{% url 'account:cancel-action' reservation.reservation_id %}">لغو رزرو</a>
+                      {% elif reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده" %}
+                      <a class="btn btn-success btn-sm" href="{% url 'account:returned-action' reservation.reservation_id %}">بازگردانده شده</a>
+                      {% elif reservation.status == "لغو رزرو" %}
+                      <a class="btn btn-info btn-sm" href="{% url 'account:reserve-action' reservation.reservation_id %}">رزرو شده</a>
 
-                    {% endif %}
-                  </td>
+                      {% endif %}
+                    </td>
+                  {% endif %}
               </tr>
               {% endfor %}
             </tbody>

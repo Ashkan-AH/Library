@@ -44,8 +44,22 @@
                         {% else %}
                           <a href="{% url 'books:bookmark-add' books.id %}" class="btn btn-outline-warning">ذخیره شده</a>
                         {% endif %}
+                        {% if not reserved %}
+                          {% if request.user.reservation_limit <= 0 %}
+                            <p style="font-size: 15px;color: red;">شما به حد رزرو خود رسیده اید.</p>
+                          {% endif %}
+                          {% if books.in_stock_user <= 0 %}
+                            <p style="font-size: 15px;color: red;">ظرفیت رزرو این کتاب تکمیل شده است</p>
+                          {% endif %}
+                          {% if books.in_stock_user > 0 and request.user.reservation_limit > 0 %}
+                            <a href="{% url 'books:reservation-add' books.id %}" class="btn btn-info">رزرو کتاب</a>
+                          {% endif %}
+                        {% else %}
+                          <a href="{% url 'books:reservation-add' books.id %}" class="btn btn-outline-info">رزرو شده</a>
+                        {% endif %}
                       {% else %}
                         <a href="{% url 'login' %}?next={{request.path}} " class="btn btn-warning">ذخیره</a>
+                        <a href="{% url 'login' %}?next={{request.path}} " class="btn btn-warning">رزرو</a>
                       {% endif %}
                       
                       <span style="font-size: 18px;">اثری از 

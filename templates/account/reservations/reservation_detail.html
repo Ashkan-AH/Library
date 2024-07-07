@@ -12,6 +12,5 @@
   <p>{{object.persian_delivery_date}}</p>
   <p>{{object.deadline}}</p>
   <p>{{object.delivery_remaining}}</p>
-  <a href="{% url 'account:reservation-update' object.reservation_id %}" class="btn bg-warning">ویرایش رزرو</a>
   <a href="{% url 'account:reservation-delete' object.reservation_id %}" class="btn bg-danger">حذف رزرو</a>
 {% endblock content %}

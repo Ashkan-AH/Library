@@ -42,7 +42,7 @@ class User(AbstractUser):
     home_number = models.CharField(max_length=11, blank=True, verbose_name="تلفن ثابت")
     emergency_number = models.CharField(max_length=15, verbose_name="شماره اضطراری", blank=True)
     picture = models.ImageField(upload_to="uploads/profile/", verbose_name="تصویر", blank=True)
-    birth_date = models.DateField(verbose_name="تاریخ تولد", default=timezone.now, blank=True)
+    birth_date = models.DateField(verbose_name="تاریخ تولد", blank=True)
     reservation_limit = models.IntegerField(default=5, verbose_name="محدودیت رزرو")
     role = models.CharField(choices=ROLE_CHOICES, max_length=7, blank=True)
     st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")

@@ -37,14 +37,14 @@
                   <div class="row">
                     <div class="col-lg-4 col-sm-5">
                       <div class="image">
-                        <a href="{% url 'books:about' book.slug %}"><img src="{{book.picture.url}}" alt=""></a>
+                        <a href="{% url 'books:book-detail' book.slug %}"><img src="{{book.picture.url}}" alt=""></a>
                         
                       </div>
                     </div>
                     <div class="col-lg-8 col-sm-7">
                       <div class="right-content">
                         
-                        <a href="{% url 'books:about' book.slug %}"><h3 style="color:#FFFFFF">{{book.name}}</h3></a>
+                        <a href="{% url 'books:book-detail' book.slug %}"><h3 style="color:#FFFFFF">{{book.name}}</h3></a>
                         <span style="font-size: 18px;">اثری از 
                         {% for author in book.author.all %}
                         <a href="{% url 'author:author' author.slug %}">{{author.name}} ,</a>
@@ -63,7 +63,7 @@
                         </div>
                         <span style="font-size: 15px; margin-top: 15px;">آخرین ویرایش در {{book.persian_date}}</span>
                         <div class="text-button">
-                          <a href="{% url 'books:about' book.slug %}">اطلاعات بیشتر<i class="fa fa-arrow-right"></i></a>
+                          <a href="{% url 'books:book-detail' book.slug %}">اطلاعات بیشتر<i class="fa fa-arrow-right"></i></a>
                         </div>
                       </div>
                     </div>

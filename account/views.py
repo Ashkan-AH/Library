@@ -1,3 +1,5 @@
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.db.models import Q
@@ -198,6 +200,7 @@ class AuthorList(LoginRequiredMixin, StaffAccessMixin, ListView):
 class UserList(LoginRequiredMixin, SuperuserAccessMixin, ListView):
     template_name = "account/users/users_list.html"
     def get_queryset(self):
+        
         global searchForm
         searchForm = SearchForm(self.request.GET)
         if searchForm.is_valid():
@@ -216,12 +219,15 @@ class UserList(LoginRequiredMixin, SuperuserAccessMixin, ListView):
 class UserDetail(LoginRequiredMixin, SuperuserAccessMixin, DetailView):
     template_name = "account/users/user_detail.html"
     def get_object(self):
+        global id
         id = self.kwargs.get('pk')
         if id != self.request.user.id:
-            user = get_object_or_404(User, id=id)
-        else:
-            raise Http404
-        return user
+            return get_object_or_404(User, id=id)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reservations"] = Reservation.objects.filter(Q(user_id=id)).order_by("status")
+        return context
 
 
 class UserCreate(LoginRequiredMixin, SuperuserAccessMixin, CreateView):
@@ -256,6 +262,7 @@ class Profile(LoginRequiredMixin, DetailView):
     def get_object(self):
         id = self.request.user.id
         return get_object_or_404(User, id=id)
+    
 
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
@@ -276,6 +283,7 @@ class BookmarkList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Books.objects.filter(bookmarks__in=[self.request.user.id])
     
+
 # ---------------------------------Reservation------------------------------
 
 
@@ -287,15 +295,6 @@ class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
    
 
 
-class ReservationUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateView):
-    model = Reservation
-    template_name = "account/reservations/reservation_create_update.html"
-    form_class = ReservationForm
-    success_url = reverse_lazy("account:reservations")
-    def get_form_kwargs(self):
-        kwargs = super(ReservationUpdate, self).get_form_kwargs()
-        kwargs.update({"update": "update"})
-        return kwargs
 
 @login_required
 def delivered_action(request, pk):
@@ -317,10 +316,31 @@ def delivered_action(request, pk):
 def cancel_action(request, pk):
     if request.user.is_staff or request.user.is_superuser:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
+        user = User.objects.get(id=reservation.user_id.id)
         book = get_object_or_404(Books, id=reservation.book_id.id)
         if reservation.status == "رزرو شده":
             reservation.status = "لغو رزرو"
+            user.reservation_limit += 1
             book.in_stock_user += 1
+            user.save()
+            reservation.save()
+            book.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+    else:
+        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+    
+
+@login_required
+def reserve_action(request, pk):
+    if request.user.is_staff or request.user.is_superuser:
+        reservation = get_object_or_404(Reservation, reservation_id=pk)
+        user = User.objects.get(id=reservation.user_id.id)
+        book = get_object_or_404(Books, id=reservation.book_id.id)
+        if reservation.status == "لغو رزرو":
+            reservation.status = "رزرو شده"
+            user.reservation_limit -= 1
+            book.in_stock_user -= 1
+            user.save()
             reservation.save()
             book.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
@@ -333,11 +353,14 @@ def returned_action(request, pk):
     if request.user.is_staff or request.user.is_superuser:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
         book = get_object_or_404(Books, id=reservation.book_id.id)
-        if reservation.status == "تحویل داده شده":
+        user = User.objects.get(id=reservation.user_id.id)
+        if reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده":
+            user.reservation_limit += 1
+            user.save()
             reservation.status = "بازگردانده شده"
+            reservation.save()
             book.in_stock_user += 1
             book.in_stock += 1
-            reservation.save()
             book.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
     else:
@@ -392,30 +415,24 @@ class ReservationDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
 
 
     
-class ReservationDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
+class ReservationDetail(LoginRequiredMixin, DetailView):
     template_name = "account/reservations/reservation_detail.html"
     def get_object(self):
         id = self.kwargs.get("pk")
         return get_object_or_404(Reservation, reservation_id=id)
 
 
-class ReservationList(LoginRequiredMixin, StaffAccessMixin, ListView):
+class ReservationList(LoginRequiredMixin, ListView):
     template_name = "account/reservations/reservation_list.html"
     def get_queryset(self):
-        reservations = Reservation.objects.all()
-        for reservation in reservations:
-            if reservation.status == "رزرو شده":
-                remaining = timezone.now().date() - reservation.date_added.date()
-                if remaining.days > 7:
-                    reservation.status = "لغو رزرو"
-                    reservation.save()
-            elif reservation.status == "تحویل داده شده":
-                remaining = reservation.delivery_remaining()
-                if remaining is not None and remaining.days <= 0:
-                    reservation.status = "بازگردانده نشده"
-                    reservation.save()
-            else:
-                continue
-        return reservations
-        
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return Reservation.objects.all()
+        else:
+            return Reservation.objects.filter(user_id=self.request.user.id)
 
+# ------------------------------Black List------------------------------------
+
+class BlackList(SuperuserAccessMixin, LoginRequiredMixin, ListView):
+    template_name = "account/black_list_users_list.html"
+    def get_queryset(self):
+        return User.objects.filter(is_active=False)
