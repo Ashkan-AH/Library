@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from django.contrib.auth import views
 from . import views
 
@@ -35,7 +35,6 @@ urlpatterns = [
     path("returned/<int:pk>/", views.returned_action, name="returned-action"),
 
 
-    path("users/create/", views.UserCreate.as_view(), name="user-create"),
     path("users/update/<int:pk>/", views.UserUpdate.as_view(), name="user-update"),
     path("users/delete/<int:pk>/", views.UserDelete.as_view(), name="user-delete"),
     path("users/<int:pk>/", views.UserDetail.as_view(), name="user-detail"),
@@ -44,6 +43,14 @@ urlpatterns = [
 
     path("black-list/", views.BlackList.as_view(), name="black-list"),
     path("bookmarks/", views.BookmarkList.as_view(), name="bookmarks"),
+    path("waiting-list/", views.WaitingList.as_view(), name="waiting-list"),
     path("profile-update/", views.ProfileUpdate.as_view(), name="profile-update"),
+
+    
+    path('signup/', views.Registration1.as_view(), name='signup1'),
+    path('signup/<int:pk>/', views.Registration2.as_view(), name='signup2'),
+    path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate, name='activate'),
+
+
     path("", views.Profile.as_view(), name="profile"), 
 ]

@@ -1,0 +1,33 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ثبت نام</title>
+  <link href="{% static 'main/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+</head>
+  <body>
+    <h2>ثبت نام</h2>
+    <form role="form" method="post" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        {% if user.role == "استاد" %}
+          <div class="col-3">{{form.pro_id|as_crispy_field}}</div>
+          <div class="col-3">{{form.pro_major|as_crispy_field}}</div>
+          <div class="col-3">{{form.pro_grade|as_crispy_field}}</div>
+        {% elif user.role == "دانشجو" %}
+          <div class="col-3">{{form.st_id|as_crispy_field}}</div>
+          <div class="col-3">{{form.st_major|as_crispy_field}}</div>
+          <div class="col-3">{{form.st_grade|as_crispy_field}}</div>
+        {% elif user.role == "کامند" %}
+          <div class="col-3">{{form.co_id|as_crispy_field}}</div>
+          <div class="col-3">{{form.co_unit|as_crispy_field}}</div>
+          <div class="col-3">{{form.co_grade|as_crispy_field}}</div>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary">ثبت نام</button>
+    </form>
+  </body>
+</html>

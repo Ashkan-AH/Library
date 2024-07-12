@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="{% static 'user/assets/css/adminlte.min.css' %}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{% static 'user/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{% static 'user/plugins/daterangepicker/daterangepicker.css' %}">
   <!-- summernote -->
@@ -91,6 +92,9 @@
             with font-awesome or any other icon font library -->
             <li class="nav-item">
               {% link request 'bookmarks' 'محبوب ها' "fa-bookmark" %}
+            </li>
+            <li class="nav-item">
+              {% link request 'waiting-list' 'لیست انتظار' "fa-clock" %}
             </li>
             {% if not request.user.is_staff or not request.user.is_superuser %}
               <li class="nav-item">
@@ -188,36 +192,14 @@
                     </li>
                 </ul>
               </li>  
-            {% endif %}
-          {% if request.user.is_superuser %}
-            <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
-            menu-open
-            {% endif %}">
-              <a href="#" class="nav-link {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'user-update' or request.resolver_match.url_name == 'user-delete' or request.resolver_match.url_name == 'user-detail' or request.resolver_match.url_name == 'user-create' %}
-              active
-              {% endif %}">
-                <i class="nav-icon fa fa-user"></i>
-                <p>
-                  کاربران
-                  <i class="right fa fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                
-                  <li class="nav-item">
-                    {% link request 'users' 'لیست کاربران' "fa-th-list" %}
-                  </li>
-                  <li class="nav-item">
-                    {% link request 'user-create' 'افزودن کاربر' "fa-user-plus" %}
-                  </li>
-                
-                
-              </ul>
-            </li>
-            <li class="nav-item">
-              {% link request 'black-list' 'لیست سیاه' "fa-ban" %}
+              <li class="nav-item">
+                {% link request 'users' 'لیست کاربران' "fa-th-list" %}
               </li>
-          {% endif %}
+              <li class="nav-item">
+                {% link request 'black-list' 'لیست سیاه' "fa-ban" %}
+                </li>
+            {% endif %}
+          
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

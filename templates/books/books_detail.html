@@ -50,6 +50,11 @@
                           {% endif %}
                           {% if books.in_stock_user <= 0 %}
                             <p style="font-size: 15px;color: red;">ظرفیت رزرو این کتاب تکمیل شده است</p>
+                            {% if not waiting %}
+                              <a href="{% url 'books:waiting-add' books.id %}" class="btn btn-primary">خبرم کن</a>
+                            {% else %}
+                              <a href="#" class="btn btn-outline-primary disabled">خبرم کن</a>
+                            {% endif %}
                           {% endif %}
                           {% if books.in_stock_user > 0 and request.user.reservation_limit > 0 %}
                             <a href="{% url 'books:reservation-add' books.id %}" class="btn btn-info">رزرو کتاب</a>

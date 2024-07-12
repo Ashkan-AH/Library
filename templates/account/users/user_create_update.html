@@ -3,21 +3,13 @@
 {% load jalali_tags %}
 {% load static %}
 {% block title%}
-{% if request.resolver_match.url_name == "user-create" %}
-  افزودن کاربر
-{% elif request.resolver_match.url_name == "user-update" %}
   ویرایش {{user.get_full_name}}
-{% endif %}
 
 {% endblock title %}
 {% block content %}
   <div class="card card-primary">
     <div class="card-header">
-        {% if request.resolver_match.url_name == "user-create" %}
-          <h3 class="card-title float-left">افزودن کاربر</h3>
-        {% elif request.resolver_match.url_name == "user-update" %}
-          <h3 class="card-title float-left">ویرایش {{user.get_full_name}}</h3>
-        {% endif %}
+      <h3 class="card-title float-left">ویرایش {{user.get_full_name}}</h3>
       
     </div>
     <!-- /.card-header -->

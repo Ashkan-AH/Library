@@ -5,6 +5,8 @@ from django.utils.html import format_html
 from ckeditor.fields import RichTextField
 from author.models import Author
 from account.models import User
+from django.conf import settings
+from django.core.mail import send_mail
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True, unique=True, blank=False)
@@ -64,15 +66,23 @@ class Books(models.Model):
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)
     bookmarks = models.ManyToManyField(User, related_name="bookmarks", verbose_name="ذخیره شده ها", blank=True)
      
+    waiting_users = models.ManyToManyField(User, related_name="books", verbose_name="لیست انتظار")
     class Meta:
         verbose_name = "کتاب"
         verbose_name_plural = "کتاب ها"
 
     def persian_date(self):
         return date2jalali(self.date_uploaded).strftime("%Y %B %d")
-    
-    
-
+    def in_stock_email(book):
+        if book.in_stock_user > 0 and book.waiting_users != None:
+            for user in book.waiting_users.all():
+                user = User.objects.get(id=user.id)
+                subject = f'افزایش موجودی {book.name}'
+                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.name} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری کنید.'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email, ]
+                send_mail( subject, message, email_from, recipient_list )
+                book.waiting_users.remove(user)
     def get_absolute_url(self):
         return reverse("account:books")
     def html_img(self):

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,17 @@ def bookmark_add(request, id):
     else:
         book.bookmarks.add(request.user)
     return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+@login_required
+def waiting_add(request, id):
+    book = get_object_or_404(Books, id=id)
+    if book.in_stock_user <= 0:
+        if book.waiting_users.filter(id=request.user.id).exists():
+            book.waiting_users.remove(request.user)
+        else:
+            book.waiting_users.add(request.user)
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
 
 
 @login_required
@@ -56,6 +67,10 @@ class BookDetail(DetailView):
         if Reservation.objects.filter(Q(book_id=book.id), Q(user_id=self.request.user.id), Q(status="رزرو شده")).exists():
             reserved = True
         context["reserved"] = reserved
+        waiting = bool
+        if book.waiting_users.filter(id=self.request.user.id).exists():
+            waiting = True
+        context["waiting"] = waiting
         return context
 
 

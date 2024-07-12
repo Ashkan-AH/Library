@@ -1,20 +1,26 @@
-from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from jalali_date import date2jalali
 from books.models import Books, Category
 from author.models import Author
 from .models import User
 from .mixins import StaffAccessMixin, SuperuserAccessMixin
+
+from django.http import HttpResponse
+from django.contrib.auth import login
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.core.mail import EmailMessage
 
 #----------------------------------Books-------------------------------------------
 
@@ -229,13 +235,6 @@ class UserDetail(LoginRequiredMixin, SuperuserAccessMixin, DetailView):
         context["reservations"] = Reservation.objects.filter(Q(user_id=id)).order_by("status")
         return context
 
-
-class UserCreate(LoginRequiredMixin, SuperuserAccessMixin, CreateView):
-    model = User
-    template_name = "account/users/user_create_update.html"
-    form_class = CreateUserForm
-    success_url = reverse_lazy("account:users")
-
 class UserUpdate(LoginRequiredMixin, SuperuserAccessMixin, UpdateView):
     model = User
     template_name = "account/users/user_create_update.html"
@@ -322,6 +321,7 @@ def cancel_action(request, pk):
             reservation.status = "لغو رزرو"
             user.reservation_limit += 1
             book.in_stock_user += 1
+            Books.in_stock_email(book)
             user.save()
             reservation.save()
             book.save()
@@ -361,6 +361,7 @@ def returned_action(request, pk):
             reservation.save()
             book.in_stock_user += 1
             book.in_stock += 1
+            Books.in_stock_email(book)
             book.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
     else:
@@ -436,3 +437,107 @@ class BlackList(SuperuserAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/black_list_users_list.html"
     def get_queryset(self):
         return User.objects.filter(is_active=False)
+    
+# -------------------------------Registration---------------------------------
+
+# def signup(request):
+#     if request.method == 'POST':
+#         form = SignupForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active = False
+#             user.save()
+#             current_site = get_current_site(request)
+#             mail_subject = 'Activate your blog account.'
+#             message = render_to_string('acc_active_email.html', {
+#                 'user': user,
+#                 'domain': current_site.domain,
+#                 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+#                 'token':account_activation_token.make_token(user),
+#             })
+#             to_email = form.cleaned_data.get('email')
+#             email = EmailMessage(
+#                         mail_subject, message, to=[to_email]
+#             )
+#             email.send()
+#             return HttpResponse('Please confirm your email address to complete the registration')
+#     else:
+#         form = SignupForm()
+#     return render(request, 'signup.html', {'form': form})
+
+class Registration1(CreateView):
+    form_class = Registration1Form
+    template_name = "registration/signup1.html"
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+        return HttpResponseRedirect(reverse_lazy("account:signup2", kwargs={"pk":user.id}))
+
+
+
+class Registration2(UpdateView):
+    form_class = Registration2Form
+    model = User
+    template_name = "registration/signup2.html"
+    def get_object(self):
+        global user
+        id = self.kwargs.get("pk")
+        user = User.objects.get(id=id)
+        return user
+    def form_valid(self, form):
+        if user.role == "استاد":
+            user.pro_id = form.cleaned_data.get("pro_id")
+            user.pro_major = form.cleaned_data.get("pro_major")
+            user.pro_grade = form.cleaned_data.get("pro_grade")
+        elif user.role == "دانشجو":
+            user.st_id = form.cleaned_data.get("st_id")
+            user.st_major = form.cleaned_data.get("st_major")
+            user.st_grade = form.cleaned_data.get("st_grade")
+        elif user.role == "کامند":
+            user.co_id = form.cleaned_data.get("co_id")
+            user.co_unit = form.cleaned_data.get("co_unit")
+            user.co_grade = form.cleaned_data.get("co_grade")
+        user.save()
+        current_site = get_current_site(self.request)
+        mail_subject = 'تایید ایمیل.'
+        message = render_to_string('registration/acc_active_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+            'token':account_activation_token.make_token(user),
+        })
+        to_email = user.email
+        email = EmailMessage(
+                    mail_subject, message, to=[to_email]
+        )
+        email.send()
+        return HttpResponse('لطفا با لینک ارسال شده ایمیلتان را تایید کنید تا فرایند ثبت نام تکمیل شود.')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = user
+        return context
+    
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        # return redirect('home')
+        return HttpResponse('ایمیل شما تایید شد و فرایند ثبت نام به پایان رسید.\nحالا میتوانید با موفقیت وارد حساب کاربری خود شوید.')
+    else:
+        return HttpResponse('لینک وارد شده نامعتبر است!')
+    
+# --------------------------------waiting-list-------------------------------
+class WaitingList(LoginRequiredMixin, ListView):
+    template_name = "account/waiting_list.html"
+    def get_queryset(self):
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return Books.objects.filter(waiting_users= not None)
+        else:
+            return Books.objects.filter(waiting_users__in=[self.request.user.id])
