@@ -1,0 +1,311 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}
+  ویرایش مشخصات
+{% endblock title %}
+{% block content %}
+  
+<div class="alertion hide" id="alertion"> 
+<hr>
+<h6 id="alertion-text"></h6>
+<hr>
+
+</div>
+<section class="hero-wrap hero-wrap-2 " style="background-image: url({% static 'main/images/Newfolder/nature.jpg' %}); height: 1030px !important;" data-stellar-background-ratio="0.5">
+  <div class="overlay" style="height: 1030px;"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+  
+<div class="morepagesearch">
+  <input type="text" id="search-input" placeholder="جست جو  با نویسنده کتاب دسته بندی" >
+       
+   
+     <button class="img"  id="search-btn" >
+    <img src="{% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %} " alt="">
+  </button>
+    
+  </div>
+      <div class="col-md-9 ftco-animate pb-5">
+        <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span> ثبت نام <i class="ion-ios-arrow-forward"></i></span></p>
+        <h1 class="mb-3 bread"> ثبت مشخصات</h1>
+      </div>
+    </div>
+  </div>
+ <!--   formmm    -----------------------  start-->
+  <form class="form-horizontal  form-newstyle" method="post" id="form-input" style="
+         z-index: 1;
+         position: absolute;
+         left: 13%;
+         width: 75%;
+">
+{% if request.user.is_superuser %}
+  
+{{form.as_p}}
+{%else%}
+{{form.first_name}}
+{{form.last_name}}
+{{form.address}}
+{{form.national_code}}
+{{form.sel_number}}
+{{form.home_number}}
+{{form.picture}}
+{{form.birth_date}}
+{{form.emergency_number}}
+{{form.role}}
+{{form.st_id}}
+{{form.st_major}}
+{{form.st_grade}}
+{{form.co_id}}
+{{form.co_unit}}
+{{form.co_grade}}
+{{form.pro_id}}
+{{form.pro_major}}
+{{form.pro_grade}}
+
+{% endif %}
+        <section class="user-img-get" style="background-image: url({{object.picture.url}}); background-size: cover;">
+           
+            <button class="img edit-btn" id="img-edit-btn"></button>
+        </section>
+        <h2 style="
+        color: white;
+        text-align: center;
+        margin: 8px 0px 6px 0px;">نمایه</h2>
+    
+      <hr>
+      
+        <div class="user-prop">
+        <div class="form-group  user-fa">
+          <label for="id_first_name" class="col-sm-2 control-label inputName2 label-fa">نام</label>
+
+          <div class="col-sm-10 inout-fa">
+            <input type="texts" name="first_name"  class="form-control" id="id_first_name" value="{{object.first_name}}" placeholder="(الزامی)نام را در اینجا بنویسید" maxlength="150" minlength="3" required="">
+          </div>
+        </div>
+        <div class="form-group user-fa">
+          <label for="id_last_name" class="col-sm-2 control-label inputName2 label-fa">نام خانوادگی</label>
+
+          <div class="col-sm-10 inout-fa">
+            <input type="text" name="last_name" value="{{object.last_name}}" class="form-control" id="id_last_name" placeholder=" (الزامی)نام خانوادگی را در اینجا بنویسید" maxlength="150" minlength="3" required="">
+          </div>
+        </div>
+        <div class="form-group user-fa">
+          <label for="id_national_code" class="col-sm-2 control-label inputName2 label-fa">کد ملی</label>
+
+          <div class="col-sm-10 inout-fa">
+            <input type="tel" name="national_code" class="form-control" id="id_national_code" value="{{object.national_code}}" placeholder="(الزامی)کد ملی" maxlength="10" minlength="10" required="">
+          </div>
+        </div>
+        
+        
+      
+      
+      <div class="form-group user-fa">
+        <label for="id_birth_number" class="col-sm-2 control-label inputName2 label-fa"> شماره شناسنامه</label>
+
+        <div class="col-sm-10">
+          <input class="form-control" type="tel" name="birth_number" id="id_birth_number input-value" placeholder="شماره شناسنامه     (الزامی)" value="{{object.birth_number}}" maxlength="10" minlength="1" required="">
+        </div>
+      </div>
+      
+      <div class="user-prop">
+        
+        <div class="form-group user-fa">
+          <label for="id_fathers_name" class="col-sm-2 control-label inputName2 label-fa"> نام پدر</label>
+
+          <div class="col-sm-10 inout-fa">
+            <input type="text" class="form-control" name="fathers_name" id="id_fathers_name input-value" placeholder="نام پدر " minlength="3" value="{{object.fathers_name}}" maxlength="15" required="">
+          </div>
+        </div>
+         
+        <div class="form-group user-fa">
+          <label for="id_birth_date" class="col-sm-2 control-label inputName2 label-fa">تاریخ تولد</label>
+
+          <div class="col-sm-10 inout-fa">
+            <input type="date" name="birth_date" class="form-control" id="id_birth_date" value="{{object.birth_date}}" placeholder=" " required="">
+          </div>
+        </div>
+
+
+
+        <div class="user-prop" style="flex-wrap: nowrap;">
+
+
+          <div class="form-group user-fa">
+            <label for="id_sel_number" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن همراه</label>
+
+            <div class="col-sm-10 inout-fa">
+              <input type="tel" class="form-control" id="id_sel_number input-value" name="sel_number" placeholder="شماره تلفن(الزامی)" maxlength="11 " minlength="11" value="{{object.sel_number}}" required="">
+            </div>
+          </div>
+
+
+          
+          <div class="form-group user-fa">
+            <label for="id_emergency_number" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن همراه اضطراری</label>
+
+            <div class="col-sm-10 inout-fa">
+              <input type="tel" class="form-control" id="id_emergency_number input-value" name="emergency_number" placeholder="شمارع تلفن(الزامی)" maxlength="11" minlength="11" required="" value="{{object.emergency_number}}">
+            </div>
+          </div>
+
+          
+          <div class="form-group user-fa">
+            <label for="id_home_number" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن  ثابت</label>
+
+            <div class="col-sm-10 inout-fa">
+              <input type="tel" class="form-control" id="id_home_number input-value" name="home_number" placeholder="شمارع تلفن ثابت(الزامی)" maxlength="11" value="{{object.home_number}}" minlength="11" required="">
+            </div>
+          </div>
+          
+          
+        </div>
+        
+
+         <div class="user-prop">
+       
+          <div class="form-group" style="width: 100%;">
+            <label for="id_address" class="col-sm-2 control-label inputName2">آدرس  </label>
+
+            <div class="col-sm-10">
+              <textarea type="text" name="address" class="form-control" id="id_address input-value" placeholder="ادرس(الزامی)" maxlength="250" minlength="10" value="{{object.address}}" required=""></textarea>
+            </div>
+          </div>
+          
+         </div>
+
+        
+          <hr>
+          
+          <div class="user-prop">
+<!-- 
+            
+         <div class="form-group user-fa  user-fa">
+          {<label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa"> پست دانشگاهی </label>
+          <div class="col-sm-10 inout-fa">
+           <select name="job" id="job" class="job-selector">
+            <option value="choose">انتخاب کنید</option>
+            <option value="student">دانشجو</option>
+            <option value="professor">استاد</option>
+            <option value="Employee">کارمند</option>
+
+           </select>
+
+         </div>}
+          </div>
+          <div class="form-group user-fa  user-fa">
+            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="job-selector-name">  پست دانشگاهی را انتخاب کنید  </label>
+            <div class="col-sm-10 inout-fa">
+             <select name="job" id="subject" class="job-selector">
+               <option value="software">انتخاب کنید </option>
+             </select>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="user-prop">
+            
+          <div class="form-group user-fa">
+            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="student-number-select">پست دانشگاهی را انتخاب کنید </label>
+
+            <div class="col-sm-10 inout-fa">
+              <input type="tel" class="form-control" id="inputSkills" placeholder="پست سازمانی راانتخاب کنید" maxlength="14" minlength="14" style="
+              height: 35px !important;
+              border: solid 1px;
+          " required="">
+            </div>
+          </div>
+
+          <div class="form-group user-fa  user-fa">
+            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="leve-text"> 
+            پست دانشگاهی را انتخاب کنید </label>
+            <div class="col-sm-10 inout-fa">
+             <select name="job" id="joblevel" class="job-selector">
+              <option value="choose">انتخاب کنید</option>
+
+             </select>
+
+              </div>
+            </div> -->
+          
+
+          </div>
+          
+        </div>
+        
+       
+          <div class="col-sm-offset-2 col-sm-10" id="div-button">
+            <button type="submit" class="btn btn-danger btn-fa " style="
+            background: #ffffff !important;
+           color: rgb(0, 0, 0);">ذخیره
+            </button>
+            
+            <button id="cancel-btn" class="btn btn-danger btn-fa">لغو 
+            </button>
+            <button class="btn btn-danger btn-fa" id="submit-btn" style="background-color: #01d28e; border:solid 2px #009563;">تایید
+            </button>
+            
+         
+    </div>
+
+</div>
+   </form>
+</section>
+
+
+<div class="alertion hide" id="alertion"> 
+  <hr>
+  <h6 id="alertion-text"></h6>
+  <hr>
+
+</div>
+
+
+<section class="edit-alert hide " id="edit-alertdiv">
+  <h4 id="edit-alert-text" >آیا از لغو عملیات اطمینان دارید؟</h4>
+  <div>
+ <button id="edit-alert-btn1">تایید</button>
+ <button  id="edit-alert-btn2" style="background-color: red;">لغو</button>
+</div>
+
+</section>
+
+<section class="edit-alert hide " id="edit-alert-submit">
+  <h4 id="edit-alert-text" >  آیا از صحت اطلاعات اطمینان دارید؟   </h4>
+  <div>
+ <button type="submit" id="submit-alert-btn1">تایید</button>
+ <button  id="submit-alert-btn2" style="background-color: red;">لغو</button>
+</div>
+
+</section>
+<div class="beautibackg" id="beautibackg" style="top: 1150px;"></div>
+<div class="user-img-edit hide" id="edit-div">
+  <h3> عکس نمایه جدید</h3>
+  <section id="img-watch"></section>
+<input type="file" accept="image/jpeg" name="picture" id="id_picture" >  
+<div class="edit-btns">
+<button id="edit-btn1">تایید</button>
+<button id="edit-btn2" style="background: red;color: white;">لغو</button>
+
+
+
+</div>
+</div>
+<div class="book-page-title">
+<h1></h1>
+</div>
+<section class="ftco-section ftco-car-details">
+  <div class="container">
+    
+    <div class="tab-pane" id="settings">
+
+      
+<div  style="height: 350px;"></div>
+
+</section>
+
+<script src="{% static 'js/main.js' %} "></script>
+<script src="{% static 'js/singup.js' %} "></script>
+<script src="{% static 'js/search.js' %} "></script>
+{% endblock content %}

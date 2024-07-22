@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: hidden; overflow-x: hidden;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background-image: url(../images/Newfolder/nature.jpg);background-size: cover;background-repeat: no-repeat;">
+
+    <div class="main" style="background: none;">
+
+        <!-- Sign up form -->        
+         <section class="sign-in" style="position: relative; top: -100px;">
+
+            <div class="containersing">
+                
+                <section class="coll-m10" style="width: 100%;">
+                    <h2 class="signtitle">سرزمین </h2>
+                   
+                    <h2 class="">کتاب  </h2>
+    
+                 </section>
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">ایجاد حساب کار بری</h2>
+                        <form method="POST" class="register-form" id="register-form">
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input  type="text" minlength="3" maxlength="30" required name="name" id="name" placeholder="نام کاربری" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email"  minlength="11" maxlength="50" required  name="email" id="email" placeholder="ادرس ایمیل "/>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password"   minlength="8" maxlength="20" required name="pass" id="pass" placeholder="رمز عبور"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input  type="password"   minlength="8" maxlength="20" required name="re_pass" id="re_pass" placeholder="تکرار رمز عبور"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>با تمام <a href="">قواین</a> موافقم  <a href="#" class="term-service"></a></label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit no-interaction" value="تایید"/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                        <a href="#" class="signup-image-link">حسابی دارید؟وارید شوید</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sing in  Form -->
+
+    </div>
+</body>
+    <!-- JS -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %} "></script>
+    <script src="{% static 'js/main.js' %} "></script>
+</html>

@@ -16,11 +16,7 @@ class User(AbstractUser):
         "آموزشکده فنی بندر انزلی - شهید خدادادی":"آموزشکده فنی بندر انزلی - شهید خدادادی",
         "آموزشکده فنی رستم آباد رودبار - سیدالشهداء":"آموزشکده فنی رستم آباد رودبار - سیدالشهداء",
         "آموزشکده فنی رشت - شهید چمران":"آموزشکده فنی رشت - شهید چمران",
-        "آموزشکده فنی پسران آستانه اشرفیه":"آموزشکده فنی پسران آستانه اشرفیه",
-        "آموزشکده فنی پسران لاهیجان - شهیدرجائی":"آموزشکده فنی پسران لاهیجان - شهیدرجائی",
-        "دانشکده فنی و حرفه‌ای صومعه سرا":"دانشکده فنی و حرفه‌ای صومعه سرا",
-        "آموزشکده فنی دختران رشت":"آموزشکده فنی دختران رشت",
-        "دانشگاه فنی و حرفه‌ای استان گیلان":"دانشگاه فنی و حرفه‌ای استان گیلان",
+        
     }
     MAJOR_CHOICES = {
         "حسابداری":"حسابداری",
@@ -51,19 +47,19 @@ class User(AbstractUser):
     role = models.CharField(verbose_name="نقش", choices=ROLE_CHOICES, max_length=7, blank=False)
 
 
-    st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")
-    st_major = models.CharField(max_length=15, verbose_name="رشته تحصیلی", blank=True, choices=MAJOR_CHOICES)
-    st_grade = models.CharField(max_length=15, verbose_name="مقطع تحصیلی", blank=True, choices=GRADE_CHOICES)
+    # st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")
+    # st_major = models.CharField(max_length=15, verbose_name="رشته تحصیلی", blank=True, choices=MAJOR_CHOICES)
+    # st_grade = models.CharField(max_length=15, verbose_name="مقطع تحصیلی", blank=True, choices=GRADE_CHOICES)
 
 
-    co_id = models.CharField(blank=True, max_length=15, verbose_name="کد کارمندی")
-    co_unit = models.CharField(max_length=50, verbose_name="محل کار", blank=True, choices=UNIT_CHOICES)
-    co_grade = models.CharField(max_length=15, verbose_name="سمت شغلی", blank=True)
+    # co_id = models.CharField(blank=True, max_length=15, verbose_name="کد کارمندی")
+    # co_unit = models.CharField(max_length=50, verbose_name="محل کار", blank=True, choices=UNIT_CHOICES)
+    # co_grade = models.CharField(max_length=15, verbose_name="سمت شغلی", blank=True)
 
 
-    pro_id =models.CharField(blank=True, max_length=15, verbose_name="کد استادی")
-    pro_major = models.CharField(max_length=15, verbose_name="رشته درسی", blank=True, choices=MAJOR_CHOICES)
-    pro_grade = models.CharField(max_length=15, verbose_name="مقطع درسی", blank=True, choices=GRADE_CHOICES)
+    # pro_id =models.CharField(blank=True, max_length=15, verbose_name="کد استادی")
+    # pro_major = models.CharField(max_length=15, verbose_name="رشته درسی", blank=True, choices=MAJOR_CHOICES)
+    # pro_grade = models.CharField(max_length=15, verbose_name="مقطع درسی", blank=True, choices=GRADE_CHOICES)
 
 
     def persian_birthdate(self):

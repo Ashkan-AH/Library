@@ -15,7 +15,23 @@
     <!-- form start -->
     <form role="form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
       <div class="row" style="padding: 20px;">
-        {{form|crispy}}
+        {% if request.user.is_superuser %}
+          
+          {{form|crispy}}
+          {% else %}
+          {{form.first_name|as_crispy_field}}
+          {{form.last_name|as_crispy_field}}
+          {{form.address|as_crispy_field}}
+          {{form.national_code|as_crispy_field}}
+          {{form.sel_number|as_crispy_field}}
+          {{form.home_number|as_crispy_field}}
+          {{form.picture|as_crispy_field}}
+          {{form.birth_date|as_crispy_field}}
+          {{form.fathers_name|as_crispy_field}}
+          {{form.birth_number|as_crispy_field}}
+          {{form.emergency_number|as_crispy_field}}
+          {{form.role|as_crispy_field}}
+          {% endif %}
         
       </div>
       <!-- /.card-body -->

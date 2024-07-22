@@ -1,0 +1,498 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{{object.name}}
+{% endblock title %}
+{% block content %}
+  
+<div class="alertion hide" id="alertion"> 
+	<hr>
+	<h6 id="alertion-text"></h6>
+	<hr>
+
+  </div>
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'main/images/Newfolder/lib.jpg.jpg' %});" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+	<div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+		<div class="searchbar">
+	<div class="morepagesearch">
+		<input type="text" id="search-input" placeholder="جست جو  با نویسنده کتاب دسته بندی" >
+				 
+		 
+		   <button class="img"  id="search-btn" >
+			<img src="{% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %} " alt="">
+	  </button>
+		  
+	  </div>
+	  
+	  <div id="result-container" class="result-container result-container2 hide">
+				
+		<a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block" style="width: 97% !important; 
+		 margin: 7px 0px 7px 0px;box-shadow: none;"><meta itemprop="">
+		 
+		   <hr style="height: 1px;background: gray;">
+		  <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
+		 <div class="left">
+			 <h2 itemprop="name" style="color: black;">جلال آل احمد</h2>
+			 <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
+		  </div>
+	   </a>
+	</div>
+	   
+  
+	 </div>
+	  <div class="col-md-9 ftco-animate pb-5">
+		  <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span> کتاب ها <i class="ion-ios-arrow-forward"></i></span></p>
+		<h1 class="mb-3 bread">  کتاب</h1>
+	  </div>
+	</div>
+  </div>
+</section>
+	
+<div class="book-page-title">
+
+</div>
+<section class="ftco-section ftco-car-details">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<div class="car-details  book-single">
+
+					 <div class="img rounded" style="background-image: url({{object.picture.url}}); width: 35% ;height:500px; 
+					 width: 35%;
+					 height: 500px;
+					 margin: 0px 10px 0px 0px;
+					" ></div>
+					<section class="col-0"><div class="beauti-div">
+					  <section class=" bookproperty   "> 
+						  <div class="col-md d-flex align-self-stretch ftco-animate fadeInUp ftco-animated">
+							  <div class="media block-6 services">
+								<div class="media-body py-md-4">
+									<div class="d-flex mb-3 align-items-center flex">
+										<div class="icon d-flex align-items-center justify-content-center " style="display: flex;
+										width: 35px;
+										height: 35px;
+										margin: 1px 4px auto;"> 
+										  <section class="hero-wrap js-fullheight   bg-img" style="background-image: url(&quot;images/Newfolder/icon/counting-svgrepo-com.svg&quot;); height: 882px; background-position: 50% 0px;" data-stellar-background-ratio="1"> </section></div>
+										<div class="text">
+										  <h3 class="heading mb-0 pl-3" style="font-size: 20px !important; text-align: end;">
+											   ناشر
+											  <span>
+												  انتشارات اندیشه آگاه  
+											  </span>
+										  </h3>
+									  </div>
+								  </div>
+								</div>
+							  </div>      
+							</div>
+
+						
+					   <div class="col-md d-flex align-self-stretch ftco-animate fadeInUp ftco-animated">
+						  <div class="media block-6 services">
+							<div class="media-body py-md-4">
+								<div class="d-flex mb-3 align-items-center flex">
+									<div class="icon d-flex align-items-center justify-content-center " style="display: flex;
+									width: 35px;
+									height: 35px;
+									margin: 1px 4px auto;"> 
+									  <section class="hero-wrap js-fullheight   bg-img" style="background-image: url(&quot;images/Newfolder/icon/counting-svgrepo-com.svg&quot;); height: 622px; background-position: 50% 0px;" data-stellar-background-ratio="1"> </section></div>
+									<div class="text">
+									  <h3 class="heading mb-0 pl-3" style="font-size: 20px !important; text-align: end;">
+										   ناشر
+										  <span>
+											  انتشارات اندیشه آگاه  
+										  </span>
+									  </h3>
+								  </div>
+							  </div>
+							</div>
+						  </div>      
+						</div>
+						  
+						
+					   <div class="col-md d-flex align-self-stretch ftco-animate fadeInUp ftco-animated">
+						  <div class="media block-6 services">
+							<div class="media-body py-md-4">
+								<div class="d-flex mb-3 align-items-center flex">
+									<div class="icon d-flex align-items-center justify-content-center " style="display: flex;
+									width: 35px;
+									height: 35px;
+									margin: 1px 4px auto;"> 
+									  <section class="hero-wrap js-fullheight   bg-img" style="background-image: url(&quot;images/Newfolder/icon/translate-svgrepo-com.svg&quot;); height: 622px; background-position: 50% 0px;" data-stellar-background-ratio="1"> </section></div>
+									<div class="text">
+									  <h3 class="heading mb-0 pl-3" style="font-size: 20px !important; text-align: end;">
+										  مترجم
+										  <span>
+											  ندارد 
+										  </span>
+									  </h3>
+								  </div>
+							  </div>
+							</div>
+						  </div>      
+						</div>
+						   
+						
+						  
+						</section>
+					  </div>
+					  
+		<section class="rent-btn-style">
+		  <div class="text">
+			 <p>برای رزرو <b>کتاب قدرت هیجانات</b>&nbsp;و دسترسی به هزاران کتاب دیگر، <a style="font-weight:bold" target="_blank" href="https://www.ketabrah.ir/apps"> در سرزمین کتاب </a> را رایگان ثبت نام&nbsp;کنید.</p>
+		  </div>
+		   <a href="" class="rent-btn">درخواست رزرو</a>
+		</section>
+					  </section>
+						
+					  </section>
+				  </div> 
+					
+				</div>
+			</div>
+		</div>
+	  
+
+		<div class="row"  style="
+		flex-direction: column;
+		align-content: space-evenly;">
+		  <section style="display: flex; justify-content: center; max-width: 100%;width: 100%;" >
+			<div class="col-md d-flex align-self-stretch ftco-animate" style="max-width: 20%;width: 20%;">
+		  <div class="media block-6 services">
+			<div class="media-body py-md-4">
+				<div class="d-flex mb-3 align-items-center">
+					<div class="icon d-flex align-items-center justify-content-center"> 
+					  <section class="hero-wrap js-fullheight   bg-img" style="background-image: url('images/Newfolder/download.jpg');" data-stellar-background-ratio="1"> </div>
+					<div class="text">
+					  <h3 class="heading mb-0 pl-3">
+						  انتشارات-اندیشه-آگاه
+						  <span>
+							   
+						  </span>
+					  </h3>
+				  </div>
+			  </div>
+			</div>
+		  </div>      
+		</div>
+		
+		<div class="col-md d-flex align-self-stretch ftco-animate" style="max-width: 20%;width: 20%;">
+		  <div class="media block-6 services">
+			<div class="media-body py-md-4">
+				<div class="d-flex mb-3 align-items-center">
+					<div class="icon d-flex align-items-center justify-content-center"> 
+					  <section class="hero-wrap js-fullheight   bg-img" style="background-image: url('images/Newfolder/downl5oad.jpg');" data-stellar-background-ratio="1"> </div>
+					<div class="text">
+					  <h3 class="heading mb-0 pl-3">
+						  
+						  <span>نیما یوشیج
+						  </span>
+					  </h3>
+				  </div>
+			  </div>
+			</div>
+		  </div>      
+		</div>
+		  </section>
+		<div class="row ">
+			<div class="col-md-12 pills">
+					  <div class="bd-example bd-example-tabs">
+						  <div class="d-flex justify-content-center">
+							<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+							  <li class="nav-item">
+								<a class="nav-link" id="tab-select" data-toggle="pill" href="#pills-manufacturer" role="tab" aria-controls="pills-manufacturer" aria-expanded="true">توضیحات</a>
+							  </li>
+							  <li class="nav-item">
+								<a class="nav-link"  id="tab-select" data-toggle="pill" href="#pills-review" role="tab" aria-controls="pills-review" aria-expanded="true" > مشخصات بیشتر</a>
+							  </li>
+							  
+							  <li class="nav-item">
+								  <a class="nav-link"  id="tab-select" data-toggle="pill" href="#pills-review" role="tab" aria-controls="pills-review" aria-expanded="true">نظر کاربران </a>
+								</li>
+							</ul>
+						  </div>
+
+						<div class="tab-content" id="pills-tabContent">
+						  <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+							  <div class="row">
+							  </div>
+						  </div>
+								 
+						  <div class="hide " id="tab-div" role="tabpanel" aria-labelledby="pills-manufacturer-tab" style="
+						  width: 70%;
+						  margin: auto;">
+							<p>>ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با >ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با >ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با </p>
+						  </div>
+
+						  <div class="hide " id="tab-div" role="tabpanel" aria-labelledby="pills-manufacturer-tab" style="
+						  width: 70%;
+						  margin: auto;">
+						  <div class="grid-body" style="height: 816.8px;">
+							  <table class="bookprop-table">
+									  
+								  <tr class="tr-row">
+									  <td class="td-cell white"style="width: 270px;" > کتابخانه نیمه شب   </td>
+									  <td class="td-cell" > نام اثر: </td>
+									  <td class="td-cell" style="width: 30px; background: white;" > 1 </td>
+
+								  </tr>
+								  <tr class="tr-alt-row">
+									  <td class="td-cell gray" style="width: 270px;">نیما یوشیج </td>
+									  <td class="td-cell" > نویسنده </td>
+									  <td class="td-cell" style="width: 30px; background:  #bfbfbf;" > 2 </td>
+								  </tr>
+								  
+								  <tr class="tr-row">
+									  <td class="td-cell white"style="width: 270px;" >   انگیزشی</td>
+									  <td class="td-cell" > دسته بندی </td>
+									  <td class="td-cell" style="width: 30px; background: white;" > 3 </td>
+									  
+								  </tr>
+								  <tr class="tr-alt-row">
+									  <td class="td-cell gray" style="width: 270px;"> ندارد</td>
+									  <td class="td-cell" >مترجم </td>
+									  <td class="td-cell" style="width: 30px; background:  #bfbfbf;" > 4 </td>
+
+								  </tr>
+								  
+								  <tr class="tr-row">
+									  <td class="td-cell white"style="width: 270px;" > انتشارات اندیشه آگاه    </td>
+									  <td class="td-cell" > منتشرکننده</td>
+									  <td class="td-cell" style="width: 30px; background: white;" > 5 </td>
+
+									  
+								  </tr>
+								  <tr class="tr-alt-row">
+									  <td class="td-cell gray" style="width: 270px;">  260</td>
+									  <td class="td-cell" >  تعدادصفحات</td>
+									  <td class="td-cell" style="width: 30px; background:  #bfbfbf;" > 6 </td>
+
+								  </tr>
+								  
+								  <tr class="tr-row">
+									  <td class="td-cell white"style="width: 270px;" >  1360  </td>
+									  <td class="td-cell" > سال انتشار </td>
+									  <td class="td-cell" style="width: 30px; background: white;" > 7 </td>
+
+									  
+								  </tr>
+								  <tr class="tr-alt-row">
+									  <td class="td-cell gray" style="width: 270px;"> نوجوانان</td>
+									  <td class="td-cell" > رده سنی </td>
+									  <td class="td-cell" style="width: 30px; background:  #bfbfbf;" > 8 </td>
+
+								  </tr>
+								  
+								  <tr class="tr-row">
+									  <td class="td-cell white"style="width: 270px;" >  عدد 20  </td>
+									  <td class="td-cell" > تعداد کل</td>
+									  <td class="td-cell" style="width: 30px; background: white;" > 9 </td>
+
+									  
+								  </tr>
+								  <tr class="tr-alt-row">
+									  <td class="td-cell gray" style="width: 270px;">عدد 14 </td>
+									  <td class="td-cell" > موجودی فعلی </td>
+									  <td class="td-cell" style="width: 30px; background:  #bfbfbf;" > 10</td>
+
+									  
+								  </tr>
+								  
+							  </table>
+						  </div>
+
+						  </div>
+						  <div class="hide" id="tab-div" role="tabpanel" aria-labelledby="pills-review-tab">
+							<div class="row">
+									 <div class="col-md-7">
+										 <h3 class="head">23نظر </h3>
+										 <div class="review d-flex">
+											 <div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
+											 <div class="desc">
+												 <h4>
+													 <span class="text-left">ارش محمدی </span>
+													 <span class="text-right">1403/01/12  </span>
+												 </h4>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+													 </span>
+													 <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+												 </p>
+												 <p>ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با </p>
+											 </div>
+										 </div>
+										 <div class="review d-flex">
+											 <div class="user-img" style="background-image: url(images/person_2.jpg)"></div>
+											 <div class="desc">
+												 <h4>
+													 <span class="text-left">محمد امیری </span>
+													 <span class="text-right">1403/2/1  </span>
+												 </h4>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+													 </span>
+													 <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+												 </p>
+												 <p>>ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با </p>
+											 </div>
+										 </div>
+										 <div class="review d-flex">
+											 <div class="user-img" style="background-image: url(images/person_3.jpg)"></div>
+											 <div class="desc">
+												 <h4>
+													 <span class="text-left">رضا خالق </span>
+													 <span class="text-right">1403/01/01  </span>
+												 </h4>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+													 </span>
+													 <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+												 </p>
+												 <p>>ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با </p>
+											 </div>
+										 </div>
+									 </div>
+									 <div class="col-md-5">
+										 <div class="rating-wrap">
+											 <h3 class="head"> کیلیت اثر </h3>
+											 <div class="wrap">
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 (98%)
+													 </span>
+													 <span>20 نظر</span>
+												 </p>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 (85%)
+													 </span>
+													 <span>10نظر</span>
+												 </p>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 (70%)
+													 </span>
+													 <span>5 نظر</span>
+												 </p>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 (10%)
+													 </span>
+													 <span>0 نظر</span>
+												 </p>
+												 <p class="star">
+													 <span>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 <i class="ion-ios-star"></i>
+														 (0%)
+													 </span>
+													 <span>0 نظر</span>
+												 </p>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+						  </div>
+						</div>
+					  </div>
+			</div>
+			  </div>
+	</div>
+  </section>
+
+  <section class="ftco-section ftco-no-pt">
+	  <div class="container">
+		  <div class="row justify-content-center">
+		<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+			<span class="subheading"> دیگر کتاب ها</span>
+		  <h2 class="mb-2">کتاب های دیگر در همین ژانر
+		  </h2>
+		</div>
+	  </div>
+	  <div class="row">
+		  <div class="col-md-4">
+			  <div class="car-wrap rounded ftco-animate">
+				  <div class="img rounded d-flex align-items-end" style="background-image: url(images/d1ownload.jpg);">
+				  </div>
+				  <div class="text">
+					  <h2 class="mb-0"><a href="car-single.html">پدر مادر ما متهمیم</a></h2>
+					  <div class="d-flex mb-3">
+						  <span class="cat">نیما یوشیج</span>
+						  <p class="price ml-auto">20 <span>/تعداد</span></p>
+					  </div>
+					  <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">رزرو </a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a></p>
+				  </div>
+			  </div>
+		  </div><div class="col-md-4">
+			  <div class="car-wrap rounded ftco-animate">
+				  <div class="img rounded d-flex align-items-end" style="background-image: url(images/do2wnload.jpg);">
+				  </div>
+				  <div class="text">
+					  <h2 class="mb-0"><a href="car-single.html">کتابخانه نیمه شب</a></h2>
+					  <div class="d-flex mb-3">
+						  <span class="cat"> هوشنگ ابتهاج</span>
+						  <p class="price ml-auto">10 <span>/تعداد</span></p>
+					  </div>
+					  <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">رزرو </a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a></p>
+				  </div>
+			  </div>
+		  </div><div class="col-md-4">
+			  <div class="car-wrap rounded ftco-animate">
+				  <div class="img rounded d-flex align-items-end" style="background-image: url(images/down3load.jpg);">
+				  </div>
+				  <div class="text">
+					  <h2 class="mb-0"><a href="car-single.html"> چه کسی پنیر مرا دزدید</a></h2>
+					  <div class="d-flex mb-3">
+						  <span class="cat"> برای تریسی</span>
+						  <p class="price ml-auto">7 <span>/تعداد</span></p>
+					  </div>
+					  <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">رزرو </a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a></p>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+	  </div>
+  </section>
+  
+{% endblock content %}

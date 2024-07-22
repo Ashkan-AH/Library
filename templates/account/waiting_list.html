@@ -22,13 +22,16 @@
             <thead>
               <tr>
                 <th>نام کتاب</th>
+                {% if request.user.is_staff or request.user.is_superuser %}
+                  
+                <th>کاربران</th>
+                {% endif %}
                 <th>عکس</th>
                 <th>کد کتاب</th>
                 <th>نویسنده</th>
                 <th>ناشر</th>
                 <th>مترجم</th>
-                <th>توصیحات</th>
-                <th></th>
+                <th>توضیحات</th>
               </tr>
             </thead>
             <tbody>
@@ -40,13 +43,19 @@
                 {% else %}
                   <td><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></td>
                 {% endif %}
+                {% if request.user.is_staff or request.user.is_superuser %}
+                <td>
+                  {% for user in book.waiting_users.all %}
+                    <a href="{% url 'account:user-detail' user.id %}">{{user}}</a>, 
+                  {% endfor %}
+                </td>
+                {% endif %}
                 <td>{{book.html_img}}</td>
                 <td>{{book.id}}</td>
                 <td>{{book.author_str}}</td>
                 <td>{{book.publisher}}</td>
                 <td>{{book.translator}}</td>
                 <td>{{book.description|striptags|truncatewords:10}}</td>
-                <td><a href="{% url 'books:bookmark-add' book.id %}" class="btn btn-danger">حذف</a></td>
               </tr>
               {% endfor %}
             </tbody>

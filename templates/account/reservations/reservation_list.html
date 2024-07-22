@@ -40,7 +40,7 @@
               <tr>
                 <td><a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a></td>
                 {% if request.user.is_staff or request.user.is_superuser %}
-                  <td><a href="{% url 'account:book-detail' reservation.book_id.id %}">{{reservation.book_id}}</a></td>
+                  <td><a href="{% url 'account:book-detail' reservation.book_id.slug %}">{{reservation.book_id}}</a></td>
                 {% else %}
                   <td><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id}}</a></td>
                 {% endif %}

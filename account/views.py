@@ -242,10 +242,7 @@ class UserUpdate(LoginRequiredMixin, SuperuserAccessMixin, UpdateView):
     success_url = reverse_lazy("account:users")
     def get_object(self):
         return User.objects.get(id=self.kwargs.get("pk"))
-    def get_form_kwargs(self):
-        kwargs = super(UserUpdate, self).get_form_kwargs()
-        kwargs.update({"user": self.request.user})
-        return kwargs
+    
 
 
 class UserDelete(LoginRequiredMixin, SuperuserAccessMixin, DeleteView):
@@ -271,10 +268,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("account:profile")
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
-    def get_form_kwargs(self):
-        kwargs = super(ProfileUpdate, self).get_form_kwargs()
-        kwargs.update({"user": self.request.user})
-        return kwargs
+    
     
 
 class BookmarkList(LoginRequiredMixin, ListView):
@@ -427,9 +421,17 @@ class ReservationList(LoginRequiredMixin, ListView):
     template_name = "account/reservations/reservation_list.html"
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
-            return Reservation.objects.all()
+            reservations = Reservation.objects.all()
+            for reservation in reservations:
+                Reservation.not_returned(reservation)
+                Reservation.reservation_expired(reservation)
+            return reservations
         else:
-            return Reservation.objects.filter(user_id=self.request.user.id)
+            reservations = Reservation.objects.filter(user_id=self.request.user.id)
+            for reservation in reservations:
+                Reservation.not_returned(reservation)
+                Reservation.reservation_expired(reservation)
+            return reservations
 
 # ------------------------------Black List------------------------------------
 
@@ -472,33 +474,6 @@ class Registration1(CreateView):
         user = form.save(commit=False)
         user.is_active = False
         user.save()
-        return HttpResponseRedirect(reverse_lazy("account:signup2", kwargs={"pk":user.id}))
-
-
-
-class Registration2(UpdateView):
-    form_class = Registration2Form
-    model = User
-    template_name = "registration/signup2.html"
-    def get_object(self):
-        global user
-        id = self.kwargs.get("pk")
-        user = User.objects.get(id=id)
-        return user
-    def form_valid(self, form):
-        if user.role == "استاد":
-            user.pro_id = form.cleaned_data.get("pro_id")
-            user.pro_major = form.cleaned_data.get("pro_major")
-            user.pro_grade = form.cleaned_data.get("pro_grade")
-        elif user.role == "دانشجو":
-            user.st_id = form.cleaned_data.get("st_id")
-            user.st_major = form.cleaned_data.get("st_major")
-            user.st_grade = form.cleaned_data.get("st_grade")
-        elif user.role == "کامند":
-            user.co_id = form.cleaned_data.get("co_id")
-            user.co_unit = form.cleaned_data.get("co_unit")
-            user.co_grade = form.cleaned_data.get("co_grade")
-        user.save()
         current_site = get_current_site(self.request)
         mail_subject = 'تایید ایمیل.'
         message = render_to_string('registration/acc_active_email.html', {
@@ -513,10 +488,9 @@ class Registration2(UpdateView):
         )
         email.send()
         return HttpResponse('لطفا با لینک ارسال شده ایمیلتان را تایید کنید تا فرایند ثبت نام تکمیل شود.')
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["user"] = user
-        return context
+
+
+
     
 def activate(request, uidb64, token):
     try:
@@ -538,6 +512,6 @@ class WaitingList(LoginRequiredMixin, ListView):
     template_name = "account/waiting_list.html"
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
-            return Books.objects.filter(waiting_users= not None)
+            return Books.objects.exclude(waiting_users__isnull=True)
         else:
             return Books.objects.filter(waiting_users__in=[self.request.user.id])

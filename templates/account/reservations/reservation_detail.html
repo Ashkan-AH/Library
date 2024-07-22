@@ -11,6 +11,6 @@
   <p>{{object.persian_date_added}}</p>
   <p>{{object.persian_delivery_date}}</p>
   <p>{{object.deadline}}</p>
-  <p>{{object.delivery_remaining}}</p>
+  <p>{{object.delivery_remaining.days}}</p>
   <a href="{% url 'account:reservation-delete' object.reservation_id %}" class="btn bg-danger">حذف رزرو</a>
 {% endblock content %}

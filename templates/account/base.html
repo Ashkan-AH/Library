@@ -96,7 +96,7 @@
             <li class="nav-item">
               {% link request 'waiting-list' 'لیست انتظار' "fa-clock" %}
             </li>
-            {% if not request.user.is_staff or not request.user.is_superuser %}
+            {% if not request.user.is_staff and not request.user.is_superuser %}
               <li class="nav-item">
                 {% link request "reservations" "سابقه رزرو" "fa-address-book" %}
               </li>
@@ -192,12 +192,14 @@
                     </li>
                 </ul>
               </li>  
-              <li class="nav-item">
-                {% link request 'users' 'لیست کاربران' "fa-th-list" %}
-              </li>
-              <li class="nav-item">
-                {% link request 'black-list' 'لیست سیاه' "fa-ban" %}
+              {% if request.user.is_superuser %}  
+                <li class="nav-item">
+                  {% link request 'users' 'لیست کاربران' "fa-th-list" %}
                 </li>
+                <li class="nav-item">
+                  {% link request 'black-list' 'لیست سیاه' "fa-ban" %}
+                </li>
+              {% endif %}
             {% endif %}
           
         </ul>

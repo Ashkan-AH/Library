@@ -4,6 +4,7 @@ from books.models import Books
 from account.models import User
 from datetime import timedelta
 from jalali_date import date2jalali
+from datetime import timedelta
 # Create your models here.
 
 class Reservation(models.Model):
@@ -33,7 +34,7 @@ class Reservation(models.Model):
         if self.delivery_date is not None and self.deadline is not None:
             return ((self.delivery_date + timedelta(days=14)) - timezone.now().date())
     def not_returned(self):
-        if self.status == "تحویل داده شده" and self.delivery_remaining() <= -2:
+        if self.status == "تحویل داده شده" and self.delivery_remaining().days <= 0:
             user = User.objects.get(id=self.user_id.id)
             user.is_active = False
             user.save()

@@ -23,9 +23,7 @@ db.sqlite3-journal
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/

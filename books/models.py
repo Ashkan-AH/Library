@@ -13,6 +13,7 @@ class Category(models.Model):
     name = models.CharField(max_length=100, blank=False, verbose_name="نام دسته بندی")
     date_created = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True, allow_unicode=True, blank=False, verbose_name="لینک")
+    picture = models.ImageField(upload_to="uploads/categories/", verbose_name="عکس دسته بندی", default="default.jpg", blank=False)
 
     class Meta:
         verbose_name = 'دسته‌بندی'
@@ -25,7 +26,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class Books(models.Model):
@@ -78,7 +78,7 @@ class Books(models.Model):
             for user in book.waiting_users.all():
                 user = User.objects.get(id=user.id)
                 subject = f'افزایش موجودی {book.name}'
-                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.name} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری کنید.'
+                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.name} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/book/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری کنید.'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [user.email, ]
                 send_mail( subject, message, email_from, recipient_list )

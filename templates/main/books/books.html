@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  کتاب ها
+{% endblock title %}
+
+{% block content %}
+  {% if request.resolver_match.url_name == "books" %}
+	
+<div class="alertion hide" id="alertion"> 
+	<hr>
+	<h6 id="alertion-text"></h6>
+	<hr>
+
+  </div>
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'main/images/Newfolder/pexels-pixabay-159872.jpg' %});" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+	<div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+		
+	<div class="morepagesearch">
+		<input type="text" id="search-input" placeholder="جست جو  با نویسنده کتاب دسته بندی" >
+				 
+		 
+		   <button class="img"  id="search-btn" >
+			<img src="{% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %}" alt="">
+	  </button>
+		  
+	  </div>
+	  
+	  <div id="result-container" class="result-container result-container2 hide">
+				
+		<a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block" style="width: 97% !important; 
+		 margin: 7px 0px 7px 0px;box-shadow: none;"><meta itemprop="">
+		 
+		   <hr style="height: 1px;background: gray;">
+		  <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
+		 <div class="left">
+			 <h2 itemprop="name" style="color: black;">جلال آل احمد</h2>
+			 <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
+		  </div>
+	   </a>
+	</div>
+	  <div class="col-md-9 ftco-animate pb-5">
+		  <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span> کتاب <i class="ion-ios-arrow-forward"></i></span></p>
+		<h1 class="mb-3 bread">  همه کتاب ها</h1>
+	  </div>
+	</div>
+  </div>
+</section>
+	{% elif request.resolver_match.url_name == "category" %}
+	
+<div class="alertion hide" id="alertion"> 
+	<hr>
+	<h6 id="alertion-text"></h6>
+	<hr>
+  
+	</div>
+	<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'main/images/Newfolder/teenager-using-tablet-library.jpg' %});" data-stellar-background-ratio="0.5">
+	  <div class="overlay"></div>
+	  <div class="container">
+		<div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+	  
+	<div class="morepagesearch">
+	  <input type="text" id="search-input" placeholder="جست جو  با نویسنده کتاب دسته بندی" >
+		   
+	   
+		 <button class="img"  id="search-btn" >
+		<img src="{% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %}" alt="">
+	  </button>
+		
+	  </div>
+	  
+	  <div id="result-container" class="result-container result-container2 hide">
+					
+		<a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block" style="width: 97% !important; 
+		 margin: 7px 0px 7px 0px;box-shadow: none;"><meta itemprop="">
+		 
+		   <hr style="height: 1px;background: gray;">
+		  <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
+		 <div class="left">
+		   <h2 itemprop="name" style="color: black;">جلال آل احمد</h2>
+		   <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
+		  </div>
+		 </a>
+	  </div>
+	  <div id="result-container" class="result-container result-container2 hide">
+					
+		<a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block" style="width: 97% !important; 
+		 margin: 7px 0px 7px 0px;box-shadow: none;"><meta itemprop="">
+		 
+		   <hr style="height: 1px;background: gray;">
+		  <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
+		 <div class="left">
+		   <h2 itemprop="name" style="color: black;">جلال آل احمد</h2>
+		   <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
+		  </div>
+		 </a>
+	  </div>
+		  <div class="col-md-9 ftco-animate pb-5">
+			<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span> کتاب ها <i class="ion-ios-arrow-forward"></i></span></p>
+			<h1 class="mb-3 bread"> {{category.name}} دسته بندی</h1>
+		  </div>
+		</div>
+	  </div>
+	</section>
+  {% endif %}
+<section class="ftco-section bg-light">
+
+			
+	<div class="container">
+		<div class="row">
+			{% if object_list %}
+			  
+			{% for book in object_list %}
+			<div class="col-md-4">
+				<div class="car-wrap rounded ftco-animate">
+					<div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
+						<button class="unsave-btn">
+						{% if request.user.is_authenticated %}
+							{% if not book.is_bookmarked %}
+								<a href="{% url 'books:bookmark-add' book.id %}"><img src="{% static 'main/images/Newfolder/icon/save-svgrepo-com.svg' %}" alt=""></a>
+							{% else %}
+								<a href="{% url 'books:bookmark-add' book.id %}"><img src="{% static 'main/images/Newfolder/icon/saved-com.svg' %}" alt=""></a>
+							{% endif %}
+						{% else %}
+						  	<a href="{% url 'login' %}"> <img src="{% static 'main/images/Newfolder/icon/save-svgrepo-com.svg' %}" alt=""></a>
+						{% endif %}
+						</button>
+					</div>
+					<div class="text">
+						<h2 class="mb-0"><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></h2>
+						<div class="d-flex mb-3">
+							<span class="cat">{% for author in book.author.all %}
+							  <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
+							{% endfor %}</span>
+							<p class="price ml-auto">{{book.in_stock_user}} <span>/تعداد</span></p>
+						</div>
+						<p class="d-flex mb-0 d-block">{% if request.user.is_authenticated %}
+							{% if not book.is_reserved %}
+							{% if book.in_stock_user > 0 %}
+							  {% if request.user.reservation_limit > 0 %}
+							  <a href="{% url 'books:reservation-add' book.id %}" class="btn btn-primary py-2 mr-1"> رزرو</a>
+							  {% else %}
+							  <a href="#" class="btn btn-primary py-2 mr-1 disabled"> رزرو</a>
+							  {% endif %}
+							  {% else %}
+							  	{% if not book.is_waiting %}
+								  <a href="{% url 'books:waiting-add' book.id %}" class="btn btn-info py-2 mr-1"> خبرم کن</a>
+								{% else %}
+									<a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info disabled py-2 mr-1"> خبرم کن</a>
+								{% endif %}
+							{% endif %}
+							  
+							{% else %}
+							  <a href="{% url 'books:reservation-add' book.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
+							{% endif %}
+						  {% else %}
+							<a href="{% url 'login' %}" class="btn btn-primary py-2 mr-1"> رزرو</a>
+						  {% endif %}</a> <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a></p>
+					</div>
+				</div>
+			</div>		 
+        {% endfor %} 
+		{%else%}
+		<h1>کتابی ثبت نشده.</h1>
+			{% endif %}
+		</div>
+		<div class="row mt-5">
+	  <div class="col text-center">
+		<div class="block-27">
+		  <ul>
+			<li><a href="#">&lt;</a></li>
+			<li class="active"><span>1</span></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">&gt;</a></li>
+		  </ul>
+		</div>
+	  </div>
+	</div>
+	</div>
+</section>
+{% endblock content %}

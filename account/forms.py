@@ -49,33 +49,16 @@ class ReservationForm(forms.ModelForm):
 class Registration1Form(UserCreationForm):
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "address", "national_code", "sel_number", "birth_date", "fathers_name", "birth_number", "role"]
+        fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
         # fields = ["username", "first_name", "last_name", "email", "address", "national_code", "sel_number", "home_number", "birth_date", "fathers_name", "birth_number", "emergency_number", "role", "st_id", "st_major", "st_grade", "co_id", "co_unit", "co_grade", "pro_id", "pro_major", "pro_grade", "picture"]
-    def __init__(self, *args, **kwargs):
-        super(Registration1Form, self).__init__(*args, **kwargs)
-        self.fields['birth_date'] = JalaliDateField(label=('تاریخ تولد'),
-            widget=AdminJalaliDateWidget
-        )
+    
 
-
-class Registration2Form(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ["st_id", "st_major", "st_grade", "co_id", "co_unit", "co_grade", "pro_id", "pro_major", "pro_grade"]
 
 
 class UpdateUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user')
         super(UpdateUserForm, self).__init__(*args, **kwargs)
         self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
-        self.fields["username"].help_text = True
-        if not user.is_superuser:
-            self.fields['username'].disabled = True
-            self.fields['national_code'].disabled = True
-            self.fields['is_superuser'].disabled = True
-            self.fields['is_staff'].disabled = True
-            self.fields['is_active'].disabled = True
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active", "fathers_name", "birth_number", "emergency_number", "role", "st_id", "st_major", "st_grade", "co_id", "co_unit", "co_grade", "pro_id", "pro_major", "pro_grade"]
+        fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active", "fathers_name", "birth_number", "emergency_number", "role"]

@@ -1,0 +1,278 @@
+/*history.rent start*/
+@media (max-width:435px){
+    .rentrdproperty h1{
+      font-size: 25px;
+     
+    
+    }
+    .rentrdproperty{
+        width: 23%;
+    }
+    .rent-fa{
+      width: 100% !important;
+      height: 40px !important;
+      font-size: 17px;
+    }
+    .rent-item{
+     width: 100% !important;
+     font-weight: bold;
+
+    }
+    .icon-flex h4{
+        font-size: 20px;
+        width: 100%;
+        text-align: end;
+    }
+    .rent-alert h3{
+
+        width: 100%;
+        font-size: 17px;
+        text-align: center;
+    }
+    .rent-fa-line{
+        width: 35%;
+    }
+    .rent-line h4{
+font-size: 20px;
+    }
+    
+    
+    }
+    
+
+    @media (min-width:993px){
+        .rent-item{
+            max-width: 70% !important;
+            width: 65%;
+        }
+        
+.rent-item .img{
+            
+    width: 28% !important;
+    height: 80% !important;
+        }
+
+    }
+@media (min-width:435px){
+.rent-item{
+    max-width: 100%;
+    width: 100%;
+}
+
+.rent-item .img{
+            
+    width: 28% !important;
+    height: 55% !important;
+        }
+
+
+
+}
+
+@media (max-width:435px){
+
+    .rent-item{
+       background-image: url(../images/Newfolder/downlo22ad.jpg);
+       background-size: cover;
+  
+       }
+   .rent-item.rounded{
+    display: none;
+      }
+       .liner-parent{
+        display: none;
+       }
+       .rent-alert h6 {
+           height: 169px;
+           border: solid;
+           overflow: auto;
+           width: 111%;
+           /* border: solid #01d28e; */
+           border-radius: 10px;
+           font-size: 0.8rem;
+           background-color: white;
+           color: black;
+       }
+   
+       
+    .rentrdproperty h1 {
+        font-size: 22px;
+        font-weight: bold;
+        color: gray;
+        text-shadow: 0px 3px 3px black;
+    }
+    
+    .icon-flex h4 {   
+        font-size: 15px;
+        width: 100%;
+        text-align: end;
+        color: white;
+        margin-right: 6px;
+    }
+    .rent-alert h3{
+        
+        
+    margin: 7px 17px 5px 21px;
+    }
+    
+    .rent-fa {
+        width: 100% !important;
+        height: 40px !important;
+        font-size: 11px;
+    }
+    .rent-line{
+        display: block;
+ 
+    height: 26px !important;
+    margin: 0;
+    padding: 0;
+    }
+    .rent-alert{
+     height: 237px;
+    }
+    
+    .rent-alert h3 {
+        width: 75%;
+        font-size: 15px;
+        text-align: center;
+    }
+    
+    .rentrdproperty {
+        
+    align-items: end;
+        width: 37%;
+    }
+    .icon-flex{
+        
+    background-color: #1089ff;
+    width: fit-content;
+    border-radius: 20px;
+    color: white;
+    }
+    .icon-flex section{
+        
+            text-align: center;
+            width: 100%;
+            margin-bottom: 3px;
+            font-size: 10px;
+       
+    }
+    
+    .rent-fa-line {
+        width: 35%;
+        margin-left: 11px;
+    }
+    .rent-line h4{
+        
+    margin: 0px 10px 24px 20px;
+    width: 100% !important;
+    color: gray;
+    text-align: center;
+    font-weight: bold;
+    }
+
+}
+/*history.rent end*/
+
+
+/*book.single start*/
+
+
+@media(max-width:1001px){
+.book-single .img{
+    width: 90% !important;
+}
+.book-single{
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+.bookproperty{
+    flex-direction: row;
+    justify-content: space-around;
+}
+.bookproperty .col-md{
+    margin-right: 0px !important;
+    width: 30%;
+}
+.rent-btn-style .rent-btn{
+    width: 60%;
+    font-size: 1rem;
+}
+body{
+    overflow-x: hidden;
+}
+
+
+
+
+}
+
+
+/*book.single end*/
+
+
+@media(min-width:435px){
+    .rentrdproperty #rent-btn{
+
+        width: 60%;
+        height: 30px;
+        font-size: 80%;
+        margin-left: auto;
+
+    }
+    .rentrdproperty .bread{
+        
+    font-size: 150%;
+    font-weight: bold;
+    
+    text-align: end;
+    }
+    .icon-flex{
+        flex-direction: column;
+        align-content: end !important;
+    }
+    .rent-alert h3{
+        
+    width: fit-content;
+    height: 32px;
+    font-size: 100%;
+    }
+    .rent-alert h6{
+        font-size: 75%;
+    }
+    .fa-property h4{
+       
+        margin: 0px 24% 1px 20px !important;
+        width: fit-content !important;
+    }
+    .fa-property h6{
+       
+    margin: 2px 1px 0px 0px;
+    }
+    .fa-property {
+       
+    height: 77px;
+    }
+    .icon-flex h4{
+        
+    font-size: 115%;
+    font-weight: bold;
+    }
+}
+
+@media(min-width:765px){
+    .rent-item .img{
+        width: 20% !important;
+        height: 70% !important;
+        max-width: 190px;
+
+    }
+    .rent-item{
+        max-width: 60% !important;
+    }
+}
+
+/*book.rent start*/
+
