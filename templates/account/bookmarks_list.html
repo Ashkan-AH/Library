@@ -41,7 +41,7 @@
                 <td>{{book.author_str}}</td>
                 <td>{{book.publisher}}</td>
                 <td>{{book.translator}}</td>
-                <td>{{book.description|truncatewords:10|safe}}</td>
+                <td>{{book.description|linebreaksbr|truncatewords:10|safe}}</td>
                 <td><a href="{% url 'books:bookmark-add' book.id %}" class="btn btn-danger">حذف</a></td>
               </tr>
               {% endfor %}

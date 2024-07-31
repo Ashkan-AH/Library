@@ -16,8 +16,6 @@
       {% csrf_token %}
       <div class="row">
         <div class="col-3">{{form.username|as_crispy_field}}</div>
-        <div class="col-3">{{form.first_name|as_crispy_field}}</div>
-        <div class="col-3">{{form.last_name|as_crispy_field}}</div>
         <div class="col-3">{{form.email|as_crispy_field}}</div>
         <div class="col-3">{{form.password1|as_crispy_field}}</div>
         <div class="col-3">{{form.password2|as_crispy_field}}</div>

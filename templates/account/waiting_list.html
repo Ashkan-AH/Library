@@ -55,7 +55,7 @@
                 <td>{{book.author_str}}</td>
                 <td>{{book.publisher}}</td>
                 <td>{{book.translator}}</td>
-                <td>{{book.description|striptags|truncatewords:10}}</td>
+                <td>{{book.description|linebreaksbr|striptags|truncatewords:10}}</td>
               </tr>
               {% endfor %}
             </tbody>

@@ -17,7 +17,7 @@
   <p>{{object.language}}</p>
   <img src="{{object.picture.url}}" width="100px">
   <p>{{object.age_category}}</p>
-  <p>{{object.description|safe}}</p>
+  <p>{{object.description|linebreaksbr|safe}}</p>
   <p>{{object.persian_date}}</p>
   <p>{{object.slug}}</p>
   <a href="{% url 'account:book-update' object.slug %}" class="btn bg-warning">ویرایش کتاب</a>

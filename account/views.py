@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -264,7 +264,7 @@ class Profile(LoginRequiredMixin, DetailView):
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = User
     template_name = "account/profile_update.html"
-    form_class = UpdateUserForm
+    form_class = UpdateProfileForm
     success_url = reverse_lazy("account:profile")
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
@@ -467,9 +467,9 @@ class BlackList(SuperuserAccessMixin, LoginRequiredMixin, ListView):
 #         form = SignupForm()
 #     return render(request, 'signup.html', {'form': form})
 
-class Registration1(CreateView):
-    form_class = Registration1Form
-    template_name = "registration/signup1.html"
+class Registration(CreateView):
+    form_class = RegistrationForm
+    template_name = "registration/signup.html"
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_active = False
@@ -503,9 +503,10 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
         # return redirect('home')
-        return HttpResponse('ایمیل شما تایید شد و فرایند ثبت نام به پایان رسید.\nحالا میتوانید با موفقیت وارد حساب کاربری خود شوید.')
+        context = {"is_valid": True}
     else:
-        return HttpResponse('لینک وارد شده نامعتبر است!')
+        context = {"is_valid": False}
+    return render(request, "registration/confirmation.html", context)
     
 # --------------------------------waiting-list-------------------------------
 class WaitingList(LoginRequiredMixin, ListView):

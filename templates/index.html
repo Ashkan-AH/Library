@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load reservation_btn %}
+{% load bookmark_btn %}
 {% block title %}
   خانه
 {% endblock title %}
@@ -9,6 +11,64 @@
   <div class="overlay"></div>
   <div class="container">
     <div class=" row no-gutters slider-text justify-content-start align-items-center justify-content-center">
+      <style>
+        .desc p{
+            color: black !important;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function()
+    {
+        $("#search").keyup(function()
+    {
+        let query = $(this).val();
+        $.ajax({
+            url:'/search/', 
+            data:{
+                "q":query
+            },
+            dataType:"json", 
+            success:function(data){
+                $("#results").empty();
+                if(data == []){
+                    $("#results").empty();}
+                if(data.length>0){
+                for (let i = 0; i<data.length; i++){
+                    if(data[i].type == "book"){
+                        let name = (data[i].name).slice(0, 15) + "..."
+                        let description = (data[i].description).slice(0, 75) + "..."
+                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/book/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${name}</h2>\n<div class="desc">${description}</div>\n</div>\n</a>`);}
+                        else if(data[i].type == "author"){
+                        let name = (data[i].name).slice(0, 15) + "..."
+                        let description = (data[i].description).slice(0, 75) + "..."
+                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/authors/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${name}</h2>\n<div class="desc">${description}</div>\n</div>\n</a>`);
+                    }
+                        else if(data[i].type == "category"){
+                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/category/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${data[i].name}</h2>\n</div>\n</a>`);
+                    }
+                }}else{
+                    $("#results").append(`<a href="#" class="author-block" style="pointer-events: none;cursor: default;width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="{%static 'main/images/close.png'%}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">موردی یافت نشد!</h2>\n</div>\n</a>`);
+                }
+            }
+        });
+    });
+    });
+    </script>
+    <div class="morepagesearch2">
+        <input type="text" id="search" placeholder="جست جو  با نویسنده کتاب دسته بندی" >
+    </div>
+    <div id="results" class="result-container result-container2">
+        
+          
+        
+    </div>
+
+
+
+
+
+
       <div class="col-lg-8 ftco-animate">
         <div class="textcontain-bgcolor text w-100 text-center mb-md-5 pb-md-5">
           <h1 class="mb-4">دیدگاه  خودت رو نسبت به جهان تغیر بده     </h1>
@@ -37,39 +97,9 @@
     <div class="row no-gutters">
       <div class="col-md-12	featured-top">
         <div class="row no-gutters">
-          <div class="col-md-4 d-flex align-items-center">
-            <form action="#" class="request-form ftco-animate bg-primary">
-              <h2>جست و جوی کتاب یا نویسندگان</h2>
-            
-             <div class="searchbar">
-                   <input type="text" id="search-input" class="search-input">
-              
-               <div class="form-searchgroup">
-                <button class="search-btn"  id="search-btn"><svg width="100%" height="100%" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"         fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round"   stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#ffffff" fill-rule="evenodd" d="M4 9a5 5 0 1110 0A5 5 0   014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z"></path> </g></svg>
-                 </button>
-               </div>
-            </div>
-              
-               <div id="result-container" class="result-container hide">
-                
-                  <a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block" style="width: 97% !important; 
-                   margin: 7px 0px 7px 0px;box-shadow: none;"><meta itemprop="">
-                   
-                     <hr style="height: 1px;background: gray;">
-                    <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
-                   <div class="left">
-                       <h2 itemprop="name" style="color: black;">جلال آل احمد</h2>
-                       <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
-                    </div>
-                 </a>
-                 
-            
-               </div>
-            <span id="search-span" style="position:absolute;top: 200px;">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه </span>	
-            </form>
-          </div>
-          <div class="col-md-8 d-flex align-items-center">
-            <div class="services-wrap rounded-right w-100">
+          
+          <div class="col-md-8 d-flex align-items-center" style="margin-left: 185px;text-align: center;">
+            <div class="services-wrap rounded-right w-100" style="border-radius: 15px !important;">
               <h3 class="heading-section mb-4">مزایا استفاده از پلتفرم سرزمین کتاب</h3>
               <div class="row d-flex mb-4">
                 <div class="col-md-4 d-flex align-self-stretch ftco-animate">
@@ -102,7 +132,7 @@
                   </div>      
                 </div>
               </div>
-              <p><a href="books.html" class="btn btn-primary py-3 px-4" style="margin-left: 50px;">کتاب مورد نیاز خود را رزرو کنید</a></p>
+              <p><a href="{% url 'books:books' %}" class="btn btn-primary py-3 px-4">کتاب مورد نیاز خود را رزرو کنید</a></p>
             </div>
           </div>
         </div>
@@ -123,23 +153,12 @@
       <div class="col-md-12">
         <div class="carousel-car owl-carousel">
         {% for book in books %}
-        {% if forloop.counter <= 6 %}
         
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
             <div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
-              <button class="unsave-btn">
-                {% if request.user.is_authenticated %}
-                  {% if not book.is_bookmarked %}
-                    <a href="{% url 'books:bookmark-add' book.id %}"><img src="{% static 'main/images/Newfolder/icon/save-svgrepo-com.svg' %}" alt=""></a>
-                  {% else %}
-                    <a href="{% url 'books:bookmark-add' book.id %}"><img src="{% static 'main/images/Newfolder/icon/saved-com.svg' %}" alt=""></a>
-                  {% endif %}
-                {% else %}
-                    <a href="{% url 'login' %}"> <img src="{% static 'main/images/Newfolder/icon/save-svgrepo-com.svg' %}" alt=""></a>
-                {% endif %}
-                </button>
+              {% bookmark_btn request book %}
             </div>
             <div class="text">
               <h2 class="mb-0"><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></h2>
@@ -149,29 +168,12 @@
                 {% endfor %}</span>
                 <p class="price ml-auto">{{book.in_stock_user}} <span>/تعداد</span></p>
               </div>
-              <p class="d-flex mb-0 d-block">{% if request.user.is_authenticated %}
-                {% if not book.is_reserved %}
-                {% if book.in_stock_user > 0 %}
-                  {% if request.user.reservation_limit > 0 %}
-                  <a href="{% url 'books:reservation-add' book.id %}" class="btn btn-primary py-2 mr-1"> رزرو</a>
-                  {% else %}
-                  <a href="#" class="btn btn-primary py-2 mr-1 disabled"> رزرو</a>
-                  {% endif %}
-                  {% else %}
-                  <a href="{% url 'books:waiting-add' book.id %}" class="btn btn-info py-2 mr-1"> خبرم کن</a>
-                  
-                {% endif %}
-                  
-                {% else %}
-                  <a href="{% url 'books:reservation-add' book.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
-                {% endif %}
-              {% else %}
-                <a href="{% url 'login' %}" class="btn btn-primary py-2 mr-1"> رزرو</a>
-              {% endif %}</a><a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">جزءیات</a></p>
+              <p class="d-flex mb-0 d-block">
+              {% reservation_btn request book %}
+                <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">جزءیات</a></p>
             </div>
           </div>
         </div>
-      {% endif %}		 
     {% endfor %} 
           
         </div>
@@ -186,12 +188,12 @@
       <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url({% static 'main/images/Newfolder/group-therapy-making-list-clipboard.jpg' %});">
       </div>
       <div class="col-md-6 wrap-about ftco-animate">
-        <div class="heading-section heading-section-white pl-md-5">
+        <div class="heading-section heading-section-white pl-md-5" style="direction: rtl;text-align: right;">
           <span class="subheading"> دریاره ما</span>
           <h2 class="mb-4"> به سرزمین کتاب خوش آمدید </h2>
 
-          <p>>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه </p>
-          <p><a href="#" class="btn btn-primary py-3 px-4">جست جوی کتاب</a></p>
+          <p style="direction: rtl;text-align: right;">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه </p>
+          
         </div>
       </div>
     </div>
@@ -208,7 +210,6 @@
     </div>
     <div class="row">
       {% for category in categories %}
-        {% if forloop.counter <= 4 %}
       <div class="col-md-3">
         
        <a class="coll-211" href="{% url 'books:category' category.slug %}" >
@@ -222,7 +223,6 @@
         </div>
       </a>
       </div>
-      {% endif %}		 
     {% endfor %} 
     </div>
   </div>
@@ -254,19 +254,30 @@
         <div class="carousel-testimony owl-carousel ftco-owl">
           
       {% for author in authors %}
-      {% if forloop.counter <= 6 %}
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
               <div class="user-img mb-2" style="background-image: url({{author.picture.url}})">
               </div>
+              <style>
+                .special p{
+                  direction: rtl;
+                  text-align: right;
+                }
+              </style>
               <div class="text pt-4">
-                <p class="mb-4">{{author.description|striptags|truncatewords:30}}</p>
+                <div class="special">{% autoescape off %}
+                    
+                  {{author.description|linebreaksbr|truncatewords:30}}
+                  {% endautoescape %}</div>
+                
+                  
+                
+
                 <p class="name"> {{author.name}}</p>
               <a href="{% url 'author:author-detail' author.slug %}"><span class="position"> مشاهده آثار</span></a>  
               </div>
             </div>
           </div>
-          {% endif %}		 
         {% endfor %} 
         </div>
       </div>
@@ -347,7 +358,7 @@
       <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
         <div class="block-18">
           <div class="text text-border d-flex align-items-center">
-            <strong class="number" data-number="1090">0</strong>
+            <strong class="number" data-number="{{books_number}}">0</strong>
             <span>مجموع <br>کتاب ها</span>
           </div>
         </div>
@@ -355,7 +366,7 @@
       <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
         <div class="block-18">
           <div class="text text-border d-flex align-items-center">
-            <strong class="number" data-number="1800">0</strong>
+            <strong class="number" data-number="{{reserve_number}}">0</strong>
             <span> رزرو<br>موفق</span>
           </div>
         </div>
@@ -363,7 +374,7 @@
       <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
         <div class="block-18">
           <div class="text d-flex align-items-center">
-            <strong class="number" data-number="2326">0</strong>
+            <strong class="number" data-number="{{users_number}}">0</strong>
             <span>مجموع <br>اعضا</span>
           </div>
         </div>

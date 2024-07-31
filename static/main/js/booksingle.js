@@ -1,7 +1,6 @@
-let $=document
-const tabselect=$.querySelectorAll("#tab-select")
-const tabdiv=$.querySelectorAll("#tab-div")
-console.log(tabdiv,tabselect);
+
+const tabselect=document.querySelectorAll("#tab-select")
+const tabdiv=document.querySelectorAll("#tab-div")
 
 tabselect.forEach((Element,index)=>{
     Element.addEventListener("click",()=>{

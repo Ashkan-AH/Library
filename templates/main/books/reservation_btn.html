@@ -1,0 +1,24 @@
+{% if request.user.is_authenticated %}
+	{% if not reservation %}
+		{% if book.in_stock_user > 0 %}
+			{% if request.user.reservation_limit > 0 %}
+				<a href="{% url 'books:reservation-add' book.id %}" class="btn btn-primary py-2 mr-1"> رزرو</a>
+			{% else %}
+				<a href="#" class="btn btn-primary py-2 mr-1 disabled"> رزرو</a>
+			{% endif %}
+		{% else %}
+			{% if not book.is_waiting %}
+				<a href="{% url 'books:waiting-add' book.id %}" class="btn btn-info py-2 mr-1"> خبرم کن</a>
+			{% else %}
+				<a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info disabled py-2 mr-1"> خبرم کن</a>
+			{% endif %}
+		{% endif %}
+							  
+	{% elif reservation.status == "رزرو شده" %}
+		<a href="{% url 'books:reservation-add' book.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
+	{% elif reservation.status == "تحویل داده شده" %}
+		<a href="#" class="btn btn-success py-2 mr-1 disabled"> تحویل داده شده</a>
+	{% endif %}
+{% else %}
+	<a href="{% url 'login' %}" class="btn btn-primary py-2 mr-1"> رزرو</a>
+{% endif %}

@@ -1,0 +1,12 @@
+{% load static %}
+<button class="unsave-btn">
+    {% if request.user.is_authenticated %}
+        {% if not book.is_bookmarked %}
+            <a href="{% url 'books:bookmark-add' book.id %}"><img src="{% static 'main/images/Newfolder/icon/save-svgrepo-com.svg' %}" alt=""></a>
+        {% else %}
+            <a href="{% url 'books:bookmark-add' book.id %}"><img src="{% static 'main/images/Newfolder/icon/saved-com.svg' %}" alt=""></a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'login' %}"> <img src="{% static 'main/images/Newfolder/icon/save-svgrepo-com.svg' %}" alt=""></a>
+    {% endif %}
+</button>

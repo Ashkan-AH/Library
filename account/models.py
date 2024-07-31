@@ -27,24 +27,24 @@ class User(AbstractUser):
         "برق":"برق",
     }
 
-    first_name = models.CharField(verbose_name="نام", max_length=150, blank=False)
-    last_name = models.CharField(verbose_name="نام خانوادگی", max_length=150, blank=False)
+    first_name = models.CharField(verbose_name="نام", max_length=150, blank=True)
+    last_name = models.CharField(verbose_name="نام خانوادگی", max_length=150, blank=True)
     email = models.EmailField(verbose_name="ایمیل", unique=True, blank=False)
-    address = models.TextField(verbose_name="آدرس منزل", blank=False)
-    birth_number = models.CharField(verbose_name="شماره شناسنامه", max_length=20, blank=False)
-    national_code = models.CharField(max_length=10, verbose_name="کدملی", unique=True, blank=False)
-    fathers_name = models.CharField(verbose_name="نام پدر", max_length=50, blank=False)
-    sel_number = models.CharField(max_length=15, verbose_name="تلفن همراه", blank=False)
+    address = models.TextField(verbose_name="آدرس منزل", blank=True)
+    birth_number = models.CharField(verbose_name="شماره شناسنامه", max_length=20, blank=True)
+    national_code = models.CharField(max_length=10, verbose_name="کدملی", unique=True, blank=True)
+    fathers_name = models.CharField(verbose_name="نام پدر", max_length=50, blank=True)
+    sel_number = models.CharField(max_length=15, verbose_name="تلفن همراه", blank=True)
     home_number = models.CharField(max_length=11, blank=True, verbose_name="تلفن ثابت")
     emergency_number = models.CharField(max_length=15, verbose_name="شماره اضطراری", blank=True)
-    birth_date = models.DateField(verbose_name="تاریخ تولد", blank=False)
+    birth_date = models.DateField(verbose_name="تاریخ تولد", blank=True, null=True)
     picture = models.ImageField(upload_to="uploads/profile/", verbose_name="تصویر", default="default.jpg")
 
 
     reservation_limit = models.IntegerField(default=5, verbose_name="محدودیت رزرو")
 
 
-    role = models.CharField(verbose_name="نقش", choices=ROLE_CHOICES, max_length=7, blank=False)
+    role = models.CharField(verbose_name="نقش", choices=ROLE_CHOICES, max_length=7, blank=True)
 
 
     # st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")
@@ -63,4 +63,13 @@ class User(AbstractUser):
 
 
     def persian_birthdate(self):
-        return date2jalali(self.birth_date).strftime("%Y %B %d")
+        if self.birth_date:
+            return date2jalali(self.birth_date).strftime("%Y %B %d")
+    
+    def is_information_compelete(self):
+        if self.first_name and self.last_name and self.address and self.birth_number and self.national_code and self.fathers_name and self.sel_number and self.emergency_number and self.birth_date and self.role:
+            return True
+        else:
+            return False
+    is_information_compelete.boolean = True
+    is_information_compelete.short_description = "کامل بودن پروفایل"

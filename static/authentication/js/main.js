@@ -1,13 +1,12 @@
 let checkbox = document.getElementById("agree-term")
  let submitbtn=document.getElementById("signup")
-let input =document.getElementById("email")
-let input2 =document.getElementById("name")
+let input =document.getElementById("id_email")
+let input2 =document.getElementById("id_username")
 
-let input3 =document.getElementById("pass")
+let input3 =document.getElementById("id_password1")
 
-let input4 =document.getElementById("re_pass")
+let input4 =document.getElementById("id_password2")
 
-if(input3.value==input4.value){
   
 
 
@@ -28,4 +27,3 @@ checkbox.addEventListener("change",()=>
     }    
  }    
  )      
-}

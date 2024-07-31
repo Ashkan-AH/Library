@@ -1,41 +1,28 @@
-<!DOCTYPE html>
-<html lang="en" style="overflow-y: hidden; overflow-x: hidden;">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>سرزمین کتاب /قوانین</title>
+{% extends "registration/base.html" %}
+{% block title %}
+  قوانین
+{% endblock title %}
+{% block content %}
+  
+<!-- Sing in  Form -->
+<section class="sign-in">
+    <div class="containersing config-cont" style="
+    width: 700px;
+    box-shadow: 0px 5px 18px 0px;
+    overflow-y: auto; padding: 25px;
+    overflow-x: hidden;
+    height: 500px;" >
+        <div class="flex" style="flex-wrap: nowrap;">
+            
+            <section class="coll-m10" style="width: 100%;">
+                <h2 class="signtitle">سرزمین </h2>
+               
+                <h2 class="">کتاب  </h2>
 
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+             </section>
 
-    <!-- Main css -->
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body style="background-image: url(../images/Newfolder/nature.jpg);background-size: cover;background-repeat: no-repeat;">
-
-    <div class="main" style="background: none;">
-
-
-        <!-- Sing in  Form -->
-        <section class="sign-in">
-            <div class="containersing config-cont" style="
-            width: 700px;
-            box-shadow: 0px 5px 18px 0px;
-            overflow-y: auto; padding: 25px;
-            overflow-x: hidden;
-            height: 500px;" >
-                <div class="flex" style="flex-wrap: nowrap;">
-                    
-                    <section class="coll-m10" style="width: 100%;">
-                        <h2 class="signtitle">سرزمین </h2>
-                       
-                        <h2 class="">کتاب  </h2>
-        
-                     </section>
-
-                     <h3 style="direction: rtl;">
-                     
+             <h3 style="direction: rtl;">
+             
 بخش اول: قوانین عمومی
 ساعت کاری کتابخانه:
 
@@ -81,17 +68,9 @@
 <br>
 کاربران می‌توانند نظرات، پیشنهادات و شکایات خود را از طریق فرم‌های موجود در وبسایت کتابخانه یا صندوق پیشنهادات در داخل کتابخانه مطرح کنند. نظرات شما برای بهبود خدمات کتابخانه ارزشمند است.
 تمامی پیشنهادات و شکایات به دقت بررسی و در صورت نیاز اقدامات لازم انجام خواهد شد. کتابخانه متعهد است که در اسرع وقت به مسائل مطرح شده پاسخ دهد و مشکلات را حل کند.
-                     </h3>
-                </div>
-            </div>
-            
-        </section>
-
+             </h3>
+        </div>
     </div>
     
-    <div class="beautibackg" id="beautibackg" style="top: 1150px;"></div>
-</body>
-    <!-- JS -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="js/main.js"></script>
-</html>
+</section>
+{% endblock content %}

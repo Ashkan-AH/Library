@@ -16,6 +16,7 @@
     height: 110px;
     margin: 25px 0px 25px 1px;
     z-index: 1;
+    background: lightgray;
 }
 
 
@@ -43,12 +44,14 @@ a img {
     font-size: 16px;
     line-height: 220%;
     text-align: right;
+    padding-top: 5px;
+    margin-bottom: -4px;
 }
 
 .author-block .left > .desc {
     color:black;
     font-size: 14px;
-    line-height: 220%;
+    /* line-height: 220%; */
     text-align: right;
 }
 

@@ -1,96 +1,76 @@
+{% extends "registration/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en" style="overflow-y: auto; overflow-x: hidden;">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ورود</title>
+{% block title %}
+  ورود
+{% endblock title %}
+{% block content %}
+  
+<!-- Sing in  Form -->
+<section class="sign-in" style="position: relative; top: -100px;">
 
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="{% static 'authentication/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
-
-    <!-- Main css -->
-    <link rel="stylesheet" href="{% static 'authentication/css/style.css' %}">
-</head>
-<body style="background-image: url({% static 'main/images/Newfolder/nature.jpg' %});background-size: cover;background-repeat: no-repeat;">
-
-    <div class="main" style="background: none;">
-
-
-
-        <!-- Sing in  Form -->
-        <section class="sign-in" style="position: relative; top: -100px;">
+    <div class="containersing">
+        <section class="coll-m10" style="width: 100%;">
+        <h2 class="signtitle">سرزمین </h2>
        
-            <div class="containersing">
-                <section class="coll-m10" style="width: 100%;">
-                <h2 class="signtitle">سرزمین </h2>
-               
-                <h2 class="">کتاب  </h2>
+        <h2 class="">کتاب  </h2>
 
-             </section>
-                <div class="signin-content">
-                    <div class="signin-image">
-                        <figure><img src="{% static 'authentication/images/signin-image.jpg' %}" alt="sing up image"></figure>
-                        <a href="{% url 'account:signup' %}" class="signup-image-link">ایجاد حساب کار بری  </a>
-                    </div>
+     </section>
+        <div class="signin-content">
+            <div class="signin-image">
+                <figure><img src="{% static 'authentication/images/signin-image.jpg' %}" alt="sing up image"></figure>
+                <a href="{% url 'account:signup' %}" class="signup-image-link">ایجاد حساب کار بری  </a>
+            </div>
 
-                    <div class="signin-form">
-                        <h2 class="form-title" >ورود</h2>
-                        {% if form.non_field_errors %}
+            <div class="signin-form">
+                <h2 class="form-title" >ورود</h2>
+                {% if form.non_field_errors %}
+                <div>
+                    {% for error in form.non_field_errors %}
+                    <span class="error">{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form method="POST" class="register-form" id="login-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {% if form.username.errors %}
                         <div>
-                            {% for error in form.non_field_errors %}
+                            {% for error in form.username.errors %}
                             <span class="error">{{error}}</span>
                             {% endfor %}
                         </div>
                         {% endif %}
-                        <form method="POST" class="register-form" id="login-form">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                {% if form.username.errors %}
-                                <div>
-                                    {% for error in form.username.errors %}
-                                    <span class="error">{{error}}</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                <label for="id_username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" placeholder="نام کاربری "/>
-                            </div>
-                            <div class="form-group">
-                                {% if form.password.errors %}
-                                <div>
-                                    {% for error in form.password.errors %}
-                                    <span class="error">{{error}}</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                                <label for="id_password"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" autocomplete="current-password" required="" id="id_password" placeholder="رمز عبور"/>
-                            </div>
-
-                            <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit" value="ورود "/>
-                            </div>
-                        </form>
-                        <div class="social-login">
-                            <span class="social-label">دیگر روش های ورود</span>
-                            <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                            </ul>
-                        </div>
+                        <label for="id_username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                        <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" placeholder="نام کاربری "/>
                     </div>
+                    <div class="form-group">
+                        {% if form.password.errors %}
+                        <div>
+                            {% for error in form.password.errors %}
+                            <span class="error">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <label for="id_password"><i class="zmdi zmdi-lock"></i></label>
+                        <input type="password" name="password" autocomplete="current-password" required="" id="id_password" placeholder="رمز عبور"/>
+                    </div>
+
+                    <div class="form-group form-button">
+                        <input type="submit" name="signin" id="signin" class="form-submit" value="ورود "/>
+                    </div>
+                </form>
+                <div class="social-login">
+                    <span class="social-label">دیگر روش های ورود</span>
+                    <ul class="socials">
+                        <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                        <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                        <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                    </ul>
                 </div>
             </div>
-        </section>
-
+        </div>
     </div>
-    
-    <div class="beautibackg" id="beautibackg" style="top: 1150px;"></div>
-</body>
-    <!-- JS -->
-    <script src="{% static 'authentication/vendor/jquery/jquery.min.js' %} "></script>
-    <script src="{% static 'authentication/js/main.js' %} "></script>
-</html>
+</section>
+
+
+{% endblock content %}

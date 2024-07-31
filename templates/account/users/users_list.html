@@ -37,7 +37,12 @@
               {% for user in object_list %}
                 {% if user.username != request.user.username %}
                       <tr>
-                    <td><a href="{% url 'account:user-detail' user.id %}">{{user.username}}</a></td>
+                        {% if user.is_information_compelete %}
+                        <td><a href="{% url 'account:user-detail' user.id %}">{{user.username}}</a></td>
+                        {% else %}
+                        <td><a href="{% url 'account:user-detail' user.id %}" style="color: red;">{{user.username}}</a></td>
+
+                        {% endif %}
                     <td>{{user.get_full_name}}</td>
                     <td>{{user.id}}</td>
                     <td>{{user.national_code}}</td>

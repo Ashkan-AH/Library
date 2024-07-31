@@ -8446,7 +8446,7 @@ h1, h2, h3, h4, h5,
     .slider-text .icon-wrap .heading-title span {
       font-family: "Poppins", Arial, sans-serif;
       color: #fff; }
-  .slider-text p {
+  .slider-text {
     line-height: 1.5;
     color: white; }
   .slider-text .breadcrumbs {
@@ -8544,7 +8544,15 @@ h1, h2, h3, h4, h5,
       .morepagesearch{
         position: absolute;
         top: 185px;
-        left: 22%;
+        left: 16%;
+        width: 845px;
+        display: flex;
+        height: 50px;
+    }
+      .morepagesearch2{
+        position: absolute;
+        top: 185px;
+        right: 140px;
         width: 845px;
         display: flex;
         height: 50px;
@@ -8564,9 +8572,6 @@ h1, h2, h3, h4, h5,
     width: 75%;
     }
 
-    .beauti-dec{
-    
-    }
     .nav-search button{
       width: 55px;
       height: 100%;
@@ -8589,7 +8594,18 @@ border-radius: 10px;
       border-bottom-left-radius: 20px;
       border-top-left-radius: 20px;
       border: white;
-      opacity: 55%;
+      background: white;
+      /* backdrop-filter: blur(47px); */
+      border-right: none;
+      outline: none;
+  
+        }
+        .morepagesearch2 input{
+          direction: rtl;
+          padding: 25px;
+      width: 80%;
+      border-radius: 25px;
+      border: white;
       background: white;
       /* backdrop-filter: blur(47px); */
       border-right: none;
@@ -10217,7 +10233,7 @@ border: solid #dadada;
   background: none !important;
   backdrop-filter: contrast(0.1);
   align-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .result-container{
   overflow-y: auto;
@@ -10229,8 +10245,10 @@ border: solid #dadada;
   flex-direction: column;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  background: white;
-  margin-top: -1px
+  background: white !important;
+  margin-top: -1px;
+  padding-left: 10px;
+  z-index: 1;
 }
 .result-container section{
 
@@ -10242,7 +10260,7 @@ border: solid #dadada;
 
   flex-direction: row;
   align-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .result-container img{ 

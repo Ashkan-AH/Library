@@ -1,6 +1,7 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
@@ -8,6 +9,21 @@ from reservation.models import Reservation
 from account.models import User
 from author.models import Author
 from .models import Books, Category
+from account.forms import SearchForm
+
+def search_item(request):
+    query = request.GET.get("q", "")
+    results = []
+    if query:
+        results = [{"name":item.name, "description":item.description, "picture":item.picture.url, "slug":item.slug, "type":"book"}for item in Books.objects.filter(Q(name__icontains=query) | Q(publisher__icontains=query) | Q(translator__icontains=query))]
+        for item in Author.objects.filter(name__icontains=query):
+            results.append({"name":item.name, "description":item.description, "picture":item.picture.url, "slug":item.slug, "type":"author"})
+        for item in Category.objects.filter(name__icontains=query):
+            results.append({"name":item.name, "picture":item.picture.url, "slug":item.slug, "type":"category"})
+   
+    return JsonResponse(results, safe=False)
+
+
 
 @login_required
 def bookmark_add(request, id):
@@ -47,72 +63,54 @@ def reservation_add(request, book_id):
 
 
 
+def search_result(request):
+    search = request.GET.get('search')
+    context = {}
+    context["books"] = Books.objects.filter(Q(name__icontains=search) | Q(publisher__icontains=search) | Q(translator__icontains=search))
+    context["authors"] = Author.objects.filter(name__icontains=search)
+    context["categories"] = Category.objects.filter(name__icontains=search)
+    context["search_text"] = search
+    return render(request, "search_result.html", context)
+
+
+
+
+
 class BookList(ListView):
     template_name = "main/books/books.html"
+    paginate_by = 18
     def get_queryset(self):
-        books = Books.objects.all()
-        for book in books:
-            bookmark = bool
-            if book.bookmarks.filter(id=self.request.user.id).exists():
-                bookmark = True
-            book.is_bookmarked = bookmark
-            reserved = bool
-            if Reservation.objects.filter(Q(book_id=book.id), Q(user_id=self.request.user.id), Q(status="رزرو شده")).exists():
-                reserved = True
-            book.is_reserved = reserved
-            waiting = bool
-            if book.waiting_users.filter(id=self.request.user.id).exists():
-                waiting = True
-            book.is_waiting = waiting
-        
-        return books
+        if "slug" in self.kwargs:
+            slug = self.kwargs.get("slug")
+            return Books.objects.filter(author__slug=slug)
+        return Books.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "slug" in self.kwargs:
+            slug = self.kwargs.get("slug")
+            context["author_name"] = Author.objects.get(slug=slug).name
+        return context
 
 
 
 def index(request):
-    books = Books.objects.all()
-    for book in books:
-        bookmark = bool
-        if book.bookmarks.filter(id=request.user.id).exists():
-            bookmark = True
-        book.is_bookmarked = bookmark
-        reserved = bool
-        if Reservation.objects.filter(Q(book_id=book.id), Q(user_id=request.user.id), Q(status="رزرو شده")).exists():
-            reserved = True
-        book.is_reserved = reserved
-        waiting = bool
-        if book.waiting_users.filter(id=request.user.id).exists():
-            waiting = True
-        book.is_waiting = waiting
     context = {
-        "books": books,
-        "authors":Author.objects.all(),
-        "categories":Category.objects.all()
+        "books": [book for book in Books.objects.all().order_by("?")[0:8]],
+        "authors": [author for author in Author.objects.all().order_by("?")[0:8]],
+        "categories": [category for category in Category.objects.all()[0:4]],
+        "books_number": Books.objects.all().count(),
+        "reserve_number": Reservation.objects.filter(status="بازگردانده شده").count(),
+        "users_number": User.objects.all().count(),
     }
     return render(request, "index.html", context)
     
-class AuthorBookList(ListView):
-    template_name = "main/books/books.html"
-    def get_queryset(self):
-        slug = self.kwargs.get("slug")
-        return Books.objects.filter(author__slug=slug)
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        slug = self.kwargs.get("slug")
-        book = Books.objects.filter(author__slug=slug)
-        bookmark = bool
-        if book.bookmarks.filter(user_id=self.request.user.id).exists():
-            bookmark = True
-        context["bookmark"] = bookmark
-        reserved = bool
-        if Reservation.objects.filter(Q(book_id=book.id), Q(user_id=self.request.user.id), Q(status="رزرو شده")).exists():
-            reserved = True
-        context["reserved"] = reserved
-        waiting = bool
-        if book.waiting_users.filter(id=self.request.user.id).exists():
-            waiting = True
-        context["waiting"] = waiting
-        return context
+# class AuthorBookList(ListView):
+#     paginate_by = 18
+#     template_name = "main/books/books.html"
+#     def get_queryset(self):
+#         slug = self.kwargs.get("slug")
+#         return Books.objects.filter(author__slug=slug)
+        
     
 
 
@@ -121,52 +119,32 @@ class BookDetail(DetailView):
     template_name = "main/books/book_detail.html"
     def get_object(self):
         slug = self.kwargs.get("slug")
-        book = Books.objects.get(slug=slug)
-        return book
-    
+        global book1
+        book1 = Books.objects.get(slug=slug)
+        if book1.waiting_users.filter(id=self.request.user.id).exists():
+            book1.is_waiting = True
+        if book1.bookmarks.filter(id=self.request.user.id).exists():
+            book1.is_bookmarked = True
+        return book1
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        slug = self.kwargs.get("slug")
-        book = Books.objects.get(slug=slug)
-        bookmark = bool
-        if book.bookmarks.filter(id=self.request.user.id).exists():
-            bookmark = True
-        context["bookmark"] = bookmark
-        reserved = bool
-        if Reservation.objects.filter(Q(book_id=book.id), Q(user_id=self.request.user.id), Q(status="رزرو شده")).exists():
-            reserved = True
-        context["reserved"] = reserved
-        waiting = bool
-        if book.waiting_users.filter(id=self.request.user.id).exists():
-            waiting = True
-        context["waiting"] = waiting
+        context["reservation"] = Reservation.objects.filter(Q(book_id=book1.id), Q(user_id=self.request.user.id), Q(status="تحویل داده شده")|Q(status="رزرو شده")).first()
+        context["books"] = [book for book in Books.objects.filter(Q(category__in=(book1.category.all())), ~Q(slug=book1.slug)).order_by("?")[0:3]]
         return context
-
+        
+    
 
 class CategoryList(ListView):
+    paginate_by = 12
     template_name = "main/books/categories.html"
     model = Category
 class CategoryBookList(ListView):
     template_name = "main/books/books.html"
     def get_queryset(self):
-        
         slug = self.kwargs.get("slug")
         selected_category = get_object_or_404(Category, slug=slug)
-        books = selected_category.books.all()
-        for book in books:
-            bookmark = bool
-            if book.bookmarks.filter(id=self.request.user.id).exists():
-                bookmark = True
-            book.is_bookmarked = bookmark
-            reserved = bool
-            if Reservation.objects.filter(Q(book_id=book.id), Q(user_id=self.request.user.id), Q(status="رزرو شده")).exists():
-                reserved = True
-            book.is_reserved = reserved
-            waiting = bool
-            if book.waiting_users.filter(id=self.request.user.id).exists():
-                waiting = True
-            book.is_waiting = waiting
-        return books
+        return selected_category.books.all()
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")

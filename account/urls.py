@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from django.contrib.auth import views
 from . import views
+from django.views.generic import TemplateView
 
 app_name = "account"
 
@@ -47,8 +48,9 @@ urlpatterns = [
     path("profile-update/", views.ProfileUpdate.as_view(), name="profile-update"),
 
     
-    path('signup/', views.Registration1.as_view(), name='signup'),
+    path('signup/', views.Registration.as_view(), name='signup'),
     path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate, name='activate'),
+    path('policy/', TemplateView.as_view(template_name="registration/policy.html"), name="policy"),
 
 
     path("", views.Profile.as_view(), name="profile"), 
