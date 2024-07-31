@@ -1,5 +1,4 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic.list import ListView

@@ -1,6 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from jalali_date import date2jalali
+from datetime import timedelta
+from django.utils import timezone
+from django.contrib.auth.models import UserManager
+
+class UserQuerySet(models.QuerySet):
+    def delete_half_done_user(self):
+        date = timezone.now() - timedelta(days=1)
+        self.filter(models.Q(last_login=None), models.Q(date_joined__lt=date)).delete()
+        return self
+    
+class UserManager2(UserManager):
+    def get_queryset(self):
+        queryset = UserQuerySet(self.model, using=self._db)
+        queryset.delete_half_done_user()
+        return queryset
 
 class User(AbstractUser):
     ROLE_CHOICES = {
@@ -60,12 +75,17 @@ class User(AbstractUser):
     # pro_id =models.CharField(blank=True, max_length=15, verbose_name="کد استادی")
     # pro_major = models.CharField(max_length=15, verbose_name="رشته درسی", blank=True, choices=MAJOR_CHOICES)
     # pro_grade = models.CharField(max_length=15, verbose_name="مقطع درسی", blank=True, choices=GRADE_CHOICES)
-
-
+    objects = UserManager2()
+    
     def persian_birthdate(self):
         if self.birth_date:
             return date2jalali(self.birth_date).strftime("%Y %B %d")
     
+    # def delete_half_done():
+    #     for user in User.objects.all():
+    #         if not user.last_login and (user.date_joined + timedelta(days=1)) < timezone.now():
+    #             user.delete()
+
     def is_information_compelete(self):
         if self.first_name and self.last_name and self.address and self.birth_number and self.national_code and self.fathers_name and self.sel_number and self.emergency_number and self.birth_date and self.role:
             return True

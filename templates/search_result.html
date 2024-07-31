@@ -31,6 +31,9 @@
 
 			
 	<div class="container">
+		{% if not books and not authors and not categories %}
+		<h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">نتیجه ای یافت نشد.</h1>
+		{% endif %}
 		{% if books %}
 		<h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">کتاب ها</h1>
 		<div class="row">
