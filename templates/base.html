@@ -54,7 +54,7 @@
 				
 				<li class="nav-item {% if request.resolver_match.url_name == 'login' %}
 				active
-				{% endif %}"><a href="{% url 'login' %}" class="nav-link">ورود</a></li>
+				{% endif %}"><a href="{% url 'login' %}?next={{request.path}}" class="nav-link">ورود</a></li>
 				{% endif %}
 				<li class="nav-item"><a class="nav-search"  id="nav-search" href="#"   >
 					<button class="search-btn img" style="background-image: url({% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %});background-size: cover; outline: none;"></button>

@@ -71,24 +71,24 @@ class Reservation(models.Model):
     #         book.in_stock_user += 1
     #         book.save()
     #     return super().__getattribute__(name)
-    # def not_returned(self):
-    #     if self.status == "تحویل داده شده" and self.delivery_remaining().days <= 0:
-    #         user = User.objects.get(id=self.user_id.id)
-    #         user.is_active = False
-    #         user.save()
-    #         self.status = "بازگردانده نشده"
-    #         self.save()
-    # def reservation_expired(self):
-    #     remaining = timezone.now().date() - self.date_added.date()
-    #     if remaining.days > 7:
-    #         user = User.objects.get(id=self.user_id.id)
-    #         book = Books.objects.get(id=self.book_id.id)
-    #         user.reservation_limit += 1
-    #         user.save()
-    #         self.status = "لغو رزرو"
-    #         self.save()
-    #         book.in_stock_user += 1
-    #         book.save()
+    def not_returned(self):
+        if self.status == "تحویل داده شده" and self.delivery_remaining().days <= 0:
+            user = User.objects.get(id=self.user_id.id)
+            user.is_active = False
+            user.save()
+            self.status = "بازگردانده نشده"
+            self.save()
+    def reservation_expired(self):
+        remaining = timezone.now().date() - self.date_added.date()
+        if remaining.days > 7:
+            user = User.objects.get(id=self.user_id.id)
+            book = Books.objects.get(id=self.book_id.id)
+            user.reservation_limit += 1
+            user.save()
+            self.status = "لغو رزرو"
+            self.save()
+            book.in_stock_user += 1
+            book.save()
             
     persian_date_added.short_description = "تاریخ رزرو"
     persian_delivery_date.short_description = "تاریخ تحویل کتاب"
@@ -101,3 +101,4 @@ class Reservation(models.Model):
     class Meta:
         verbose_name = "رزرو"
         verbose_name_plural = "رزرو‌ها"
+        ordering = ["-date_added"]

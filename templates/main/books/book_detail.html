@@ -150,8 +150,8 @@
 				<a href="#" class="btn btn-success btn-lg py-2 mr-1 disabled" style="width: 170px;height: 50px;font-size: 20px;"> تحویل داده شده</a>
 			{% endif %}
 		{% else %}
-			<a href="{% url 'login' %}" class="btn btn-primary btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;"> رزرو</a>
-			<a href="{% url 'login' %}" class="btn btn-warning btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;">ذخیره</a>
+			<a href="{% url 'login' %}?next={{request.path}}" class="btn btn-primary btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;"> رزرو</a>
+			<a href="{% url 'login' %}?next={{request.path}}" class="btn btn-warning btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;">ذخیره</a>
 		{% endif %}
 		
 	  </section>

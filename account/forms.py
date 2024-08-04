@@ -61,7 +61,7 @@ class UpdateUserForm(forms.ModelForm):
         self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
     class Meta:
         model = User
-        fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active", "fathers_name", "birth_number", "emergency_number", "role"]
+        fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active", "fathers_name", "birth_number", "emergency_number", "role", "reservation_limit"]
 
 class UpdateProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

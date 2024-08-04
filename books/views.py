@@ -53,8 +53,10 @@ def reservation_add(request, book_id):
         reservation = Reservation.objects.get(Q(book_id=book_id), Q(user_id=request.user.id), Q(status="رزرو شده"))
         reservation.status = "لغو رزرو"
         book.in_stock_user += 1
+        user.reservation_limit += 1
         book.save()
         reservation.save()
+        user.save()
     else:
         if book.in_stock_user > 0 and user.reservation_limit > 0:
             Reservation.objects.create(book_id=book, user_id=user)
