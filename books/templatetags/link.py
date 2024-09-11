@@ -2,7 +2,7 @@ from django import template
 
 register = template.Library()
 
-@register.inclusion_tag("account/link.html")
+@register.inclusion_tag("account/admin/link.html")
 def link(request, link_name, content, icon):
     return {
         "request": request, 

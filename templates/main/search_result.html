@@ -1,0 +1,156 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load reservation_btn %}
+{% load bookmark_btn %}
+{% block title %}
+  نتیجه "{{search_text}}"
+{% endblock title %}
+
+{% block content %}
+	
+<div class="alertion hide" id="alertion"> 
+	<hr>
+	<h6 id="alertion-text"></h6>
+	<hr>
+
+  </div>
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'main/images/Newfolder/pexels-pixabay-159872.jpg' %});" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+	<div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+	{% include "main/search_bar.html" %}
+	<div class="col-md-11 ftco-animate pb-5" style="text-align: right;direction: rtl;">
+		<!-- <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span> کتاب <i class="ion-ios-arrow-forward"></i></span></p> -->
+	  <h1 class="mb-3 bread">   نتیجه "{{search_text}}"</h1>
+	</div>
+	</div>
+  </div>
+</section>
+	
+<section class="ftco-section bg-light" style="padding: 2em 0 !important;">
+
+			
+	<div class="container">
+		{% if not books_page and not authors_page and not categories_page %}
+		<h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">نتیجه ای یافت نشد.</h1>
+		{% endif %}
+		{% if books_page %}
+		<h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">کتاب ها</h1>
+		<div class="row">
+			
+			{% for book in books_page.object_list %}
+			<div class="col-md-4">
+				<div class="car-wrap rounded ftco-animate">
+					<a href="{% url 'books:book-detail' book.slug %}"><div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
+						{% bookmark_btn request book %}
+					</div></a>
+					<div class="text">
+						<h2 class="mb-0"><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></h2>
+						<div class="d-flex mb-3">
+							<span class="cat">{% for author in book.author.all %}
+							  <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
+							{% endfor %}</span>
+							<p class="price ml-auto">{{book.in_stock_user}} <span>/تعداد</span></p>
+						</div>
+						<p class="d-flex mb-0 d-block">
+						{% reservation_btn request book %}
+						<a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a></p>
+					</div>
+				</div>
+			</div>		 
+				 
+        {% endfor %} 
+	</div>	
+	<div class="row mt-5">
+		<div class="col text-center">
+		  <div class="block-27">
+			<ul>
+			  {% if books_page.has_previous %}
+			  <li><a href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{ books_page.previous_page_number }}">&lt;</a></li>
+			  {% endif %}
+			  {% for page_number in books_page_range %}
+				
+			  <li class="{% if page_number == books_page.number %}active{% endif %}"><a href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{page_number}}">{{page_number}}</a></li>
+			  {% endfor %}
+			  {% if books_page.has_next %}
+			  
+			  <li><a href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{ books_page.next_page_number }}">&gt;</a></li>
+			  {% endif %}
+			</ul>
+		  </div>
+		</div>
+	  </div>
+		{% endif %}
+			{% if authors_page %}
+			<h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">نویسندگان</h1>
+			<div class="row">
+			{% for author in authors_page.object_list %}
+		  
+			<a itemscope="" itemtype="" itemid="" href="{% url 'author:author-detail' author.slug %}" 
+			class="author-block"><meta itemprop="">
+				<img itemprop="image" src="{{author.picture.url}}" alt="{{author.name}}">
+				<div class="left">
+					<h2 itemprop="name">{{author.name}}</h2>
+					<div class="desc">{{author.description|linebreaksbr|truncatewords:15|striptags}}</div>
+				</div>
+			</a> 
+		{% endfor %}
+	</div>
+	<div class="row mt-5">
+				<div class="col text-center">
+				  <div class="block-27">
+					<ul>
+					  {% if authors_page.has_previous %}
+					  <li><a href="?search={{search_text}}&authors_page={{ authors_page.previous_page_number }}&categories_page={{categories_page.number}}&books_page={{books_page.number}}">&lt;</a></li>
+					  {% endif %}
+					  {% for page_number in authors_page_range %}
+						
+					  <li class="{% if page_number == authors_page.number %}active{% endif %}"><a href="?search={{search_text}}&authors_page={{page_number}}&categories_page={{categories_page.number}}&books_page={{books_page.number}}">{{page_number}}</a></li>
+					  {% endfor %}
+					  {% if authors_page.has_next %}
+					  <li><a href="?search={{search_text}}&authors_page={{ authors_page.next_page_number }}&categories_page={{categories_page.number}}&books_page={{books_page.number}}">&gt;</a></li>
+					  {% endif %}
+					</ul>
+				  </div>
+				</div>
+			  </div>
+		{% endif %}
+			{% if categories_page %}
+			<h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">دسته بندی ها</h1>
+		<div class="row">
+
+			{% for category in categories_page.object_list %}
+      <div class="col-md-4 category-div">
+        <div class="car-wrap rounded ftco-animate col-0">
+          <div class="img rounded d-flex align-items-end CATEGORY-IMG" style="background-image: url({{category.picture.url}}); height: 100%;">
+           <a href="{% url 'books:category' category.slug %}">{{category.name}} </a>
+           </div>
+       </div>
+     </div>
+     {% endfor %} 
+	</div>
+	<div class="row mt-5">
+				<div class="col text-center">
+				  <div class="block-27">
+					<ul>
+					  {% if categories_page.has_previous %}
+					  <li><a href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{ categories_page.previous_page_number }}&books_page={{books_page.number}}">&lt;</a></li>
+					  {% endif %}
+					  {% for page_number in categories_page_range %}
+						
+					  <li class="{% if page_number == categories_page.number %}active{% endif %}"><a href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{page_number}}&books_page={{books_page.number}}">{{page_number}}</a></li>
+					  {% endfor %}
+					  {% if categories_page.has_next %}
+					  
+					  <li><a href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{ categories_page.next_page_number }}&books_page={{books_page.number}}">&gt;</a></li>
+					  {% endif %}
+					</ul>
+				  </div>
+				</div>
+			  </div>	 
+
+		{% endif %}
+	
+	</div>
+</section>
+{% endblock content %}

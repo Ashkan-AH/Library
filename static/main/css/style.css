@@ -10176,7 +10176,6 @@ textarea.form-control {
   .again-btn{
     border: none;
     color: white;
-    font-size: 1.5rem;
     padding: -5%;
     text-align: center;
     align-content: center;
@@ -10186,7 +10185,10 @@ textarea.form-control {
     border-radius: 5px;
     
    background-Color:red !important;
-   width:100% !important;
+   margin-bottom: 30px;
+   width: 145px !important;
+   height: 45px !important;
+   font-size: 19px;
   }
   .col-211{
     
@@ -10365,7 +10367,7 @@ color: #01d28e;
     font-size: 20px !important;
   }
   .col-2000 a,button{
-     width: 43%;
+     width: 87%;
   }
   .col-002{
     

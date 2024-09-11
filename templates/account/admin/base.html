@@ -1,0 +1,297 @@
+{% load static %}
+{% load link %}
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}
+    
+  {% endblock title %}</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'user/plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="{% static 'user/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'user/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{% static 'user/plugins/jqvmap/jqvmap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'user/dist/css/new-s.css' %} ">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'user/dist/css/adminlte.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'user/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'user/plugins/daterangepicker/daterangepicker.css' %}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{% static 'user/plugins/summernote/summernote-bs4.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Bootstrap 4 RTL -->
+  <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+  <!-- Custom style for RTL -->
+  <link rel="stylesheet" href="{% static 'user/dist/css/custom.css' %}">
+  {% block style %}
+    
+  {% endblock style %}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'books:index' %}" class="nav-link">مشاهده سایت</a>
+      </li>
+      {% if request.user.is_superuser %}
+        <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'admin:index' %}" class="nav-link">پنل ادمین</a>
+      </li>
+      {% endif %}
+      
+      
+      
+    </ul>
+    
+    <form class="form-inline ml-3">
+      <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    <ul class="navbar-nav mr-auto-navbav">
+      <li class="nav-item"><form id="logout-form" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="fas fa-sign-out-alt" style="border: none;padding: 0px;background-color: transparent;"></button>
+      </form></li>
+    </ul>
+
+  </nav>
+  <!-- /.navbar -->
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{request.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 45px !important; height: 45px !important;">
+        </div>
+        <div class="info">
+          <a href="{% url 'account:admin-profile' %}" class="d-block">{{request.user.get_full_name}}</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="text-align: right; padding-right: 0;">
+          <!-- Add icons to the links using the .nav-icon class
+            with font-awesome or any other icon font library -->
+            <li class="nav-item">
+              {% link request 'bookmarks' 'محبوب ها' "fa-bookmark" %}
+            </li>
+            <li class="nav-item">
+              {% link request 'waiting-list' 'لیست انتظار' "fa-clock" %}
+            </li>
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'book-delete' or request.resolver_match.url_name == 'book-update' or request.resolver_match.url_name == 'book-create' or request.resolver_match.url_name == 'book-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'book-delete' or request.resolver_match.url_name == 'book-update' or request.resolver_match.url_name == 'book-create' or request.resolver_match.url_name == 'book-detail' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fa fa-book"></i>
+                  <p>
+                    کتاب ها
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "books" "لیست کتاب ها" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'book-create' 'افزودن کتاب' "fa-plus" %}
+                    </li>
+                </ul>
+              </li>  
+
+
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'categories' or request.resolver_match.url_name == 'category-delete' or request.resolver_match.url_name == 'category-update' or request.resolver_match.url_name == 'category-create' or request.resolver_match.url_name == 'category-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'categories' or request.resolver_match.url_name == 'category-delete' or request.resolver_match.url_name == 'category-update' or request.resolver_match.url_name == 'category-create' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    دسته بندی‌ها
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "categories" "لیست دسته بندی‌ها" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'category-create' 'افزودن دسته بندی' "fa-plus" %}
+                    </li>
+                </ul>
+              </li>  
+
+
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'authors' or request.resolver_match.url_name == 'author-delete' or request.resolver_match.url_name == 'author-update' or request.resolver_match.url_name == 'author-create' or request.resolver_match.url_name == 'author-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'authors' or request.resolver_match.url_name == 'author-delete' or request.resolver_match.url_name == 'author-update' or request.resolver_match.url_name == 'author-create' or request.resolver_match.url_name == 'author-detail' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fa fa-users"></i>
+                  <p>
+                    نویسندگان
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "authors" "لیست نویسندگان" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'author-create' 'افزودن نویسنده' "fa-user-plus" %}
+                    </li>
+                </ul>
+              </li>  
+
+
+              <li class="nav-item has-treeview {% if request.resolver_match.url_name == 'reservations' or request.resolver_match.url_name == 'reservation-delete' or request.resolver_match.url_name == 'reservation-update' or request.resolver_match.url_name == 'reservation-create' or request.resolver_match.url_name == 'reservation-detail' %}
+              menu-open
+              {% endif %}">
+                <a href="#" class="nav-link {% if request.resolver_match.url_name == 'reservations' or request.resolver_match.url_name == 'reservation-delete' or request.resolver_match.url_name == 'reservation-update' or request.resolver_match.url_name == 'reservation-create' or request.resolver_match.url_name == 'reservation-detail' %}
+                active
+                {% endif %}">
+                  <i class="nav-icon fa fa-address-book"></i>
+                  <p>
+                    رزرو ها
+                    <i class="right fa fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      {% link request "reservations" "لیست رزرو ها" "fa-th-list" %}
+                    </li>
+                    <li class="nav-item">
+                      {% link request 'reservation-create' 'افزودن رزرو' "fa-plus" %}
+                    </li>
+                </ul>
+              </li>  
+              {% if request.user.is_superuser %}  
+                <li class="nav-item">
+                  {% link request 'users' 'لیست کاربران' "fa-th-list" %}
+                </li>
+                <li class="nav-item">
+                  {% link request 'black-list' 'لیست سیاه' "fa-ban" %}
+                </li>
+              {% endif %}
+          
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <!-- <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark"></h1>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        {% block content %}
+          
+        {% endblock content %}
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.0.0-rc.1
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'user/plugins/jquery/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'user/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 rtl -->
+<script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'user/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'user/plugins/chart.js/Chart.min.js' %}"></script>
+<!-- Sparkline -->
+<script src="{% static 'user/plugins/sparklines/sparkline.js' %}"></script>
+<!-- JQVMap -->
+<script src="{% static 'user/plugins/jqvmap/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'user/plugins/jqvmap/maps/jquery.vmap.world.js' %}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{% static 'user/plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+<!-- daterangepicker -->
+<script src="{% static 'user/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'user/plugins/daterangepicker/daterangepicker.js' %}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{% static 'user/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<!-- Summernote -->
+<script src="{% static 'user/plugins/summernote/summernote-bs4.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script src="{% static 'user/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'user/dist/js/adminlte.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{% static 'user/dist/js/pages/dashboard.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'user/dist/js/demo.js' %}"></script>
+
+  <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+</body>
+</html>

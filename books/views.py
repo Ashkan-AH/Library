@@ -1,14 +1,13 @@
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
+from django.core.paginator import Paginator
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from reservation.models import Reservation
 from account.models import User
 from author.models import Author
 from .models import Books, Category
-from account.forms import SearchForm
 
 def search_item(request):
     query = request.GET.get("q", "")
@@ -65,15 +64,52 @@ def reservation_add(request, book_id):
 
 
 def search_result(request):
-    search = request.GET.get('search')
-    context = {}
-    context["books"] = Books.objects.filter(Q(name__icontains=search) | Q(publisher__icontains=search) | Q(translator__icontains=search))
-    context["authors"] = Author.objects.filter(name__icontains=search)
-    context["categories"] = Category.objects.filter(name__icontains=search)
-    context["search_text"] = search
-    return render(request, "search_result.html", context)
+    
+    search = request.GET.get('search', "")
+    if search:
+        authors = Author.objects.filter(name__icontains=search)
+        books = Books.objects.filter(Q(name__icontains=search) | Q(publisher__icontains=search) | Q(translator__icontains=search))
+        categories = Category.objects.filter(name__icontains=search)
+    else:
+        authors = Author.objects.none()
+        books = Books.objects.none()
+        categories = Category.objects.none()
 
+        
+    books_page_number = request.GET.get("books_page", 1)
+    books_paginator = Paginator(books, 12)
+    books_page = books_paginator.get_page(books_page_number)
 
+    
+    authors_page_number = request.GET.get("authors_page", 1)
+    authors_paginator = Paginator(authors, 12)
+    authors_page = authors_paginator.get_page(authors_page_number)
+
+    
+    categories_page_number = request.GET.get("categories_page", 1)
+    categories_paginator = Paginator(categories, 12)
+    categories_page = categories_paginator.get_page(categories_page_number)
+
+    context = {
+    "books_page": books_page, 
+    "books_page_range": get_page_range(books_page),
+
+    "authors_page": authors_page, 
+    "authors_page_range": get_page_range(authors_page),
+
+    "categories_page": categories_page, 
+    "categories_page_range": get_page_range(categories_page),
+
+    "search_text": search, 
+    }
+    return render(request, "main/search_result.html", context)
+
+def get_page_range(page_obj):
+    index = page_obj.number - 1
+    max_index = len(page_obj.paginator.page_range)
+    start_index = index - 2 if index >= 2 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    return page_obj.paginator.page_range[start_index:end_index]
 
 
 
@@ -93,7 +129,6 @@ class BookList(ListView):
         return context
 
 
-
 def index(request):
     context = {
         "books": [book for book in Books.objects.all().order_by("?")[0:8]],
@@ -103,7 +138,7 @@ def index(request):
         "reserve_number": Reservation.objects.filter(status="بازگردانده شده").count(),
         "users_number": User.objects.all().count(),
     }
-    return render(request, "index.html", context)
+    return render(request, "main/index.html", context)
     
 # class AuthorBookList(ListView):
 #     paginate_by = 18

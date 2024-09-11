@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>سرزمین کتاب-{% block title %}{% endblock title %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/open-iconic-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/animate.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/owl.carousel.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/magnific-popup.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/aos.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/ionicons.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap-datepicker.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/jquery.timepicker.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/categories.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/flaticon.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/icomoon.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/media-phone.css' %} ">
+	
+	
+  </head>
+  <body>
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{% url 'books:index' %}">سرزمین <span>کتاب</span></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> منو
+	      </button>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+				<li class="nav-item {% if request.resolver_match.url_name == 'index' %}
+				active
+				{% endif %}"><a href="{% url 'books:index' %}" class="nav-link">خانه</a>
+				</li>
+				<li class="nav-item {% if request.resolver_match.url_name == 'books' %}
+				active
+				{% endif %}"><a href="{% url 'books:books' %}" class="nav-link">کتاب ها</a></li>
+				<li class="nav-item {% if request.resolver_match.url_name == 'authors' %}
+				active
+				{% endif %}"><a href="{% url 'author:authors' %}" class="nav-link">نویسندگان</a></li>
+				<li class="nav-item {% if request.resolver_match.url_name == 'categories' %}
+				active
+				{% endif %}"><a href="{% url 'books:categories' %}" class="nav-link">دسته بندی</a></li>
+				{% if request.user.is_authenticated %}
+				  
+				<li class="nav-item {% if request.resolver_match.url_name == 'user-profile' %}
+				active
+				{% endif %}"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a></li>
+				
+				{% else %}
+				
+				<li class="nav-item {% if request.resolver_match.url_name == 'login' %}
+				active
+				{% endif %}"><a href="{% url 'login' %}?next={{request.path}}" class="nav-link">ورود</a></li>
+				{% endif %}
+				<li class="nav-item"><a class="nav-search"  id="nav-search" href="#"   >
+					<button class="search-btn img" style="background-image: url({% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %});background-size: cover; outline: none;"></button>
+				</a>
+			</li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+	
+	
+	
+	
+	
+	{% block content %}
+	  
+	{% endblock content %}
+
+
+
+
+
+
+    
+    <footer class="ftco-footer ftco-bg-dark ftco-section" style="padding-left: 80px;padding-right: 80px; direction: rtl; text-align: right;">
+		<div class="container">
+		  <div class="row mb-5">
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2"><a href="#" class="logo">سرزمین <span>کتاب</span></a></h2>
+				<p>اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
+				<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+				  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+				  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+				  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4 ml-md-5">
+				<h2 class="ftco-heading-2">اطلاعات</h2>
+				<ul class="list-unstyled">
+				  <li><a href="#" class="py-2 d-block">درباره ما</a></li>
+				  <li><a href="#" class="py-2 d-block">خدمات</a></li>
+				  <li><a href="#" class="py-2 d-block">مجموعه های زیر نظر</a></li>
+				  <li><a href="#" class="py-2 d-block">قوانین و مقررات  </a></li>
+				  <li><a href="#" class="py-2 d-block">پشتیبانی &amp; کوکی ها </a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md">
+			   <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2">Customer Support</h2>
+				<ul class="list-unstyled">
+				  <li><a href="#" class="py-2 d-block">سوالات متداول</a></li>
+				  <li><a href="#" class="py-2 d-block">گزارش مشکل</a></li>
+				  <li><a href="#" class="py-2 d-block"> حریم خصوصی</a></li>
+				  <li><a href="#" class="py-2 d-block">راهنمای عملکرد</a></li>
+				  <li><a href="#" class="py-2 d-block"> پیوستن به اعضا</a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				  <h2 class="ftco-heading-2"> سوالی دارید ?</h2>
+				  <div class="block-23 mb-3">
+					<ul>
+					  <li><span class="icon icon-map-marker"></span><span class="text">زیر نظر جمخوری اسلامی ایران -کانون پرورش فکری نوجوانان</span></li>
+					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">98 321 325 1263</span></a></li>
+					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@admin.com</span></a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col-md-12 text-center">
+			  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+	Copyright &copy;<script>document.write(new Date().getFullYear());</script> کلیه حقوق طراحی متعلق به دانشکده میرزا کوچک صومعه سرا است و هرگونه کپی برداری پیگرد قانونی دارد <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="#" target="_blank">amt-group</a>
+	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+			</div>
+		  </div>
+		</div>
+	  </footer>
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  
+  <script src="{% static 'main/js/jquery.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery-migrate-3.0.1.min.js' %} "></script>
+  <script src="{% static 'main/js/popper.min.js' %} "></script>
+  <script src="{% static 'main/js/bootstrap.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery.easing.1.3.js' %} "></script>
+  <script src="{% static 'main/js/jquery.waypoints.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery.stellar.min.js' %} "></script>
+  <script src="{% static 'main/js/owl.carousel.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery.magnific-popup.min.js' %} "></script>
+  <script src="{% static 'main/js/aos.js' %} "></script>
+  <script src="{% static 'main/js/jquery.animateNumber.min.js' %} "></script>
+  <script src="{% static 'main/js/bootstrap-datepicker.js' %} "></script>
+  <script src="{% static 'main/js/jquery.timepicker.min.js' %} "></script>
+  <script src="{% static 'main/js/scrollax.min.js' %} "></script>
+  <script src="{% static 'main/js/main.js' %} "></script>
+  <!-- <script src="{% static 'main/js/search.js' %} "></script> -->
+  </body>
+</html>

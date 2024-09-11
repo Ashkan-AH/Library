@@ -18,7 +18,7 @@
 			{% if not book.is_waiting %}
 				<a href="{% url 'books:waiting-add' book.id %}" class="btn btn-info py-2 mr-1"> خبرم کن</a>
 			{% else %}
-				<a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info disabled py-2 mr-1"> خبرم کن</a>
+				<a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info py-2 mr-1"> خبرم کن</a>
 			{% endif %}
 		{% endif %}
 							  

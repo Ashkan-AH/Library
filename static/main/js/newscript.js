@@ -27,25 +27,15 @@ let editalertbtn1=$$.getElementById("edit-alert-btn1-2")
 let editalertbtn2 =$$.getElementById("edit-alert-btn2-2")
 let editalertdiv=$$.getElementById("edit-alertdiv-2")
 
-let timegive=$$.getElementById("time-give-label")
-
-let pieinnervalue2=$$.getElementById("pie-inner-value2")
 let cancelratebtn=$$.getElementById('cancel-ratebtn')
 let textarea=$$.getElementById('textarea')
 
 let timereadnumber=Number(timeread.innerText)
 let pievalue=100/14
 
-let timegetreadnumber=Number(timegive.innerText)
-let pie2value=100/7
-
 againbtn.innerText="درخواست تمدید"
 pie.style.background="conic-gradient(#01d28e 0"+timereadnumber*pievalue+"%"+", #eaeaea 0)"
-
-pie2.style.background="conic-gradient(#01d28e 0"+timegetreadnumber*pie2value+"%"+", #eaeaea 0)"
 pieinnervalue.innerText=timeread.innerText
-
-pieinnervalue2.innerText=timegive.innerText
 if(timereadnumber<=2){
   
 pie.style.background="conic-gradient(red 0"+timereadnumber*pievalue+"%"+", #eaeaea 0)"
@@ -56,14 +46,6 @@ rentbtnstyle.appendChild(againbtn)
 rentbtn.style.display="none"
 
 }
-
-if(timegetreadnumber<=2){
-  
-  pie2.style.background="conic-gradient(red 0"+timegetreadnumber*pie2value+"%"+", #eaeaea 0)"
-  pieinnervalue2.style.color="red"
-  
-  
-  }
 
 ftcosection.classList.add("hide")
 profileusername.innerText=profileprop.innerText 

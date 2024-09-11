@@ -62,24 +62,30 @@ class User(AbstractUser):
     role = models.CharField(verbose_name="نقش", choices=ROLE_CHOICES, max_length=7, blank=True)
 
 
-    # st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")
-    # st_major = models.CharField(max_length=15, verbose_name="رشته تحصیلی", blank=True, choices=MAJOR_CHOICES)
-    # st_grade = models.CharField(max_length=15, verbose_name="مقطع تحصیلی", blank=True, choices=GRADE_CHOICES)
+    st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")
+    st_major = models.CharField(max_length=15, verbose_name="رشته تحصیلی", blank=True, choices=MAJOR_CHOICES)
+    st_grade = models.CharField(max_length=15, verbose_name="مقطع تحصیلی", blank=True, choices=GRADE_CHOICES)
 
 
-    # co_id = models.CharField(blank=True, max_length=15, verbose_name="کد کارمندی")
-    # co_unit = models.CharField(max_length=50, verbose_name="محل کار", blank=True, choices=UNIT_CHOICES)
-    # co_grade = models.CharField(max_length=15, verbose_name="سمت شغلی", blank=True)
+    co_id = models.CharField(blank=True, max_length=15, verbose_name="کد کارمندی")
+    co_unit = models.CharField(max_length=50, verbose_name="محل کار", blank=True, choices=UNIT_CHOICES)
+    co_grade = models.CharField(max_length=15, verbose_name="سمت شغلی", blank=True)
 
 
-    # pro_id =models.CharField(blank=True, max_length=15, verbose_name="کد استادی")
-    # pro_major = models.CharField(max_length=15, verbose_name="رشته درسی", blank=True, choices=MAJOR_CHOICES)
-    # pro_grade = models.CharField(max_length=15, verbose_name="مقطع درسی", blank=True, choices=GRADE_CHOICES)
+    pro_id =models.CharField(blank=True, max_length=15, verbose_name="کد استادی")
+    pro_major = models.CharField(max_length=15, verbose_name="رشته درسی", blank=True, choices=MAJOR_CHOICES)
+    pro_grade = models.CharField(max_length=15, verbose_name="مقطع درسی", blank=True, choices=GRADE_CHOICES)
     objects = UserManager2()
     
-    def persian_birthdate(self):
+    def persian_birth_date(self):
         if self.birth_date:
-            return date2jalali(self.birth_date).strftime("%Y %B %d")
+            return date2jalali(self.birth_date).strftime("%d %B %Y")
+    def persian_last_login(self):
+        if self.last_login:
+            return date2jalali(self.last_login).strftime("%d %B %Y")
+    def persian_date_joined(self):
+        if self.date_joined:
+            return date2jalali(self.date_joined).strftime("%d %B %Y")
     
     # def delete_half_done():
     #     for user in User.objects.all():

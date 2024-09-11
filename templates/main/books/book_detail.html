@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/base.html" %}
 {% load static %}
 {% load reservation_btn %}
 {% load bookmark_btn %}
@@ -17,7 +17,7 @@
   <div class="overlay"></div>
   <div class="container">
 	<div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-		{% include "search_bar.html" %}
+		{% include "main/search_bar.html" %}
 
 	  <div class="col-md-11 ftco-animate pb-5" style="text-align: right;">
 		  <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span><a href="{% url 'books:books' %}"> کتاب ها <i class="ion-ios-arrow-forward"></i></a></span></p>
@@ -140,7 +140,7 @@
 					{% if not object.is_waiting %}
 						<a href="{% url 'books:waiting-add' object.id %}" class="btn btn-info btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;"> خبرم کن</a>
 					{% else %}
-						<a href="{% url 'books:waiting-add' object.id %}" class="btn btn-outline-info btn-lg disabled py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;"> خبرم کن</a>
+						<a href="{% url 'books:waiting-add' object.id %}" class="btn btn-outline-info btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;"> خبرم کن</a>
 					{% endif %}
 				{% endif %}
 									

@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+
+    <title>سرزمین کتاب-تنظیمات امنیتی</title>
+</head>
+<body style="background-color: #e9ecef;">
+   
+    
+  <!-- Navbar -->
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light user-page-nav" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{% url 'books:index' %}">سرزمین <span>کتاب</span></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="{% url 'books:index' %}" class="nav-link">خانه</a></li>
+	          <li class="nav-item"><a href="{% url 'books:books' %}" class="nav-link">کتاب ها</a></li>
+	          <li class="nav-item"><a href="{% url 'author:authors' %}" class="nav-link">نویسندگان</a></li>
+	          <li class="nav-item"><a href="{% url 'books:categories' %}" class="nav-link">دسته بندی ها</a></li>
+	          <li class="nav-item"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+  <!-- /.navbar -->
+<div class="sec-div">
+<h2 style="text-align: center;">موارد امنیتی</h2>
+
+<h3>: اخرین ورود به سیستم<p style="direction: rtl;">{{request.user.persian_last_login}}</p></h3>
+<ul>
+    <li>
+        <a href="{% url 'password_reset' %}" style="width: 100%;height: 100%;text-align: center;padding-top: 30px;">فراموشی رمز عبور</a>
+    </li>
+    
+    <li>
+        <a href="{% url 'password_change' %}" style="width: 100%;height: 100%;text-align: center;padding-top: 30px;">تغیر رمز عبور </a>
+    </li>
+    
+</ul>
+</div>
+
+
+
+</body>
+</html>

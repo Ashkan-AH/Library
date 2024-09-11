@@ -1,0 +1,87 @@
+{% extends "account/user/base.html" %}
+{% load static %}
+{% block title %}
+  ذخیره شده ها
+{% endblock title %}
+{% block content %}
+  
+<div class="col-md-9" style="padding-right: 30px;">
+  <div class="card" style="padding: 15px;height: 99%;">
+      <div class="tab-content">
+        <!-- /.tab-pane -->
+        <div id="tab" class="tab-pane" style="display: block;">
+          <section class="event-book">
+            
+<!--user-book-propstart-->
+
+<h1 style="text-align: center;">ذخیره شده ها</h1>
+          <div class="userp-book-prop" style="height: 100%;">
+
+
+            <section class="ftco-section bg-light" style="background: white !important;padding-top: 15px !important;">
+              <div class="container">
+                <div class="row">
+                  {% for book in object_list %}
+                  <div class="col-md-4">
+                    <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
+                      <div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
+                      </div><div class="text lastbook-fa">
+                        <div class="last-res-bookdate">
+                          <section>
+                            <p><label for=""> {{book.publisher}}</label>:ناشر</p>
+                       
+                            <p><label for="">{{book.in_stock_user}}</label>: موجودی</p>
+                          </section>
+                          <section>
+                             <h2 class="mb-0" style="text-align: right;direction: rtl;"><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></h2>
+                             <div class="d-flex mb-3" style="direction: rtl;">
+                                <span class="cat">{{book.author_str}}</span>
+                             </div>
+                          </section>
+                        </div>
+                        <section class="col-2000" style="display: flex;">
+                          
+                           <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-3 ml-1">مشاهده جزءیات</a>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+              </div>
+            </div>
+            <div class="row mt-5" style="width: 100%;">
+              <div class="col text-center">
+                <div class="block-27">
+                  <ul>
+                    {% if page_obj.has_previous %}
+                    <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                    {% endif %}
+                    {% for page_number in page_obj.paginator.page_range %}
+                    <li class="{% if page_obj.number == page_number %}active{% endif %}"><a href="?page={{page_number}}">{{page_number}}</a></li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div></section>
+            
+        
+            
+            
+            
+          </div>
+          <!--user-book-prop-end-->
+          </section>
+          
+        </div>
+        <!-- /.tab-pane -->
+
+        </div>
+  <!-- /.nav-tabs-custom -->
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+{% endblock content %}

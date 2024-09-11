@@ -1,0 +1,111 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+  کاربران
+{% endblock title %}
+{% block content %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>کاربران</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
+              <li class="breadcrumb-item active">کاربران</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card card-solid">
+        <div class="card-body pb-0">
+          <div class="row d-flex align-items-stretch">
+
+            
+            {% for user in object_list %}
+            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+              <div class="card bg-light item">
+                <div class="card-header text-muted border-bottom-0">
+                  {{user.role}} 
+                </div>
+                <div class="card-body pt-0">
+                  <div class="row row2">
+                    
+                      <ul class="ml-4 mb-0 fa-ul text-muted">
+                        <li class="small"><span>تماس:</span> <section>{{user.sel_number}}</section></li>
+                     
+                      
+                        <li class="small"><span>کدملی</span> <section>{{user.national_code}}</section></li>
+                        
+                        
+                         <li class="small" style="justify-content: center;"><span>  کاردانی و کار شناسی</span><section>نرم افزار</section></li>
+
+                        
+                      </ul>
+                   
+                      <section class="m-auto">01111129302026</section><span style="font-size: 12px;
+    margin-left: 40%;">کد استادی</span>
+
+                      <p class="text-muted text-sm m-auto"><b>کد عضویت: </b>11</p>
+
+                       <h2 class="lead m-auto"><b>اشکان همتی</b></h2>
+
+                    <div class="col-5 text-center m-auto">
+                      <img src="../../../uni-project/uni-project/images/Newfolder/teenager-using-tablet-library.jpg
+                      " alt="" class="img-circle img-fluid img-news">
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="text-right">
+                    <a href="#" class="btn btn-sm bg-teal">
+                      افزودن به لیست سیاه
+                    </a>
+                    <a href="#" class="btn btn-sm btn-primary">
+                      <i class="fas fa-user"></i> مشاهده حساب  
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            
+          </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item"><a class="page-link" href="#">6</a></li>
+              <li class="page-item"><a class="page-link" href="#">7</a></li>
+              <li class="page-item"><a class="page-link" href="#">8</a></li>
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-footer -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+{% endblock content %}

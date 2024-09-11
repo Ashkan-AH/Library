@@ -1,5 +1,6 @@
+from django.db.models.base import Model as Model
 from .forms import *
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, TemplateView
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
@@ -11,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from books.models import Books, Category
 from author.models import Author
 from .models import User
-from .mixins import StaffAccessMixin, SuperuserAccessMixin
+from .mixins import StaffAccessMixin, SuperuserAccessMixin, UserAccessMixin
 
 from django.http import HttpResponse
 from django.contrib.auth import login
@@ -25,28 +26,22 @@ from django.core.mail import EmailMessage
 #----------------------------------Books-------------------------------------------
 
 class BookDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
-    template_name = "account/books/book_detail.html"
+    template_name = "account/admin/books/book_detail.html"
     def get_object(self):
         slug = self.kwargs.get("slug")
         return get_object_or_404(Books, slug=slug)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        book = get_object_or_404(Books, slug=slug)
+        context["reading_number"] = book.reservations.filter(status="تحویل داده شده").count()
+        return context
+    
 
 
 class BookList(LoginRequiredMixin, StaffAccessMixin, ListView):
-    template_name = "account/books/books_list.html"
-    def get_queryset(self):
-        global searchForm
-        searchForm = SearchForm(self.request.GET)
-        if searchForm.is_valid():
-            data = searchForm.cleaned_data["search"]
-            if data.isdecimal():
-                data = int(searchForm.cleaned_data["search"])
-                return Books.objects.filter(id=data)
-            return Books.objects.filter(Q(name__icontains=data) | Q(author__name__icontains=data) | Q(publisher__icontains=data) | Q(translator__icontains=data) | Q(description__icontains=data))
-        return Books.objects.all()
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["searchForm"] = searchForm
-        return context
+    template_name = "account/admin/books/books_list.html"
+    model = Books
 
 
 class BookCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
@@ -132,21 +127,14 @@ class CategoryDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
 
 
 class CategoryList(LoginRequiredMixin, StaffAccessMixin, ListView):
-    template_name = "account/categories/categories_list.html"
-    def get_queryset(self):
-        global searchForm
-        searchForm = SearchForm(self.request.GET)
-        if searchForm.is_valid():
-            data = searchForm.cleaned_data["search"]
-            if data.isdecimal():
-                data = int(searchForm.cleaned_data["search"])
-                return Category.objects.filter(id=data)
-            return Category.objects.filter(name__icontains=data)
-        return Category.objects.all()
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["searchForm"] = searchForm
-        return context
+    template_name = "account/admin/categories/categories_list.html"
+    model = Category
+    
+class CategoryDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
+    template_name = "account/admin/categories/category_detail.html"
+    def get_object(self):
+        slug = self.kwargs.get("slug")
+        return Category.objects.get(slug=slug)
 
 #----------------------------------Authors-----------------------------------------
 
@@ -185,41 +173,14 @@ class AuthorDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
 
 class AuthorList(LoginRequiredMixin, StaffAccessMixin, ListView):
     template_name = "account/authors/authors_list.html"
-    def get_queryset(self):
-        global searchForm
-        searchForm = SearchForm(self.request.GET)
-        if searchForm.is_valid():
-            data = searchForm.cleaned_data["search"]
-            if data.isdecimal():
-                data = int(searchForm.cleaned_data["search"])
-                return Author.objects.filter(id=data)
-            return Author.objects.filter(Q(name__icontains=data) | Q(description__icontains=data))
-        return Author.objects.all()
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["searchForm"] = searchForm
-        return context
+    model = Author
 
 
 #----------------------------------Users-------------------------------------------
 
 class UserList(LoginRequiredMixin, SuperuserAccessMixin, ListView):
-    template_name = "account/users/users_list.html"
-    def get_queryset(self):
-        
-        global searchForm
-        searchForm = SearchForm(self.request.GET)
-        if searchForm.is_valid():
-            data = searchForm.cleaned_data["search"]
-            if data.isdecimal():
-                data = int(searchForm.cleaned_data["search"])
-                return User.objects.filter(id=data)
-            return User.objects.filter(Q(username__icontains=data) | Q(national_code=data) | Q(first_name__icontains=data) | Q(last_name__icontains=data) | Q(email__icontains=data) | Q(address__icontains=data) | Q(sel_number=data) | Q(home_number=data))
-        return User.objects.all()
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["searchForm"] = searchForm
-        return context
+    template_name = "account/admin/users/users_list.html"
+    model = User
 
 
 class UserDetail(LoginRequiredMixin, SuperuserAccessMixin, DetailView):
@@ -253,12 +214,27 @@ class UserDelete(LoginRequiredMixin, SuperuserAccessMixin, DeleteView):
 
 #---------------------------------Profile------------------------------------------
 
-class Profile(LoginRequiredMixin, DetailView):
-    template_name = "account/profile.html"
-    def get_object(self):
-        id = self.request.user.id
-        return get_object_or_404(User, id=id)
+# class Profile(LoginRequiredMixin, DetailView):
+#     template_name = "account/profile.html"
+#     def get_object(self):
+#         id = self.request.user.id
+#         return get_object_or_404(User, id=id)
+class UserProfile(LoginRequiredMixin, UserAccessMixin, TemplateView):
+    template_name = "account/user/profile.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reserved_books"] = self.request.user.reservations.filter(status="رزرو شده")
+        context["delivered_books"] = self.request.user.reservations.filter(status="تحویل داده شده")
+        return context
+class AdminProfile(LoginRequiredMixin, SuperuserAccessMixin, StaffAccessMixin, TemplateView):
+    template_name = "account/admin/profile1.html"
     
+@login_required
+def identifier(request):
+    if request.user.is_superuser or request.user.is_staff:
+        return HttpResponseRedirect("admin-profile")
+    else:
+        return HttpResponseRedirect("user-profile")
 
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):
@@ -272,7 +248,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     
 
 class BookmarkList(LoginRequiredMixin, ListView):
-    template_name = "account/bookmarks_list.html"
+    template_name = "account/user/bookmarks.html"
+    paginate_by = 9
     def get_queryset(self):
         return Books.objects.filter(bookmarks__in=[self.request.user.id])
     
@@ -285,7 +262,7 @@ class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
     template_name = "account/reservations/reservation_create_update.html"
     form_class = ReservationForm
     success_url = reverse_lazy("account:reservations")
-   
+    
 
 
 

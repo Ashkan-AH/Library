@@ -1,0 +1,65 @@
+{% load static %}	
+            <style>
+                .desc p{
+                    color: black !important;
+                }
+            </style>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script>
+                $(document).ready(function()
+            {
+                $("#search").keyup(function()
+            {
+                let query = $(this).val();
+                console.log(query);
+                $.ajax({
+                    url:'/search/', 
+                    data:{
+                        "q":query
+                    },
+                    dataType:"json", 
+                    success:function(data){
+                        $("#results").empty();
+                        if(data.length>0){
+                            for (let i = 0; i<data.length; i++){
+                                if(data[i].type == "book"){
+                                    let name = (data[i].name).slice(0, 15) + "..."
+                                    let description = (data[i].description).slice(0, 75) + "..."
+                                    $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/book/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${name}</h2>\n<div class="desc">${description}</div>\n</div>\n</a>`);}
+                                    else if(data[i].type == "author"){
+                                        let name = (data[i].name).slice(0, 15) + "..."
+                                        let description = (data[i].description).slice(0, 75) + "..."
+                                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/authors/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${name}</h2>\n<div class="desc">${description}</div>\n</div>\n</a>`);
+                                    }
+                                    else if(data[i].type == "category"){
+                                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/category/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${data[i].name}</h2>\n</div>\n</a>`);
+                                    }
+                                }}
+                                else if(query && data.length==0){
+                                    $("#results").append(`<a href="#" class="author-block" style="pointer-events: none;cursor: default;width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="{%static 'main/images/close.png'%}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">موردی یافت نشد!</h2>\n</div>\n</a>`);
+                                }
+                                else if(!query && data.length == 0){
+                                    $("#results").empty();}
+                            }
+                        });
+                    });
+                });
+                </script>
+                <form action="{% url 'books:search-result' %}" method="get">
+                    <div class="morepagesearch">
+                    <input type="text" id="search" name="search" placeholder="نویسنده، کتاب، دسته‌بندی، مترجم یا ناشر مورد نظرتان را جستجو کنید...">
+                <button class="img" type="submit"  id="search-btn">
+                    <img src="{% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %}" alt="">
+                </button>
+            </div>
+        </form>
+            <div id="results" class="result-container result-container2">
+                
+                  
+                
+            </div>
+
+
+
+
+

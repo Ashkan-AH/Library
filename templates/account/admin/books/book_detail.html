@@ -1,0 +1,270 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+  کتاب {{object.name}}
+{% endblock title %}
+{% block content %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px  !important;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>کتاب {{object.name}}</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
+              <li class="breadcrumb-item active"><a href="{% url 'account:books' %}"> کتاب ها</a></li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card card-solid">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <h3 class="d-inline-block d-sm-none">{{object.name}}</h3>
+              <div class="col-12">
+                <a href="{{object.picture.url}}"><img src="{{object.picture.url}}" class="product-image" alt="{{object.name}}" style="max-width: 350px;border-radius: 5px;"></a>
+              </div>
+              <div class="col-12 product-image-thumbs">
+                <div class="">نویسنده:</div>
+                <div class="product-image-thumb p-img-t">{% for author in object.author.all %}
+                  <a href="{% url 'account:author-detail' author.slug %}">{{author.name}}</a>, 
+                {% endfor %}</div>
+                <div class=" p-img-t">منتشرکننده:</div>
+                <div class="product-image-thumb">{{object.publisher}}</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <h3 class="my-3">کتاب {{object.name}}</h3>
+             
+              <hr>
+              <h4>اطلاعات </h4>
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" style="justify-content: space-evenly;">
+                <label class="text-center bg-green" style="width: 50%;margin:0px;">
+                 
+                  موجودی برای رزرو
+                  <br>
+                 {{object.in_stock_user}}
+                </label>
+                <label class=" text-center bg-olive" style="width: 50%;margin:0px;">
+                
+                  موجودی برای تحویل
+                  <br>
+                 {{object.in_stock}}
+                </label>
+                <label class="text-center bg-warning " style="width: 50%;margin:0px;">
+                 
+                  صف انتظار
+                  <br>
+                 {{object.waiting_users.count}}
+                </label>
+                <label class="text-center bg-indigo" style="width: 50%;margin:0px;">
+                 
+                  دسته بندی
+                  <br>
+                  {% for category in object.category.all %}
+                  <a href="{% url 'account:category-detail' category.slug %}">{{category.name}}</a>, 
+                {% endfor %}
+                </label>
+                <label class="text-center bg-info" style="width: 100%;margin:0px;">
+                 
+                  در حال مطالعه
+                  <br>
+                  {{reading_number}}
+                </label>
+              </div>
+
+              <h4 class="mt-3">دیگر اطلاعات</h4>
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" style="justify-content: space-evenly;">
+                <label class="text-center">
+                  <span class="text-xl">رده سنی</span>
+                  <br>
+                  {{object.age_category}}
+                </label>
+                <label class="text-center">
+                  <span class="text-xl">مترجم</span>
+                  <br>
+                  {{object.translator}}
+                </label>
+                <label class="text-center">
+                  <span class="text-xl">سال انتشار</span>
+                  <br>
+                  {{object.pub_year}}
+                </label>
+                <label class="text-center">
+                  <span class="text-xl">تعداد صفحات</span>
+                  <br>
+               {{object.number_of_pages}}
+                </label>
+              </div>
+
+
+              <div class="mt-4" style="text-align: left;margin-left: 35px;">
+                  <a href="#" class="btn btn-primary btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+                ویرایش</a>
+                 
+              </div>
+
+
+            </div>
+          </div>
+          <div class="row mt-4">
+            <nav class="w-100">
+              <div class="nav nav-tabs" id="product-tab" role="tablist">
+               
+                <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">توضیحات</a>
+                <a class="nav-item nav-link active" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="true">نظرات</a>
+              </div>
+            </nav>
+            <div class="tab-content p-3" id="nav-tabContent">
+              <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.description|safe}}
+                 </div>
+              <div class="tab-pane fade active show" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
+                <div class="post clearfix">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="../../../uni-project/uni-project/images/d1ownload.jpg" alt="User Image">
+                    <span class="username">
+                      <a href="#">علی احمدی</a>
+                    </span>
+                    <span class="description">1404/01/22</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p class="star-rate">
+                    
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star"></span>
+                   <span class="fa fa-star"></span>
+                  </p>
+                  <p class="td-25">
+                    
+                    کتاب بسیار خوبی رود و من لذت بردم 
+                    پسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با >ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با >ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                
+                  </p>
+                </div>
+
+                <div class="post clearfix">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="../../../uni-project/uni-project/images/d1ownload.jpg" alt="User Image">
+                    <span class="username">
+                      <a href="#">علی احمدی</a>
+                    </span>
+                    <span class="description">1404/01/22</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p class="star-rate">
+                    
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star"></span>
+                   <span class="fa fa-star"></span>
+                  </p>
+                  <p class="td-25">
+                    
+                    کتاب بسیار خوبی رود و من لذت بردم 
+                    پسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                
+                  </p>
+                </div>
+
+                <div class="post clearfix">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="../../../uni-project/uni-project/images/d1ownload.jpg" alt="User Image">
+                    <span class="username">
+                      <a href="#">علی احمدی</a>
+                    </span>
+                    <span class="description">1404/01/22</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p class="star-rate">
+                    
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star checked"></span>
+                   <span class="fa fa-star"></span>
+                   <span class="fa fa-star"></span>
+                  </p>
+                  <p class="td-25">
+                    
+                    کتاب بسیار خوبی رود و من لذت بردم 
+                    پسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                
+                  </p>
+                </div>
+              
+              </div>
+              <div class="card-footer">
+                <nav aria-label="Contacts Page Navigation">
+                  <ul class="pagination justify-content-center m-0">
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link" href="#">8</a></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <style>
+
+    
+.grid-body {
+    display: flex;
+    justify-content: center;
+}
+
+.bookprop-table {
+    box-shadow: 0px 12px 14px 0px;
+    height: fit-content;
+    width: 50%;
+}
+
+.tr-row {
+    height: 50px;
+    /* border: solid; */
+    border-radius: 10px;
+    background: #bfbfbf;
+}
+.book-ad-single{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+.book-ad-single img{
+    width: 350px;
+    height: 350px;
+    margin: 50px;
+}
+
+.tr-alt-row {
+    background: white;
+}
+  </style>
+{% endblock content %}

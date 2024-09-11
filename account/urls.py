@@ -16,6 +16,7 @@ urlpatterns = [
     path("categories/create/", views.CategoryCreate.as_view(), name="category-create"),
     path("categories/update/<str:slug>/", views.CategoryUpdate.as_view(), name="category-update"),
     path("categories/delete/<str:slug>/", views.CategoryDelete.as_view(), name="category-delete"),
+    path("categories/<str:slug>/", views.CategoryDetail.as_view(), name="category-detail"),
     path("categories/", views.CategoryList.as_view(), name="categories"),
 
 
@@ -46,6 +47,7 @@ urlpatterns = [
     path("bookmarks/", views.BookmarkList.as_view(), name="bookmarks"),
     path("waiting-list/", views.WaitingList.as_view(), name="waiting-list"),
     path("profile-update/", views.ProfileUpdate.as_view(), name="profile-update"),
+    path('security/', TemplateView.as_view(template_name="account/user/security.html"), name="security"),
 
     
     path('signup/', views.Registration.as_view(), name='signup'),
@@ -53,5 +55,7 @@ urlpatterns = [
     path('policy/', TemplateView.as_view(template_name="registration/policy.html"), name="policy"),
 
 
-    path("", views.Profile.as_view(), name="profile"), 
+    path("admin-profile/", views.AdminProfile.as_view(), name="admin-profile"), 
+    path("user-profile/", views.UserProfile.as_view(), name="user-profile"), 
+    path("", views.identifier, name="identifier"), 
 ]

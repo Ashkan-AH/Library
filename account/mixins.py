@@ -4,6 +4,11 @@ class SuperuserAccessMixin():
         if not request.user.is_superuser:
             raise PermissionDenied("You can't see this page.")
         return super().dispatch(request, *args, **kwargs)
+class UserAccessMixin():
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser or request.user.is_staff:
+            raise PermissionDenied("You can't see this page.")
+        return super().dispatch(request, *args, **kwargs)
     
 class StaffAccessMixin():
     def dispatch(self, request, *args, **kwargs):

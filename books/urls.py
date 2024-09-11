@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 
 app_name = "books"
-urlpatterns = [
+urlpatterns = [ 
     path("", views.index, name="index"),
     path("books/<str:slug>/", views.BookList.as_view(), name="books"),
     path("books/", views.BookList.as_view(), name="books"),

@@ -40,7 +40,7 @@ class Reservation(models.Model):
 
 
     def persian_date_added(self):
-        return date2jalali(self.date_added).strftime("%Y %B %d")
+        return date2jalali(self.date_added)
     def persian_delivery_date(self):
         if self.delivery_date is not None:
             return date2jalali(self.delivery_date).strftime("%Y %B %d")
@@ -49,6 +49,9 @@ class Reservation(models.Model):
     def deadline(self):
         if self.delivery_date is not None:
             return date2jalali(self.delivery_date + timedelta(days=14)).strftime("%Y %B %d")
+    def reservation_deadline(self):
+        if self.delivery_date is not None:
+            return date2jalali(self.date_added + timedelta(days=7))
     def delivery_remaining(self):
         if self.delivery_date is not None and self.deadline is not None:
             return ((self.delivery_date + timedelta(days=14)) - timezone.now().date())

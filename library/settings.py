@@ -44,9 +44,10 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
     "jalali_date",
-    "books.apps.BooksConfig",
-    "author.apps.AuthorConfig",
     "account.apps.AccountConfig",
+    "author.apps.AuthorConfig",
+    "books.apps.BooksConfig",
+    "comment.apps.CommentConfig",
     "reservation.apps.ReservationConfig",
 ]
 
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = "account:profile"
+LOGIN_REDIRECT_URL = "account:identifier"
 LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = "login"
 
