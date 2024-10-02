@@ -4,83 +4,93 @@
   ناحیه کاربری
 {% endblock title %}
 {% block content %}
+  
+<!-- /.col -->
+<div class="col-md-9">
+  <div class="card">
+    <div class="card-header p-2">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link "  id="nav" href="#timeline" data-toggle="tab">وضعیت رزرو ها</a></li>
+        <li class="nav-item"><a class="nav-link " id="nav" href="#settings" data-toggle="tab">اطلاعات حساب</a></li>
+      </ul>
+    </div><!-- /.card-header -->
+    <div class="card-body">
+      <div class="tab-content">
+        <h3 class="no-active-title" id="no-active-title">با استفاده از دکمه های بالا میتوانید  پنل خود را مدیریت کنید</h3>
+       
 
-        <!-- /.col -->
-        <div class="col-md-9">
-          <div class="card">
-            <div class="card-header p-2">
-              <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link "  id="nav" href="#timeline" data-toggle="tab">شرح فعالیت</a></li>
-                <li class="nav-item"><a class="nav-link " id="nav" href="#settings" data-toggle="tab">اطلاعات حساب</a></li>
-              </ul>
-            </div><!-- /.card-header -->
-            <div class="card-body">
-              <div class="tab-content">
-                <h3 class="no-active-title" id="no-active-title">با استفاده از دکمه های بالا میتوانید  پنل خود را مدیریت کنید</h3>
-                <!-- /.tab-pane -->
-                <div id="tab" class="tab-pane hide"  style="display: block;" id="timeline">
-                  <section class="event-book">
-                    <div class="row" id="row">
-                      <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-navy">
-                          <div class="inner">
-                            <h3 style="color: whitesmoke;">{{request.user.reservations.count}}</h3>
-            
-                            <p style="color: whitesmoke;">  تاریخچه رزرو</p>
-                          </div>
-                          <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
-                        </div>
-                      </div>
-                      <!-- ./col -->
-                      <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                          <div class="inner">
-                            <h3 style="color: whitesmoke;">{{request.user.books.count}}<sup style="font-size: 20px"></sup></h3>
-            
-                            <p style="color: whitesmoke;">صف انتظار</p>
-                          </div>
-                          <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
-                        </div>
-                      </div>
-                      <!-- ./col -->
-                      <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-primary">
-                          <div class="inner">
-                            <h3 style="color: whitesmoke;">{{reserved_books.count}}</h3>
-            
-                            <p style="color: whitesmoke;"> رزرو شده   </p>
-                          </div>
-                          <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
-                        </div>
-                      </div>
-                      <!-- ./col -->
-                      <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-indigo">
-                          <div class="inner">
-                            <h3 style="color: whitesmoke;">{{delivered_books.count}}</h3>
-            
-                            <p style="color: whitesmoke;">  در حال مطالعه </p>
-                          </div>
-                          <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
-                        </div>
-                      </div>
-                      <!-- ./col -->
-                <h3 class="no-active-title" id="bookactivitititle" >با استفاده از دکمه های بالا میتوانید  کتاب های خود را مدیریت کنید  </h3>
-                    </div>
+        <!-- /.tab-pane -->
+        <div id="tab" class="tab-pane hide"  style="display: block;" id="timeline">
+
+
+
+
+
+
+          
+          <section class="event-book">
+            <div class="row" id="row">
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box btn bg-navy" style="width: 200px;">
+                  <div class="inner">
+                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{request.user.reservations.count}}</h3>
+    
+                    <p style="color: whitesmoke;text-align: right;font-size: 18px;direction: rtl;">  تاریخچه رزرو</p>
+                  </div>
+                  <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box btn bg-info" style="width: 200px;">
+                  <div class="inner">
+                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{request.user.books.count}}<sup style="font-size: 20px"></sup></h3>
+    
+                    <p style="color: whitesmoke;text-align: right;font-size: 18px;direction: rtl;">صف انتظار</p>
+                  </div>
+                  <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box btn bg-primary" style="width: 200px;">
+                  <div class="inner">
+                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{reserved_books.count}}</h3>
+    
+                    <p style="color: whitesmoke;text-align: right;font-size: 18px;direction: rtl;"> رزرو شده   </p>
+                  </div>
+                  <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box btn bg-indigo" style="width: 200px;">
+                  <div class="inner">
+                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{delivered_books.count}}</h3>
+    
+                    <p style="color: whitesmoke;text-align: right;font-size: 18px;direction: rtl;">  در حال مطالعه </p>
+                  </div>
+                  <h4 class="h4-center" style="color: whitesmoke;">مشاهده</h4>
+                </div>
+              </div>
+              <!-- ./col -->
+        <h4 class="no-active-title" id="bookactivitititle" >با استفاده از دکمه های بالا میتوانید  کتاب های خود را مدیریت کنید  </h4>
+            </div>
 <!--user-book-propstart-->
 
-                  <div class="userp-book-prop hide">
-<h1 style="text-align: center;"> تاریخچه رزرو</h1>
+          <div class="userp-book-prop hide">
+<h1 style="text-align: center;font-weight: bold;">تاریخچه رزرو</h1>
 
 
-                    <section class="ftco-section bg-light" style="background: white !important;">
-                      <div class="container">
-                        <div class="row">
-                          {% for reservation in request.user.reservations.all %}
+            <section class="ftco-section bg-light" style="background: white !important;">
+              <div class="container">
+                <div class="row">
+                  {% if request.user.reservations.exists %}
+                  {% for reservation in request.user.reservations.all %}
                           <div class="col-md-4">
                             <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
                               <div class="img rounded d-flex align-items-end" style="background-image: url({{reservation.book_id.picture.url}});">
@@ -118,493 +128,579 @@
                               </div>
                             </div>
                           </div>
-                          {% endfor %}
-                      </div>
-                    </div>
-                    <div class="row mt-5" style="width: 100%;">
-                      <div class="col text-center">
-                        <div class="block-27">
-                          <ul>
-                            <li><a href="#">&lt;</a></li>
-                            <li class="active"><span>1</span></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">&gt;</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div></section>
-                    
-                
-                    
+                          {% endfor %}  
+                  {%else%}
+                  <div class="col-md-12">
+                    <h3 style="text-align: center;direction: rtl;">شما هنوز کتابی رزرو نکردید.</h3>
                   </div>
-                  <!--user-book-prop-end-->
+                          
+                  {% endif %}
+
+
                   
-<!--user-book-propstart-->
+                  
 
-                  <div class="userp-book-prop hide ">
-<h1 style="text-align: center;">   صف انتظار</h1>
 
-                    <section class="ftco-section bg-light" style="background: white !important;">
-                      <div class="container">
-                        <div class="row">
-                          {% for book in request.user.books.all %}
-                          <div class="col-md-4">
-                            <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
-                              <div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
-                              </div><div class="text lastbook-fa">
-                                <div class="last-res-bookdate">
-                                  <section>
-                                    <p><label for="">{{book.translator}}</label>:مترجم</p>
-                               
-                                    <p><label for="">{{book.publisher}}</label>:ناشر</p>
-                               
-                                  </section>
-                                  <section>
-                                     <h2 style="direction: rtl;text-align: right;" class="mb-0"><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></h2>
-                                     <div class="d-flex mb-3" style="direction: rtl;">
-                                        <span class="cat">{{book.author_str}}</span>
-                                     </div>
-                                  </section>
-                                </div>
-                                <section class="col-2000" style="display: flex;">
-                                  <a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info py-2 mr-1">خروج از صف</a>
-                                  
-                                             
-                                   <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
-                                </section>
-                              </div>
-                            </div>
-                          </div>
-                          {% endfor %}
-                          </div> 
-                          <div class="row mt-5">
-                            <div class="col text-center">
-                              <div class="block-27">
-                                <ul>
-                                  <li><a href="#">&lt;</a></li>
-                                  <li class="active"><span>1</span></li>
-                                  <li><a href="#">2</a></li>
-                                  <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&gt;</a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                    </div></section>
-                  </div>
-<!--user-book-prop-end-->
-<!--user-book-propstart-->
 
-                  <div class="userp-book-prop hide" >
-                    <h1 style="text-align: center;">   رزرو شده </h1>
+                  
+                  
 
-                      <div class="container">
-                        <div class="row justify-content-center">
-                          <div class="col-md-12">
-                            <div class="car-details  book-single book-f">
+
+                  
+                  
+
+
+                  
+                  
                 
-                                 <div class="img rounded img-profile-bookprop" style="
-                                 background-image: url(../images/do2wnload.jpg);"></div>
-                                  <section class="col-0 col-002">
-                                    <div class="text text-col">
-                                    <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                                 نام اثر:
-                                      <span>کتابخانه نیمه شب</span>
-                                    </h3>
-                                  </div>
-                            
-                      
-                                  <div class="text text-col">
-                                    <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                                  نویسنده:
-                                      <span> نیما یوشیج </span>
-                                    </h3>
-                                  </div>
-                            <div class="text text-col ">
-                                    <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                                  تاریخ رزرو:
-                                      <span> 1403/25/05 </span>
-                                    </h3>
-                                  </div>
-                                  <div class="text text-col">
-                                    <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                                  اخرین زمان تحویل :
-                                      <span>  1402/02/02</span>
-                                    </h3>
-                                  </div>
-                                </section>
-                                  <div class="bookday">   
-                                    <section class="rent-btn-style" style="
-                                      
-                                          width: 40%;
-                                          height: 50px;
-                                          margin-left: auto;
-                                      ">
-                                        <a href="" class="rent-btn" id="" style="
-                                          width: 100%;
-                                         
-                                      ">مشاهده</a>
-                                    </section>
-                                    
-                                  <section class="fa-220">                     
-                                    <section class="chart">
-                                      <div class="pie" id="pie2" style="background: conic-gradient(red 28.5714%, rgb(234, 234, 234) 0deg);">
-                                          <div>
-                                            <h1 id="pie-inner-value2" style="color: red;">2<br>                                        </h1>
-                                          </div>
-                                      </div>
-                                    </section>
-                                    <div class="fa-221">
-                                      <div>
-                                      <label for="">: مدت زمان مطالعه</label><label>14</label>
-                                    </div>
-                                      <div>
-                                        <label for="">: مدت رمان باقیمانده</label><label id="time-give-label">2
-                                        </label>
-                                    </div>
-                                      <div>
-                                        <label for="">: کد رزرو  </label><label>10</label>
-                                    </div>
-                                    </div>
-                                  </section> 
-                                  </div> 
-                    </div>
-                          </div>
-                          
-                        </div>
-                      </div>
-
-                    </div>
-<!--user-book-prop-end-->
-
-<!--user-book-propstart-->
-
-                  <div class="userp-book-prop hide" >
-                   <h1 style="text-align: center;">  در حال مطالعه </h1>
-                   <section class="ftco-section bg-light" style="background: white !important;">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-md-12">
-                        <div class="car-details  book-single book-f">
-            
-                             <div class="img rounded img-profile-bookprop" style="
-                             background-image: url(../images/do2wnload.jpg);"></div>
-                              <section class="col-0 col-002">
-                                <div class="text text-col">
-                                <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                             نام اثر:
-                                  <span>کتابخانه نیمه شب</span>
-                                </h3>
-                              </div>
-                        
-                  
-                              <div class="text text-col">
-                                <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                              نویسنده:
-                                  <span> نیما یوشیج </span>
-                                </h3>
-                              </div>
-                        <div class="text text-col ">
-                                <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                              تاریخ رزرو:
-                                  <span> 1403/25/05 </span>
-                                </h3>
-                              </div>
-                              <div class="text text-col">
-                                <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;">
-                             تاریخ برگشت :
-                                  <span>  1402/02/02</span>
-                                </h3>
-                              </div>
-                            </section>
-                              <div class="bookday">   
-                                <section class="rent-btn-style" id="rent-btn-style" style="
-                                  
-                                      width: 40%;
-                                      height: 50px;
-                                      margin-left: auto;
-                                  ">
-                                    <a href="" class="rent-btn" id="rent-btn" style="
-                                      width: 100%;
-                                     
-                                  ">مشاهده</a>
-                                </section>
-                                
-                              <section class="fa-220">                     
-                                <section class="chart">
-                                  <div class="pie" id="pie" style="background: conic-gradient(rgb(1, 210, 142) 100%, rgb(234, 234, 234) 0deg);">
-                                      <div>
-                                        <h1 id="pie-inner-value">14<br>                                          </h1>
-                                      </div>
-                                  </div>
-                                </section>
-                                <div class="fa-221">
-                                  <div>
-                                  <label for="">: مدت زمان مطالعه</label><label>10</label>
-                                </div>
-                                  <div>
-                                    <label for="">: مدت رمان باقیمانده</label><label id="time-read-label">1
-                                    </label>
-                                </div>
-                                  <div>
-                                    <label for="">: کد رزرو  </label><label>10</label>
-                                </div>
-                                </div>
-                              </section> 
-                              </div> 
-                </div>
-                        </div>
-                      </div>
-                    </div>
-                </section>
-<!--user-book-prop-end-->
-
-
-                </section>
-                </div>
-                <!-- /.tab-pane -->
-
-                <section class="ftco-section ftco-car-details" id="ftcosection">
-                  <div class="container">
-                    
-                    <div id="tab"  class="tab-pane hide " id="settings">
-                      <form class="form-horizontal">
-                        <section class="user-img-get" >
-                           
-                           <img id="userimg" src="{{request.user.picture.url}}" alt="" style="
-                           width: -webkit-fill-available;
-                           height: -webkit-fill-available;
-                           border-radius: inherit;
-                           object-fit: cover;">
-                        </section>
-                        <div class="profile-prop-name" style="align-items: center;width: 100%;"> 
-                          <section id="prof-prop">
-                          <h3 class="fn-ln">
-                            {{request.user.first_name}}
-                          </h3>
-                          <h3 class="fn-ln">
-                            {{request.user.last_name}}
-
-                          </h3>
-                        </section>
-                          
-                          <div class="form-group " style="width: 50%;align-items: center;">
-                            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f"> کد عضویت </label>
-
-
-                          <label for="inputName2" class="info-label" style="text-align: center;"> {{request.user.id}}</label>
-                          </div>
-                        </div>
-                                                  
-                          <div class="book-page-title">
-                         
-                            </div>
-                              <section class="ftco-section ftco-car-details" id="ftcosection">
-                                <div class="container">
-                                  
-                                  <div class="tab-pane" id="settings">
-                                    <form class="form-horizontal">
-                                    <hr>
-                                      <div class="user-prop" style="background:none;flex-wrap: nowrap;">
-                                      <div class="form-group user-fa">
-                                        <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f">کد ملی</label>
-
-                                        <div class="col-sm-10 inout-fa"> 
-
-                                          <label for="inputName2" class="info-label">{{request.user.national_code}}</label>
-
-                                        </div>
-                                      </div>
-                                      
-                                      <div class="form-group user-fa">
-                                        <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f">شماره شناسنامه  </label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.birth_number}}</label>
-                                        </div>
-                                      </div>
-                                      
-                                    </div>
-                                    
-                                    <div class="form-group"style="    width: 87%;">
-                                      <label for="inputExperience" class="col-sm-2 control-label inputName2 label-fa label-f"> نام پدر  </label>
-
-                                      <div class="col-sm-10">
-
-                                        <label for="inputName2" class="info-label">{{request.user.fathers_name}}</label>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                    <div class="user-prop" style="background:none;flex-wrap: nowrap;">
-                                      
-                                      <div class="form-group user-fa">
-                                        <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f">تاریخ تولد</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.persian_birth_date}}</label>
-                                        </div>
-                                      </div>
-
-                                      <div class="form-group user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">شماره تلفن همراه</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.sel_number}}</label>
-                                        </div>
-                                      </div>
-
-
-                                      
-                                      <div class="form-group user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">شماره تلفن همراه اضطراری</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.emergency_number}}</label>
-                                        </div>
-                                      </div>
-
-                                      
-                                      <div class="form-group user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">شماره تلفن  ثابت</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.home_number}}</label>
-                                        </div>
-                                      </div>
-                                      
-                                      
-                                    </div>
-                                    <hr>
-                                    <div class="user-prop" style="background:none;flex-wrap: nowrap;">
-                                      
-                                      <div class="form-group user-fa">
-                                        <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f">نام کاربری</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.username}}</label>
-                                        </div>
-                                      </div>
-
-                                      <div class="form-group user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">ایمیل</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.email}}</label>
-                                        </div>
-                                      </div>
-
-
-                                      
-                                      <div class="form-group user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">تاریخ عضویت</label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">{{request.user.persian_date_joined}}</label>
-                                        </div>
-                                      </div>
-
-                                      
-                                      
-                                    </div>
-                                    <hr>
-                                      
-                                    <div class="user-prop" style="flex-wrap: nowrap; background:none;">
-                                      
-
-                                    
-
-
-                                    </div>
-                                      <div class="form-group">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-f">ادرس محل سکونت</label>
-
-                                        <div class="col-sm-10">
-
-                                          <label for="inputName2" class="info-label"> {{request.user.address|linebreaksbr}}
-                                          </label> 
-                                        </div>
-                                      </div>
-                                      
-                                      <hr>
-
-
-                                      <div class="user-prop" style="flex-wrap: nowrap;background:none;">
-
-                                      <div class="form-group user-fa  user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa"> پست سازمانی </label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label"> {{request.user.role}}</label>
-                                        </div>
-                                      </div>
-
-                                      <div class="form-group user-fa user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f"> کد دانشجویی </label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label"> 0225252366</label>
-                                        </div>
-                                      </div>
-
-
-                                      <div class="form-group user-fa user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">   رشته تحصیلی </label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">   نرم افزار</label>
-                                        </div>
-                                      </div>
-
-                                      <div class="form-group user-fa user-fa">
-                                        <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">    مقطع تحصیلی </label>
-
-                                        <div class="col-sm-10 inout-fa">
-
-                                          <label for="inputName2" class="info-label">     کارشناسی</label>
-                                        </div>
-                                      </div>
-                                      </div>
-                                      
-                                        <hr>
-                                      <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                        
-                                          <a href="{% url 'account:profile-update' %}" class="btn btn-danger btn-fa"   style="background-color: #01d28e; border:solid 2px #009563;width: 120px;">ویرایش
-                                          </a>
-                                          
-                                        </div>
-                                      </div>
-                                </div>
-                              </section>
-                <!-- /.tab-pane -->
               </div>
-              <!-- /.tab-content -->
-            </div><!-- /.card-body -->
+            </div></section>
+            
+        
+            </div>
+<!--user-book-prop-end-->
+
+<!--user-book-propstart-->
+
+          <div class="userp-book-prop hide ">
+<h1 style="text-align: center;font-weight: bold;">  در صف انتظار</h1>
+
+            <section class="ftco-section bg-light" style="background: white !important;">
+              <div class="container">
+                <div class="row">
+                  {% for book in request.user.books.all %}
+                  <div class="col-md-4">
+                    <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
+                      <div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
+                      </div><div class="text lastbook-fa">
+                        <div class="last-res-bookdate">
+                          <section>
+                            <p><label for="">{{book.translator}}</label>:مترجم</p>
+                       
+                            <p><label for="">{{book.publisher}}</label>:ناشر</p>
+                       
+                          </section>
+                          <section>
+                             <h2 style="direction: rtl;text-align: right;" class="mb-0"><a href="{% url 'books:book-detail' book.slug %}">{{book.name}}</a></h2>
+                             <div class="d-flex mb-3" style="direction: rtl;">
+                                <span class="cat">{{book.author_str}}</span>
+                             </div>
+                          </section>
+                        </div>
+                        <section class="col-2000" style="display: flex;">
+                          <a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info py-2 mr-1">خروج از صف</a>
+                          
+                                     
+                           <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                 
+              </div> 
+                <div class="row mt-5">
+                  <div class="col text-center">
+                    <div class="block-27">
+                      <ul>
+                        <li><a href="#">&lt;</a></li>
+                        <li class="active"><span>1</span></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&gt;</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+            </div></section>
           </div>
-          <!-- /.nav-tabs-custom -->
+<!--user-book-prop-end-->
+
+<!--user-book-propstart-->
+
+          <div class="userp-book-prop hide" >
+            <h1 style="text-align: center;font-weight: bold;">کتاب های رزرو شده</h1>
+
+              <div class="container">
+                <div class="row justify-content-center">
+                  {% if reserved_books %}
+                    {% for reservation in reserved_books %}
+                    <div class="col-md-12">
+                      <div class="car-details  book-single book-f">
+          
+                           <div class="img rounded img-profile-bookprop col-3" style="
+                           background-image: url( {{reservation.book_id.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
+                            <section class="col-3" style="display: flex;flex-direction: column;
+                            flex-wrap: wrap;
+                            align-content: stretch;
+                            justify-content: space-evenly;
+                            align-items: flex-end;">
+                              <div class="text text-col">
+                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                           نام اثر:
+                                <span style="font-weight: lighter;"><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id.name}}</a></span>
+                              </h3>
+                            </div>
+                      
+                
+                            <div class="text text-col">
+                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                            نویسنده:
+                                <span style="font-weight: lighter;"> {% for author in reservation.book_id.author.all %}
+                                  <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
+                                {% endfor %} </span>
+                              </h3>
+                            </div>
+                      <div class="text text-col ">
+                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                            تاریخ رزرو:
+                                <span style="font-weight: lighter;">{{reservation.persian_date_added|date:'Y/m/d'}}</span>
+                              </h3>
+                            </div>
+                            
+                          </section>
+                              
+                              
+                            
+                              <section class="col-3" style="display: flex;flex-direction: column;
+                            flex-wrap: wrap;
+                            align-content: stretch;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            text-align: center;
+                            direction: rtl;">
+                                <div style="align-items: center !important;flex-direction: column !important;">
+                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">{{reservation.reservation_deadline_remaining}}
+                                  </label></p>
+                                  
+                              </div>
+                                <div style="align-items: center !important;flex-direction: column !important;">
+                                  <p style="font-size: 21px;">کد رزرو  : {{reservation.reservation_id}}</p>
+                              </div>
+                              </section>
+                              <section class="fa-220">                     
+                                      <section class="chart">
+                                        <div class="pie" id="pie">
+                                            <div>
+                                              <h1 id="pie-inner-value"></h1>
+                                            </div>
+                                        </div>
+                                      </section>
+                                    </section>  
+              </div>
+            </div>
+                    {% endfor %}
+                    {%else%}
+                    <h5 style="direction: rtl;">هنوز کتابی رزرو نکردید.</h5>
+                  {% endif %}
+                  
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
+
+            </div>
+<!--user-book-prop-end-->
+
+<!--user-book-propstart-->
+
+          <div class="userp-book-prop hide" >
+           <h1 style="text-align: center;">  کتاب های درحال مطالعه</h1>
+           <section class="ftco-section bg-light" style="background: white !important;">
+            <div class="container">
+              <div class="row">
+                {% if delivered_books %}
+                    {% for reservation in delivered_books %}
+                    <div class="col-md-12">
+                      <div class="car-details  book-single book-f">
+          
+                           <div class="img rounded img-profile-bookprop col-3" style="
+                           background-image: url( {{reservation.book_id.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
+                            <section class="col-3" style="display: flex;flex-direction: column;
+                            flex-wrap: wrap;
+                            align-content: stretch;
+                            justify-content: space-evenly;
+                            align-items: flex-end;">
+                              <div class="text text-col">
+                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                           نام اثر:
+                                <span style="font-weight: lighter;"><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id.name}}</a></span>
+                              </h3>
+                            </div>
+                      
+                
+                            <div class="text text-col">
+                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                            نویسنده:
+                                <span style="font-weight: lighter;"> {% for author in reservation.book_id.author.all %}
+                                  <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
+                                {% endfor %} </span>
+                              </h3>
+                            </div>
+                      <div class="text text-col ">
+                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                            تاریخ رزرو:
+                                <span style="font-weight: lighter;">{{reservation.persian_date_added|date:'Y/m/d'}}</span>
+                              </h3>
+                            </div>
+                            
+                          </section>
+                              
+                              
+                            
+                              <section class="col-3" style="display: flex;flex-direction: column;
+                            flex-wrap: wrap;
+                            align-content: stretch;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            text-align: center;
+                            direction: rtl;">
+                                <div style="align-items: center !important;flex-direction: column !important;">
+                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">{{reservation.reservation_deadline_remaining}}
+                                  </label></p>
+                                  
+                              </div>
+                                <div style="align-items: center !important;flex-direction: column !important;">
+                                  <p style="font-size: 21px;">کد رزرو  : {{reservation.reservation_id}}</p>
+                              </div>
+                              </section>
+                              <section class="fa-220">                     
+                                      <section class="chart">
+                                        <div class="pie" id="pie">
+                                            <div>
+                                              <h1 id="pie-inner-value"></h1>
+                                            </div>
+                                        </div>
+                                      </section>
+                                    </section>  
+              </div>
+            </div>
+                    {% endfor %}
+                    {%else%}
+                    <h5 style="text-align: center;direction: rtl;">هنوز کتابی تحویل نگرفتید.</h5>
+                  {% endif %}
+                  
+
+                
+                
+
+
+
+                
+                
+
+
+                
+                
+
+
+                
+                
+              
+            </div>
+          </div></section>
+<!--user-book-prop-end-->
+
+
+        </section>
+        </div>
+        <!-- /.tab-pane -->
+
+        <section class="ftco-section ftco-car-details" id="ftcosection">
+          <div class="container">
+                    
+            <div id="tab"  class="tab-pane hide " id="settings">
+              <form class="form-horizontal">
+                <section class="user-img-get" >
+                   
+                   <img id="userimg" src="{{request.user.picture.url}}" alt="" style="
+                   width: -webkit-fill-available;
+                   height: -webkit-fill-available;
+                   border-radius: inherit;
+                   object-fit: cover;">
+                </section>
+                <div class="profile-prop-name" style="align-items: center;width: 100%;"> 
+                  <section id="prof-prop">
+                    <h3 class="fn-ln">
+                      {% if request.user.get_full_name %}
+                    {{request.user.get_full_name}}
+                  {%else%}
+                    {{request.user.username}}
+                  {% endif %}
+                    </h3>
+                </section>
+                  
+                  <div class="form-group " style="width: 50%;align-items: center;">
+                    <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f"> کد عضویت </label>
+
+
+                  <label for="inputName2" class="info-label" style="text-align: center;"> {{request.user.id}}</label>
+                  </div>
+                </div>
+                                          
+                  <div class="book-page-title">
+                 
+                    </div>
+                      <section class="ftco-section ftco-car-details" id="ftcosection">
+                        <div class="container">
+                          
+                          <div class="tab-pane" id="settings">
+                            <form class="form-horizontal">
+                            <hr>
+                              <div class="user-prop" style="background:none;flex-wrap: nowrap;">
+                              <div class="form-group user-fa">
+                                <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">کد ملی</label>
+
+                                <div class="col-sm-10 inout-fa"> 
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.national_code}}</label>
+
+                                </div>
+                              </div>
+                              
+                              <div class="form-group user-fa">
+                                <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">شماره شناسنامه  </label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.birth_number}}</label>
+                                </div>
+                              </div>
+                              
+                            </div>
+                            
+                            <div class="form-group"style="    width: 87%;">
+                              <label for="inputExperience" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;"> نام پدر  </label>
+
+                              <div class="col-sm-10">
+
+                                <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.fathers_name}}</label>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="user-prop" style="background:none;flex-wrap: nowrap;">
+                              
+                              <div class="form-group user-fa">
+                                <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">تاریخ تولد</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.persian_birth_date}}</label>
+                                </div>
+                              </div>
+
+                              <div class="form-group user-fa">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">شماره تلفن همراه</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.sel_number}}</label>
+                                </div>
+                              </div>
+
+
+                              
+                              <div class="form-group user-fa">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">شماره تلفن همراه اضطراری</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.emergency_number}}</label>
+                                </div>
+                              </div>
+
+                              
+                              <div class="form-group user-fa">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">شماره تلفن  ثابت</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.home_number}}</label>
+                                </div>
+                              </div>
+                              
+                              
+                            </div>
+                            <hr>
+                            <div class="user-prop" style="background:none;flex-wrap: nowrap;">
+                              
+                              <div class="form-group user-fa">
+                                <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">نام کاربری</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.username}}</label>
+                                </div>
+                              </div>
+
+                              <div class="form-group user-fa">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">ایمیل</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.email}}</label>
+                                </div>
+                              </div>
+
+
+                              
+                              <div class="form-group user-fa">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">تاریخ عضویت</label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.persian_date_joined}}</label>
+                                </div>
+                              </div>
+
+                              
+                              
+                            </div>
+                            <hr>
+                              
+                            <div class="user-prop" style="flex-wrap: nowrap; background:none;">
+                              
+
+                            
+
+
+                            </div>
+                              <div class="form-group">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-f" style="color: black !important;">ادرس محل سکونت</label>
+
+                                <div class="col-sm-10">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 300;"> {{request.user.address|linebreaksbr}}
+                                  </label> 
+                                </div>
+                              </div>
+                              
+                              <hr>
+
+
+                              <div class="user-prop" style="flex-wrap: nowrap;background:none;">
+
+                              <div class="form-group user-fa  user-fa">
+                                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" style="color: black;"> پست سازمانی </label>
+
+                                <div class="col-sm-10 inout-fa">
+
+                                  <label for="inputName2" class="info-label" style="font-weight: 200;"> {{request.user.role}}</label>
+                                </div>
+                              </div>
+{% if request.user.role == "دانشجو" %}
+  
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;"> کد دانشجویی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;"> {{request.user.st_id}}</label>
+  </div>
 </div>
 
+
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">   رشته تحصیلی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.st_major}}</label>
+  </div>
+</div>
+
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">    مقطع تحصیلی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;">     {{request.user.st_grade}}</label>
+  </div>
+</div>
+{% elif request.user.role == "استاد" %}
+  
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;"> کد استادی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;"> {{request.user.pro_id}}</label>
+  </div>
+</div>
+
+
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">   رشته آموزشی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.pro_major}}</label>
+  </div>
+</div>
+
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">    مقطع آموزشی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;">     {{request.user.pro_grade}}</label>
+  </div>
+</div>
+{% elif request.user.role == "کارمند" %}
+  
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">کد پرسنلی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;"> {{request.user.emp_id}}</label>
+  </div>
+</div>
+
+
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">   محل کار </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 300;">{{request.user.emp_unit}}</label>
+  </div>
+</div>
+
+<div class="form-group user-fa user-fa">
+  <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f" style="color: black !important;">    سمت شغلی </label>
+
+  <div class="col-sm-10 inout-fa">
+
+    <label for="inputName2" class="info-label" style="font-weight: 200;">     {{request.user.emp_grade}}</label>
+  </div>
+</div>
+{% endif %}
+                              </div>
+                              
+                                <hr>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                
+                                  <a href="{% url 'account:profile-update' %}" class="btn btn-danger btn-fa"   style="background-color: #01d28e; border:solid 2px #009563;width: 120px;">ویرایش
+                                  </a>
+                                  
+                                </div>
+                              </div>
+                        </div>
+                      </section>
+        <!-- /.tab-pane -->
+      </div>
+      <!-- /.tab-content -->
+    </div><!-- /.card-body -->
+  </div>
+  <!-- /.nav-tabs-custom -->
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+</div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
 {% endblock content %}

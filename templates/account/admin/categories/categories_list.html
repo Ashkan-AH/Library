@@ -10,7 +10,7 @@
   {% block content %}
     
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px;">
+    <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px !important;">
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <div class="container-fluid">
@@ -51,10 +51,19 @@
                 <h4 style="position: absolute;bottom: 45px;right: 10px; font-weight: bold;">{{category.name}}</h3>
               </div>
             </a>
-            <div class="card-footer" style="padding: 0px;">
-              <a href="{% url 'account:category-detail' category.slug %}" class="btn btn-sm btn-primary" style="width: 250px; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+            <div class="card-footer" style="display: flex; padding: 0px;">
+              {% if request.user.delete_categories %}
+              <a href="{% url 'account:category-detail' category.slug %}" class="btn btn-sm btn-primary" style="width: 50%; border-bottom-left-radius: 0px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
                   مشاهده   
               </a>
+              <a href="{% url 'account:category-delete' category.slug %}" class="btn btn-sm btn-danger" style="width: 50%; border-bottom-left-radius: 5px;border-bottom-right-radius: 0px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+                  حذف   
+              </a>
+              {% else %}
+                <a href="{% url 'account:category-detail' category.slug %}" class="btn btn-sm btn-primary" style="width: 100%; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+                  مشاهده   
+              </a>
+              {% endif %}
           </div>
     
     
@@ -69,14 +78,17 @@
           <div class="card-footer">
             <nav aria-label="Contacts Page Navigation">
               <ul class="pagination justify-content-center m-0">
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                    {% endif %}
+                {% for page_number in page_obj.paginator.page_range %}
+                  
+                <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                    {% endif %}
               </ul>
             </nav>
           </div>

@@ -473,6 +473,7 @@
 </section>
 
 <section class="ftco-section ftco-no-pt">
+	{% if books %}
 	<div class="container">
 		<div class="row justify-content-center">
 	  <div class="col-md-12 heading-section text-center ftco-animate mb-5">
@@ -503,6 +504,7 @@
 		{% endfor %}
 	</div>
 	</div>
+	{% endif %}
 </section>
 
 <script src="{% static 'main/js/booksingle.js' %}"></script>

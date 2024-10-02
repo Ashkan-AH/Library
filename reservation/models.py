@@ -5,19 +5,27 @@ from account.models import User
 from datetime import timedelta
 from jalali_date import date2jalali
 from datetime import timedelta
-# Create your models here.
-# class ReservationQuerySet(models.QuerySet):
-#     def delete_half_done_user(self):
-#         date = timezone.now() - timedelta(days=1)
-#         self.filter(models.Q(last_login=None), models.Q(date_joined__lt=date)).delete()
-#         return self
-    
-# class ReservationManager(models.Manager):
-#     def get_queryset(self):
-#         queryset = ReservationQuerySet(self.model, using=self._db)
-#         queryset.delete_half_done_user()
-#         return queryset
 
+class ReservationManager(models.Manager):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        for reservation in qs:
+            if reservation.status == "تحویل داده شده" and reservation.delivery_remaining() <= 0:
+                user = User.objects.get(id=reservation.user_id.id)
+                user.is_active = False
+                user.save()
+                reservation.status = "بازگردانده نشده"
+                reservation.save()
+            elif reservation.status == "رزرو شده" and reservation.reservation_deadline_remaining() <= 0:
+                user = User.objects.get(id=reservation.user_id.id)
+                book = Books.objects.get(id=reservation.book_id.id)
+                user.reservation_limit += 1
+                user.save()
+                reservation.status = "لغو رزرو"
+                reservation.save()
+                book.in_stock_user += 1
+                book.save()
+        return qs
 
 class Reservation(models.Model):
     STATUS_CHOICES = {
@@ -35,7 +43,7 @@ class Reservation(models.Model):
     delivery_date = models.DateField(verbose_name="تاریخ تحویل", blank=True, null=True)
     extend_sluts = models.IntegerField(verbose_name="تعداد درخواست مهلت اضافه باقی مانده", default=2)
 
-
+    objects = ReservationManager()
 
 
 
@@ -43,55 +51,35 @@ class Reservation(models.Model):
         return date2jalali(self.date_added)
     def persian_delivery_date(self):
         if self.delivery_date is not None:
-            return date2jalali(self.delivery_date).strftime("%Y %B %d")
+            return date2jalali(self.delivery_date)
+        return '-'
         
 
     def deadline(self):
         if self.delivery_date is not None:
-            return date2jalali(self.delivery_date + timedelta(days=14)).strftime("%Y %B %d")
+            return date2jalali(self.delivery_date + timedelta(days=14))
+        return '-'
     def reservation_deadline(self):
-        if self.delivery_date is not None:
+        if self.status == "رزرو شده":
             return date2jalali(self.date_added + timedelta(days=7))
+        return '-'
+    def reservation_deadline_remaining(self):
+        if self.reservation_deadline is not '-':
+            resault = (self.date_added.date() + timedelta(days=7) - timezone.now().date()).days
+            if resault < 0:
+                return 0
+            else:
+                return resault
+        return '-'
     def delivery_remaining(self):
-        if self.delivery_date is not None and self.deadline is not None:
-            return ((self.delivery_date + timedelta(days=14)) - timezone.now().date())
+        if self.delivery_date is not None and self.deadline is not '-':
+            resault = ((self.delivery_date + timedelta(days=14)) - timezone.now().date()).days
+            if resault < 0:
+                return 0
+            else:
+                return resault
+        return '-'
         
-    # def __getattribute__(self, name: str):
-    #     if self.status == "تحویل داده شده" and self.delivery_remaining().days <= 0:
-    #         user = User.objects.get(id=self.user_id.id)
-    #         user.is_active = False
-    #         user.save()
-    #         self.status = "بازگردانده نشده"
-    #         self.save()
-    #     remaining = timezone.now().date() - self.date_added.date()
-    #     if remaining.days > 7:
-    #         user = User.objects.get(id=self.user_id.id)
-    #         book = Books.objects.get(id=self.book_id.id)
-    #         user.reservation_limit += 1
-    #         user.save()
-    #         self.status = "لغو رزرو"
-    #         self.save()
-    #         book.in_stock_user += 1
-    #         book.save()
-    #     return super().__getattribute__(name)
-    def not_returned(self):
-        if self.status == "تحویل داده شده" and self.delivery_remaining().days <= 0:
-            user = User.objects.get(id=self.user_id.id)
-            user.is_active = False
-            user.save()
-            self.status = "بازگردانده نشده"
-            self.save()
-    def reservation_expired(self):
-        remaining = timezone.now().date() - self.date_added.date()
-        if remaining.days > 7:
-            user = User.objects.get(id=self.user_id.id)
-            book = Books.objects.get(id=self.book_id.id)
-            user.reservation_limit += 1
-            user.save()
-            self.status = "لغو رزرو"
-            self.save()
-            book.in_stock_user += 1
-            book.save()
             
     persian_date_added.short_description = "تاریخ رزرو"
     persian_delivery_date.short_description = "تاریخ تحویل کتاب"

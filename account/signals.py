@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, post_delete
+from django.db.models.signals import pre_save, post_delete , post_save
 from django.http import Http404
 from django.dispatch import receiver
 from books.models import Books, Category
@@ -6,8 +6,31 @@ from .models import User
 from reservation.models import Reservation
 from author.models import Author
 from django.utils.text import slugify
-from django.conf import settings
-from django.core.mail import send_mail
+
+@receiver(pre_save, sender=User)
+def role(sender, instance, *args, **kwargs):
+    if instance.role == "دانشجو":
+        instance.pro_id = ""
+        instance.emp_id = ""
+        instance.pro_grade = ""
+        instance.emp_grade = ""
+        instance.pro_major = ""
+        instance.emp_unit = ""
+    elif instance.role == "استاد":
+        instance.st_id = ""
+        instance.emp_id = ""
+        instance.st_grade = ""
+        instance.emp_grade = ""
+        instance.st_major = ""
+        instance.emp_unit = ""
+    elif instance.role == "کارمند":
+        instance.pro_id = ""
+        instance.st_id = ""
+        instance.pro_grade = ""
+        instance.st_grade = ""
+        instance.pro_major = ""
+        instance.st_major = ""
+
 
 @receiver(pre_save, sender=Books)
 def create_book(sender, instance, *args, **kwargs):

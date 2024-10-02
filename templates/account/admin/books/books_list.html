@@ -11,12 +11,18 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>کتاب ها</h1>
+          {% if request.resolver_match.url_name == "author-books" %}
+          <h1>آثار {{author}}</h1>
+          {% elif request.resolver_match.url_name == "category-books" %}
+          <h1>کتاب‌های {{category}}</h1>
+          {% elif request.resolver_match.url_name == "books" %}
+          <h1>کتاب‌ها</h1>
+          {%endif%}
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
-            <li class="breadcrumb-item active">کتاب ها</li>
+            <li class="breadcrumb-item active"><a href="{% url 'account:books' %}">کتاب ها</a></li>
           </ol>
         </div>
       </div>
@@ -29,7 +35,7 @@
     <!-- Default box -->
     <div class="card card-solid">
       <div class="card-body pb-0">
-        <div class="row d-flex align-items-stretch" style="justify-content: center !important;">
+        <div class="row d-flex align-items-stretch" style="justify-content: space-evenly !important;">
 
 
             {% for book in object_list %}
@@ -46,10 +52,20 @@
             <h4 style="position: absolute;bottom: 45px;font-weight: bold;right: 10px;">{{book.name|truncatewords:4}}</h3>
           </div>
         </a>
-        <div class="card-footer" style="padding: 0px;">
-          <a href="{% url 'account:book-detail' book.slug %}" class="btn btn-sm btn-primary" style="width: 100%; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+        <div class="card-footer" style="display: flex; padding: 0px;">
+          {% if request.user.delete_books %}
+            
+          <a href="{% url 'account:book-detail' book.slug %}" class="btn btn-sm btn-primary" style="width: 50%; border-bottom-left-radius: 0px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
               مشاهده   
           </a>
+          <a href="{% url 'account:book-delete' book.slug %}" class="btn btn-sm btn-danger" style="width: 50%; border-bottom-left-radius: 5px;border-bottom-right-radius: 0px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+              حذف   
+          </a>
+          {%else%}
+          <a href="{% url 'account:book-detail' book.slug %}" class="btn btn-sm btn-primary" style="width: 100%; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+            مشاهده   
+        </a>
+          {% endif %}
       </div>
 
 
@@ -63,14 +79,17 @@
       <div class="card-footer">
         <nav aria-label="Contacts Page Navigation">
           <ul class="pagination justify-content-center m-0">
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
+            
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                {% endif %}
+            {% for page_number in page_obj.paginator.page_range %}
+              
+            <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                {% endif %}
           </ul>
         </nav>
       </div>

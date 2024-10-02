@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from books.models import Books, Category
 from author.models import Author
 from .models import User
-from .mixins import StaffAccessMixin, SuperuserAccessMixin, UserAccessMixin
+from .mixins import *
 
 from django.http import HttpResponse
 from django.contrib.auth import login
@@ -25,7 +25,7 @@ from django.core.mail import EmailMessage
 
 #----------------------------------Books-------------------------------------------
 
-class BookDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
+class BookDetail(LoginRequiredMixin, StaffAccessMixin, ViewBooksAccessMixin, DetailView):
     template_name = "account/admin/books/book_detail.html"
     def get_object(self):
         slug = self.kwargs.get("slug")
@@ -39,28 +39,34 @@ class BookDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
     
 
 
-class BookList(LoginRequiredMixin, StaffAccessMixin, ListView):
+class BookList(LoginRequiredMixin, StaffAccessMixin, ViewBooksAccessMixin, ListView):
     template_name = "account/admin/books/books_list.html"
     model = Books
+    paginate_by = 24
 
 
-class BookCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
+class BookCreate(LoginRequiredMixin, StaffAccessMixin, CreateBooksAccessMixin, CreateView):
     model = Books
     form_class = BookForm
     success_url = reverse_lazy("account:books")
-    template_name = "account/books/book_create_update.html"
 
 
-class BookUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateView):
+class BookUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateBooksAccessMixin, UpdateView):
     model = Books
     form_class = BookForm
-    template_name = "account/books/book_create_update.html"
+    template_name = "account/admin/books/book_update.html"
     success_url = reverse_lazy("account:books")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["book"] = Books.objects.get(slug=slug)
+        return context
 
 
-class BookDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
+
+class BookDelete(LoginRequiredMixin, StaffAccessMixin, DeleteBooksAccessMixin, DeleteView):
     model = Books
-    template_name = "account/books/book_comfirm_delete.html"
+    template_name = "account/admin/books/book_confirm_delete.html"
     success_url = reverse_lazy("account:books")
 
 
@@ -104,33 +110,50 @@ class BookDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
 #     return render(request, "account/book-create-update.html", context)
 
 #----------------------------------Categories--------------------------------------
-
-class CategoryCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
+class CategoryBooksList(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessMixin, ListView):
+    template_name = "account/admin/books/books_list.html"
+    paginate_by = 18
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        return Books.objects.filter(category__slug=slug)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["category"] = Category.objects.get(slug=slug)
+        return context
+class CategoryCreate(LoginRequiredMixin, StaffAccessMixin, CreateCategoriesAccessMixin, CreateView):
     model = Category
-    template_name = "account/categories/category_create_update.html"
+    template_name = "account/admin/categories/category_create.html"
     form_class = CategoryForm
     success_url = reverse_lazy("account:categories")
 
 
-class CategoryUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateView):
+class CategoryUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateCategoriesAccessMixin, UpdateView):
     model = Category
-    template_name = "account/categories/category_create_update.html"
+    template_name = "account/admin/categories/category_update.html"
     form_class = CategoryForm
     success_url = reverse_lazy("account:categories")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["category"] = Category.objects.get(slug=slug)
+        return context
 
 
-class CategoryDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
+class CategoryDelete(LoginRequiredMixin, StaffAccessMixin, DeleteCategoriesAccessMixin, DeleteView):
     model = Category
-    template_name = "account/categories/category_confirm_delete.html"
+    template_name = "account/admin/categories/category_confirm_delete.html"
     success_url = reverse_lazy("account:categories")
 
 
 
-class CategoryList(LoginRequiredMixin, StaffAccessMixin, ListView):
+class CategoryList(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessMixin, ListView):
     template_name = "account/admin/categories/categories_list.html"
     model = Category
+
+    paginate_by = 18
     
-class CategoryDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
+class CategoryDetail(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessMixin, DetailView):
     template_name = "account/admin/categories/category_detail.html"
     def get_object(self):
         slug = self.kwargs.get("slug")
@@ -138,52 +161,68 @@ class CategoryDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
 
 #----------------------------------Authors-----------------------------------------
 
+class AuthorBooksList(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin, ListView):
+    template_name = "account/admin/books/books_list.html"
+    paginate_by = 24
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        return Books.objects.filter(author__slug=slug)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["author"] = Author.objects.get(slug=slug)
+        return context
 
-class AuthorCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
+class AuthorCreate(LoginRequiredMixin, StaffAccessMixin, CreateAuthorsAccessMixin, CreateView):
     model = Author
     form_class = AuthorForm
-    template_name = "account/authors/author_create_update.html"
     success_url = reverse_lazy("account:authors")
 
 
 
-class AuthorUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateView):
+class AuthorUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateAuthorsAccessMixin, UpdateView):
     model = Author
     form_class = AuthorForm
-    template_name = "account/authors/author_create_update.html"
+    template_name = "account/admin/authors/author_update.html"
     success_url = reverse_lazy("account:authors")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["author"] = Author.objects.get(slug=slug)
+        return context
 
 
 
-class AuthorDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
+class AuthorDelete(LoginRequiredMixin, StaffAccessMixin, DeleteAuthorsAccessMixin, DeleteView):
     model = Author
-    template_name = "account/authors/author_confirm_delete.html"
+    template_name = "account/admin/authors/author_confirm_delete.html"
     success_url = reverse_lazy("account:authors")
 
 
 
     
-class AuthorDetail(LoginRequiredMixin, StaffAccessMixin, DetailView):
-    template_name = "account/authors/author_detail.html"
+class AuthorDetail(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin, DetailView):
+    template_name = "account/admin/authors/author_detail.html"
     def get_object(self):
         slug = self.kwargs.get("slug")
         return get_object_or_404(Author, slug=slug)
 
 
 
-class AuthorList(LoginRequiredMixin, StaffAccessMixin, ListView):
-    template_name = "account/authors/authors_list.html"
+class AuthorList(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin, ListView):
+    template_name = "account/admin/authors/authors_list.html"
     model = Author
-
+    paginate_by = 24
 
 #----------------------------------Users-------------------------------------------
 
-class UserList(LoginRequiredMixin, SuperuserAccessMixin, ListView):
+class UserList(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, ListView):
     template_name = "account/admin/users/users_list.html"
+    paginate_by = 12
     model = User
 
 
-class UserDetail(LoginRequiredMixin, SuperuserAccessMixin, DetailView):
+class UserDetail(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, DetailView):
     template_name = "account/users/user_detail.html"
     def get_object(self):
         global id
@@ -196,70 +235,35 @@ class UserDetail(LoginRequiredMixin, SuperuserAccessMixin, DetailView):
         context["reservations"] = Reservation.objects.filter(Q(user_id=id)).order_by("status")
         return context
 
-class UserUpdate(LoginRequiredMixin, SuperuserAccessMixin, UpdateView):
+class UserUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateUsersAccessMixin, UpdateView):
     model = User
-    template_name = "account/users/user_create_update.html"
+    template_name = "account/admin/users/user_update.html"
     form_class = UpdateUserForm
     success_url = reverse_lazy("account:users")
-    def get_object(self):
-        return User.objects.get(id=self.kwargs.get("pk"))
-    
-
-
-class UserDelete(LoginRequiredMixin, SuperuserAccessMixin, DeleteView):
-    model = User
-    template_name = "account/users/user_comfirm_delete.html"
-    success_url = reverse_lazy("account:users")
-
-
-#---------------------------------Profile------------------------------------------
-
-# class Profile(LoginRequiredMixin, DetailView):
-#     template_name = "account/profile.html"
-#     def get_object(self):
-#         id = self.request.user.id
-#         return get_object_or_404(User, id=id)
-class UserProfile(LoginRequiredMixin, UserAccessMixin, TemplateView):
-    template_name = "account/user/profile.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["reserved_books"] = self.request.user.reservations.filter(status="رزرو شده")
-        context["delivered_books"] = self.request.user.reservations.filter(status="تحویل داده شده")
+        pk = self.kwargs.get("pk")
+        context["user"] = User.objects.get(id=pk)
         return context
-class AdminProfile(LoginRequiredMixin, SuperuserAccessMixin, StaffAccessMixin, TemplateView):
-    template_name = "account/admin/profile1.html"
     
-@login_required
-def identifier(request):
-    if request.user.is_superuser or request.user.is_staff:
-        return HttpResponseRedirect("admin-profile")
-    else:
-        return HttpResponseRedirect("user-profile")
 
 
-class ProfileUpdate(LoginRequiredMixin, UpdateView):
+class UserDelete(LoginRequiredMixin, StaffAccessMixin, DeleteUsersAccessMixin, DeleteView):
     model = User
-    template_name = "account/profile_update.html"
-    form_class = UpdateProfileForm
-    success_url = reverse_lazy("account:profile")
-    def get_object(self):
-        return User.objects.get(id=self.request.user.id)
-    
-    
+    template_name = "account/admin/users/user_confirm_delete.html"
+    success_url = reverse_lazy("account:users")
 
-class BookmarkList(LoginRequiredMixin, ListView):
-    template_name = "account/user/bookmarks.html"
-    paginate_by = 9
-    def get_queryset(self):
-        return Books.objects.filter(bookmarks__in=[self.request.user.id])
-    
+class UserCreate(LoginRequiredMixin, StaffAccessMixin, CreateUsersAccessMixin, CreateView):
+    model = User
+    form_class = RegistrationForm
+    success_url = reverse_lazy("account:users")
 
 # ---------------------------------Reservation------------------------------
 
 
-class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
+class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateReservationsAccessMixin, CreateView):
     model = Reservation
-    template_name = "account/reservations/reservation_create_update.html"
+    template_name = "account/admin/reservations/reservation_create.html"
     form_class = ReservationForm
     success_url = reverse_lazy("account:reservations")
     
@@ -268,7 +272,7 @@ class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateView):
 
 @login_required
 def delivered_action(request, pk):
-    if request.user.is_staff or request.user.is_superuser:
+    if (request.user.is_staff or request.user.is_superuser) and request.user.update_reservations:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
         book = get_object_or_404(Books, id=reservation.book_id.id)
         if reservation.status == "رزرو شده":
@@ -284,7 +288,7 @@ def delivered_action(request, pk):
 
 @login_required
 def cancel_action(request, pk):
-    if request.user.is_staff or request.user.is_superuser:
+    if (request.user.is_staff or request.user.is_superuser) and request.user.update_reservations:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
         user = User.objects.get(id=reservation.user_id.id)
         book = get_object_or_404(Books, id=reservation.book_id.id)
@@ -301,27 +305,10 @@ def cancel_action(request, pk):
         raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
     
 
-@login_required
-def reserve_action(request, pk):
-    if request.user.is_staff or request.user.is_superuser:
-        reservation = get_object_or_404(Reservation, reservation_id=pk)
-        user = User.objects.get(id=reservation.user_id.id)
-        book = get_object_or_404(Books, id=reservation.book_id.id)
-        if reservation.status == "لغو رزرو":
-            reservation.status = "رزرو شده"
-            user.reservation_limit -= 1
-            book.in_stock_user -= 1
-            user.save()
-            reservation.save()
-            book.save()
-        return HttpResponseRedirect(request.META["HTTP_REFERER"])
-    else:
-        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
-    
 
 @login_required
 def returned_action(request, pk):
-    if request.user.is_staff or request.user.is_superuser:
+    if (request.user.is_staff or request.user.is_superuser) and request.user.update_reservations:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
         book = get_object_or_404(Books, id=reservation.book_id.id)
         user = User.objects.get(id=reservation.user_id.id)
@@ -380,44 +367,80 @@ def returned_action(request, pk):
 #     return render(request, "account/reservations/reservation_create_update.html", context)
 
 
-class ReservationDelete(LoginRequiredMixin, StaffAccessMixin, DeleteView):
+class ReservationDelete(LoginRequiredMixin, StaffAccessMixin, DeleteReservationsAccessMixin, DeleteView):
     model = Reservation
-    template_name = "account/reservations/reservation_confirm_delete.html"
+    template_name = "account/admin/reservations/reservation_confirm_delete.html"
     success_url = reverse_lazy("account:reservations")
 
 
     
-class ReservationDetail(LoginRequiredMixin, DetailView):
-    template_name = "account/reservations/reservation_detail.html"
+class ReservationDetail(LoginRequiredMixin, StaffAccessMixin, ViewReservationsAccessMixin, DetailView):
+    template_name = "account/admin/reservations/reservation_detail.html"
     def get_object(self):
         id = self.kwargs.get("pk")
         return get_object_or_404(Reservation, reservation_id=id)
 
 
-class ReservationList(LoginRequiredMixin, ListView):
-    template_name = "account/reservations/reservation_list.html"
-    def get_queryset(self):
-        if self.request.user.is_staff or self.request.user.is_superuser:
-            reservations = Reservation.objects.all()
-            for reservation in reservations:
-                Reservation.not_returned(reservation)
-                Reservation.reservation_expired(reservation)
-            return reservations
-        else:
-            reservations = Reservation.objects.filter(user_id=self.request.user.id)
-            for reservation in reservations:
-                Reservation.not_returned(reservation)
-                Reservation.reservation_expired(reservation)
-            return reservations
+class ReservationList(LoginRequiredMixin, StaffAccessMixin, ViewReservationsAccessMixin, ListView):
+    template_name = "account/admin/reservations/reservations_list.html"
+    model = Reservation
+    paginate_by = 15
 
-# ------------------------------Black List------------------------------------
+# ----------------------------------Others---------------------------------------
 
-class BlackList(SuperuserAccessMixin, LoginRequiredMixin, ListView):
-    template_name = "account/black_list_users_list.html"
+class BlackList(StaffAccessMixin, LoginRequiredMixin, ViewUsersAccessMixin, ListView):
+    template_name = "account/admin/black_list.html"
+    paginate_by = 12
     def get_queryset(self):
         return User.objects.filter(is_active=False)
+class WaitingList(LoginRequiredMixin, ListView):
+    template_name = "account/waiting_list.html"
+    def get_queryset(self):
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return Books.objects.exclude(waiting_users__isnull=True)
+        else:
+            return Books.objects.filter(waiting_users__in=[self.request.user.id])
+
+
+# class Profile(LoginRequiredMixin, DetailView):
+#     template_name = "account/profile.html"
+#     def get_object(self):
+#         id = self.request.user.id
+#         return get_object_or_404(User, id=id)
+class UserProfile(LoginRequiredMixin, UserAccessMixin, TemplateView):
+    template_name = "account/user/profile.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reserved_books"] = self.request.user.reservations.filter(status="رزرو شده")
+        context["delivered_books"] = self.request.user.reservations.filter(status="تحویل داده شده")
+        return context
+class AdminProfile(LoginRequiredMixin, StaffAccessMixin, TemplateView):
+    template_name = "account/admin/profile1.html"
     
-# -------------------------------Registration---------------------------------
+@login_required
+def identifier(request):
+    if request.user.is_superuser or request.user.is_staff:
+        return HttpResponseRedirect("admin-profile")
+    else:
+        return HttpResponseRedirect("user-profile")
+
+
+class ProfileUpdate(UserAccessMixin, LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = "account/user/update_profile.html"
+    form_class = UpdateProfileForm
+    success_url = reverse_lazy("account:identifier")
+    def get_object(self):
+        return User.objects.get(id=self.request.user.id)
+    
+    
+
+class BookmarkList(LoginRequiredMixin, ListView):
+    template_name = "account/user/bookmarks.html"
+    paginate_by = 9
+    def get_queryset(self):
+        return Books.objects.filter(bookmarks__in=[self.request.user.id])
+    
 
 # def signup(request):
 #     if request.method == 'POST':
@@ -485,11 +508,14 @@ def activate(request, uidb64, token):
         context = {"is_valid": False}
     return render(request, "registration/confirmation.html", context)
     
-# --------------------------------waiting-list-------------------------------
-class WaitingList(LoginRequiredMixin, ListView):
-    template_name = "account/waiting_list.html"
-    def get_queryset(self):
-        if self.request.user.is_staff or self.request.user.is_superuser:
-            return Books.objects.exclude(waiting_users__isnull=True)
-        else:
-            return Books.objects.filter(waiting_users__in=[self.request.user.id])
+
+class CreationView(LoginRequiredMixin, StaffAccessMixin, TemplateView):
+    template_name = "account/admin/creation.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_form"] = RegistrationForm
+        context["author_form"] = AuthorForm
+        context["book_form"] = BookForm
+        context["category_form"] = CategoryForm
+        context["reservation_form"] = ReservationForm
+        return context

@@ -37,9 +37,16 @@
               </div>
               <div class="col-12 product-image-thumbs">
                 <div class="">نویسنده:</div>
+                {% if request.user.view_authors %}
+                  
                 <div class="product-image-thumb p-img-t">{% for author in object.author.all %}
                   <a href="{% url 'account:author-detail' author.slug %}">{{author.name}}</a>, 
                 {% endfor %}</div>
+                {% else %}
+                <div class="product-image-thumb p-img-t">{% for author in object.author.all %}
+                  <a href="{% url 'account:author-detail' author.slug %}">{{author.name}}</a>, 
+                {% endfor %}</div>
+                {% endif %}
                 <div class=" p-img-t">منتشرکننده:</div>
                 <div class="product-image-thumb">{{object.publisher}}</div>
               </div>
@@ -49,69 +56,118 @@
              
               <hr>
               <h4>اطلاعات </h4>
-              <div class="btn-group btn-group-toggle" data-toggle="buttons" style="justify-content: space-evenly;">
-                <label class="text-center bg-green" style="width: 50%;margin:0px;">
+              <div class="btn-group btn-group-toggle" style="justify-content: space-evenly;">
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;border-top-right-radius: 5px;padding:10px;border-left: solid #343A40;">
                  
-                  موجودی برای رزرو
+                  موجودی برای رزرو:
                   <br>
                  {{object.in_stock_user}}
                 </label>
-                <label class=" text-center bg-olive" style="width: 50%;margin:0px;">
+                <label class=" text-center bg-gray" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-right: solid #343A40;">
                 
-                  موجودی برای تحویل
+                  موجودی برای تحویل:
                   <br>
                  {{object.in_stock}}
                 </label>
-                <label class="text-center bg-warning " style="width: 50%;margin:0px;">
+                <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-left: solid #6C757D;">
                  
-                  صف انتظار
+                  زبان نوشتار:
+                  <br>
+                 {{object.language}}
+                </label>
+                <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-right: solid #6C757D;">
+                 
+                  لینک:
+                  <br>
+                 {{object.slug}}
+                </label>
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-left: solid #343A40;">
+                 
+                  تاریخ ایجاد:
+                  <br>
+                 {{object.persian_date}}
+                </label>
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-right: solid #343A40;">
+                 
+                  رده سنی:
+                  <br>
+                 {{object.age_category}}
+                </label>
+                <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-left: solid #6C757D;">
+                 
+                  مترجم:
+                  <br>
+                 {{object.translator}}
+                </label>
+                <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-right: solid #6C757D;">
+                 
+                  سال چاپ:
+                  <br>
+                 {{object.pub_year}}
+                </label>
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-left: solid #343A40;">
+                 
+                  تعداد صفحات:
+                  <br>
+                 {{object.number_of_pages}}
+                </label>
+                
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;border-top-left-radius: 5px;padding:10px;border-right: solid #343A40;">
+                 
+                  سری چاپ:
+                  <br>
+                 {{object.edition}}
+                </label>
+                <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-left: solid #6C757D;">
+                 
+                  صف انتظار:
                   <br>
                  {{object.waiting_users.count}}
                 </label>
-                <label class="text-center bg-indigo" style="width: 50%;margin:0px;">
+                <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-right: solid #6C757D;">
                  
-                  دسته بندی
+                  کد کتاب:
                   <br>
+                 {{object.id}}
+                </label>
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;padding:10px;border-bottom-right-radius: 5px;border-left: solid #343A40;">
+                 
+                  درحال مطالعه:
+                  <br>
+                 {{reading_number}}
+                </label>
+                <label class="text-center bg-gray" style="width: 50%;margin:0px;padding:10px;border-bottom-left-radius: 5px;border-right: solid #343A40;">
+                 
+                  دسته بندی:
+                  <br>
+                  {% if request.user.view_categories %}
+                    
                   {% for category in object.category.all %}
                   <a href="{% url 'account:category-detail' category.slug %}">{{category.name}}</a>, 
                 {% endfor %}
+                {%else%}
+                {% for category in object.category.all %}
+                {{category.name}}, 
+                {% endfor %}
+                  {% endif %}
+
                 </label>
-                <label class="text-center bg-info" style="width: 100%;margin:0px;">
-                 
-                  در حال مطالعه
-                  <br>
-                  {{reading_number}}
-                </label>
+                
               </div>
 
-              <h4 class="mt-3">دیگر اطلاعات</h4>
-              <div class="btn-group btn-group-toggle" data-toggle="buttons" style="justify-content: space-evenly;">
-                <label class="text-center">
-                  <span class="text-xl">رده سنی</span>
-                  <br>
-                  {{object.age_category}}
-                </label>
-                <label class="text-center">
-                  <span class="text-xl">مترجم</span>
-                  <br>
-                  {{object.translator}}
-                </label>
-                <label class="text-center">
-                  <span class="text-xl">سال انتشار</span>
-                  <br>
-                  {{object.pub_year}}
-                </label>
-                <label class="text-center">
-                  <span class="text-xl">تعداد صفحات</span>
-                  <br>
-               {{object.number_of_pages}}
-                </label>
-              </div>
 
 
               <div class="mt-4" style="text-align: left;margin-left: 35px;">
-                  <a href="#" class="btn btn-primary btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
-                ویرایش</a>
+                {% if request.user.update_books %}
+                  
+                <a href="{% url 'account:book-update' object.slug %}" class="btn btn-primary btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+              ویرایش</a>
+                {% endif %}
+                {% if request.user.delete_books %}
+                  <a href="{% url 'account:book-delete' object.slug %}" class="btn btn-danger btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+                حذف</a>
+                {% endif %}
+                  
                  
               </div>
 
@@ -127,7 +183,7 @@
               </div>
             </nav>
             <div class="tab-content p-3" id="nav-tabContent">
-              <div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.description|safe}}
+              <div class="tab-pane fade" style="padding: 10px;" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.description|safe|linebreaksbr}}
                  </div>
               <div class="tab-pane fade active show" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
                 <div class="post clearfix">
@@ -205,20 +261,20 @@
                   </p>
                 </div>
               
-              </div>
-              <div class="card-footer">
-                <nav aria-label="Contacts Page Navigation">
-                  <ul class="pagination justify-content-center m-0">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link" href="#">8</a></li>
-                  </ul>
-                </nav>
+                <div class="card-footer">
+                  <nav aria-label="Contacts Page Navigation">
+                    <ul class="pagination justify-content-center m-0">
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">4</a></li>
+                      <li class="page-item"><a class="page-link" href="#">5</a></li>
+                      <li class="page-item"><a class="page-link" href="#">6</a></li>
+                      <li class="page-item"><a class="page-link" href="#">7</a></li>
+                      <li class="page-item"><a class="page-link" href="#">8</a></li>
+                    </ul>
+                  </nav>
+                </div>
               </div>
             </div>
           </div>

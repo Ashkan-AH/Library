@@ -21,16 +21,26 @@ class User(AbstractUser):
     ROLE_CHOICES = {
         "دانشجو":"دانشجو", 
         "استاد":"استاد", 
-        "کامند":"کامند",
+        "کارمند":"کارمند",
     }
-    GRADE_CHOICES = {
+    STUDENT_GRADE_CHOICES = {
         "کاردانی":"کاردانی",
         "کارشناسی":"کارشناسی",
+    }
+    PROFESSOR_GRADE_CHOICES = {
+        "کاردانی":"کاردانی",
+        "کارشناسی":"کارشناسی",
+        "کاردانی و کارشناسی": "کاردانی و کارشناسی",
     }
     UNIT_CHOICES = {
         "آموزشکده فنی بندر انزلی - شهید خدادادی":"آموزشکده فنی بندر انزلی - شهید خدادادی",
         "آموزشکده فنی رستم آباد رودبار - سیدالشهداء":"آموزشکده فنی رستم آباد رودبار - سیدالشهداء",
         "آموزشکده فنی رشت - شهید چمران":"آموزشکده فنی رشت - شهید چمران",
+        "آموزشکده فنی پسران آسانه اشرفیه":"آموزشکده فنی پسران آسانه اشرفیه",
+        "آموزشکده فنی پسران لاهیجان-شهیدرجائی":"آموزشکده فنی پسران لاهیجان-شهیدرجائی",
+        "دانشکده فنی و حرفه ای صومعه سرا":"دانشکده فنی و حرفه ای صومعه سرا",
+        "آموزشکده فنی دختران رشت":"آموزشکده فنی دختران رشت",
+        "دانشگاه فنی و حرفه ای استان گیلان":"دانشگاه فنی و حرفه ای استان گیلان",
         
     }
     MAJOR_CHOICES = {
@@ -47,7 +57,7 @@ class User(AbstractUser):
     email = models.EmailField(verbose_name="ایمیل", unique=True, blank=False)
     address = models.TextField(verbose_name="آدرس منزل", blank=True)
     birth_number = models.CharField(verbose_name="شماره شناسنامه", max_length=20, blank=True)
-    national_code = models.CharField(max_length=10, verbose_name="کدملی", unique=True, blank=True)
+    national_code = models.CharField(max_length=10, verbose_name="کدملی", blank=True)
     fathers_name = models.CharField(verbose_name="نام پدر", max_length=50, blank=True)
     sel_number = models.CharField(max_length=15, verbose_name="تلفن همراه", blank=True)
     home_number = models.CharField(max_length=11, blank=True, verbose_name="تلفن ثابت")
@@ -64,22 +74,51 @@ class User(AbstractUser):
 
     st_id = models.CharField(blank=True, max_length=15, verbose_name="کد دانشجویی")
     st_major = models.CharField(max_length=15, verbose_name="رشته تحصیلی", blank=True, choices=MAJOR_CHOICES)
-    st_grade = models.CharField(max_length=15, verbose_name="مقطع تحصیلی", blank=True, choices=GRADE_CHOICES)
+    st_grade = models.CharField(max_length=15, verbose_name="مقطع تحصیلی", blank=True, choices=STUDENT_GRADE_CHOICES)
 
 
-    co_id = models.CharField(blank=True, max_length=15, verbose_name="کد کارمندی")
-    co_unit = models.CharField(max_length=50, verbose_name="محل کار", blank=True, choices=UNIT_CHOICES)
-    co_grade = models.CharField(max_length=15, verbose_name="سمت شغلی", blank=True)
+    emp_id = models.CharField(blank=True, max_length=15, verbose_name="کد پرسنلی")
+    emp_unit = models.CharField(max_length=50, verbose_name="محل کار", blank=True, choices=UNIT_CHOICES)
+    emp_grade = models.CharField(max_length=255, verbose_name="سمت شغلی", blank=True)
 
 
     pro_id =models.CharField(blank=True, max_length=15, verbose_name="کد استادی")
-    pro_major = models.CharField(max_length=15, verbose_name="رشته درسی", blank=True, choices=MAJOR_CHOICES)
-    pro_grade = models.CharField(max_length=15, verbose_name="مقطع درسی", blank=True, choices=GRADE_CHOICES)
+    pro_major = models.CharField(max_length=15, verbose_name="رشته آموزشی", blank=True, choices=MAJOR_CHOICES)
+    pro_grade = models.CharField(max_length=18, verbose_name="مقطع آموزشی", blank=True, choices=PROFESSOR_GRADE_CHOICES)
+
+
+    #Permissions
+    #View
+    view_books = models.BooleanField(verbose_name="مشاهده کتاب ها", default=False)
+    view_authors = models.BooleanField(verbose_name="مشاهده نویسندگان", default=False)
+    view_reservations = models.BooleanField(verbose_name="مشاهده رزرو ها", default=False)
+    view_users = models.BooleanField(verbose_name="مشاهده کاربران", default=False)
+    view_categories = models.BooleanField(verbose_name="مشاهده دسته بندی ها", default=False)
+    #Update
+    update_books = models.BooleanField(verbose_name="ویرایش کتاب ها", default=False)
+    update_authors = models.BooleanField(verbose_name="ویرایش نویسندگان", default=False)
+    update_reservations = models.BooleanField(verbose_name="ویرایش رزرو ها", default=False)
+    update_users = models.BooleanField(verbose_name="ویرایش کاربران", default=False)
+    update_categories = models.BooleanField(verbose_name="ویرایش دسته بندی", default=False)
+    #Create
+    create_books = models.BooleanField(verbose_name="ایجاد کتاب ها", default=False)
+    create_authors = models.BooleanField(verbose_name="ایجاد نویسندگان", default=False)
+    create_reservations = models.BooleanField(verbose_name="ایجاد رزرو ها", default=False)
+    create_users = models.BooleanField(verbose_name="ایجاد کاربران", default=False)
+    create_categories = models.BooleanField(verbose_name="ایجاد دسته بندی ها", default=False)
+    #Delete
+    delete_books = models.BooleanField(verbose_name="حذف کتاب ها", default=False)
+    delete_authors = models.BooleanField(verbose_name="حذف نویسندگان", default=False)
+    delete_reservations = models.BooleanField(verbose_name="حذف رزرو ها", default=False)
+    delete_users = models.BooleanField(verbose_name="حذف کاربران", default=False)
+    delete_categories = models.BooleanField(verbose_name="حذف دسته بندی ها", default=False)
+
+
     objects = UserManager2()
     
     def persian_birth_date(self):
         if self.birth_date:
-            return date2jalali(self.birth_date).strftime("%d %B %Y")
+            return date2jalali(self.birth_date)
     def persian_last_login(self):
         if self.last_login:
             return date2jalali(self.last_login).strftime("%d %B %Y")
@@ -93,7 +132,7 @@ class User(AbstractUser):
     #             user.delete()
 
     def is_information_compelete(self):
-        if self.first_name and self.last_name and self.address and self.birth_number and self.national_code and self.fathers_name and self.sel_number and self.emergency_number and self.birth_date and self.role:
+        if self.first_name and self.last_name and self.address and self.birth_number and self.national_code and self.fathers_name and self.sel_number and self.emergency_number and self.birth_date and ((self.role and ((self.st_id and self.st_grade and self.st_major) or (self.emp_grade and self.emp_id and self.emp_unit) or (self.pro_grade and self.pro_id and self.pro_major))) or self.is_staff or self.is_superuser):
             return True
         else:
             return False

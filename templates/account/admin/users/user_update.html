@@ -1,0 +1,218 @@
+{% extends "account/admin/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+  ویرایش اطلاعات {% if user.get_full_name %}
+  {{user.get_full_name|truncatewords:4}}
+  {%else%}
+  {{user.username|truncatechars:20}}
+{% endif %}
+{% endblock title %}
+{% block content %}
+  
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0 !important;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>ویرایش اطلاعات {% if user.get_full_name %}
+            {{user.get_full_name|truncatewords:4}}
+            {%else%}
+            {{user.username|truncatechars:20}}
+          {% endif %}</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card card-solid"><div class="card-body">
+        {% if request.user.update_users %}
+         
+       <form action="" enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+        <div class="row rowob "id="rowob">
+          
+          <div class="col-12 ">
+           
+            <h4> اطلاعات کاربری </h4>
+            <hr>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.username|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.first_name|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.last_name|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+                <div class="form-group col mb-0">{{form.reservation_limit|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.email|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.birth_number|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+                <div class="form-group col mb-0">{{form.address|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.national_code|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.fathers_name|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.sel_number|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.home_number|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.emergency_number|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.birth_date|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <img src="{{user.picture.url}}" style="width: 60%;border: 3px solid lightgray;border-radius: 11px;margin-right:auto;margin-left: auto;display: block;margin-top: 20px;" class="center product-image img-watch"id="image1" alt="Product Image">
+                  <div class="col-12 product-image-thumbs">
+                    <div class="">انتخاب عکس: </div>
+                    <input accept=".jpg" onchange="previewImage(this, 'image1',event)" style="margin-right: 15px;" type="file" name="picture" accept="image/*" id="id_picture">
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.is_active|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.is_staff|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.is_superuser|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.role|as_crispy_field}}</div>
+            </div>
+            {% if user.role == "دانشجو" %}
+              
+            <div class="row">
+              <div class="form-group col mb-0">{{form.st_id|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.st_major|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.st_grade|as_crispy_field}}</div>
+            </div>
+            {% elif user.role == "استاد" %}
+            <div class="row">
+              <div class="form-group col mb-0">{{form.pro_id|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.pro_major|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.pro_grade|as_crispy_field}}</div>
+            </div>
+            {% elif user.role == "کارمند" %}
+            <div class="row">
+                <div class="form-group col mb-0">{{form.emp_id|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.emp_unit|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.emp_grade|as_crispy_field}}</div>
+            </div>
+            {% endif %}
+            {% if user.is_staff or is_superuser %}
+              
+            <h4>دسترسی های مشاهده</h4>
+            <hr>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.view_books|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.view_authors|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.view_reservations|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.view_users|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.view_categories|as_crispy_field}}</div>
+            </div>
+            <h4>دسترسی های ویرایش</h4>
+            <hr>
+            <div class="row">
+              <div class="form-group col mb-0">{{form.update_books|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.update_authors|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.update_reservations|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.update_users|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.update_categories|as_crispy_field}}</div>
+            </div>
+            <h4>دسترسی های ایجاد</h4>
+            <hr>
+            <div class="row">
+                <div class="form-group col mb-0">{{form.create_books|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.create_authors|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.create_reservations|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.create_users|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.create_categories|as_crispy_field}}</div>
+            </div>
+            <h4>دسترسی های حذف</h4>
+            <hr>
+            <div class="row">
+                <div class="form-group col mb-0">{{form.delete_books|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.delete_authors|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.delete_reservations|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.delete_users|as_crispy_field}}</div>
+                <div class="form-group col mb-0">{{form.delete_categories|as_crispy_field}}</div>
+            </div>
+          </div>
+            {% endif %}
+          
+        
+  
+  
+              <button type="submit" class="btn btn-success" style="margin-right: 15px;">ذخیره</button>
+  
+  
+          </div>
+       </form>
+       {% endif %}
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+  <!-- Control sidebar content goes here -->
+<div class="p-3 control-sidebar-content"><h5>Customize AdminLTE</h5><hr class="mb-2"><h6>Navbar Variants</h6><div class="d-flex"><div class="d-flex flex-wrap mb-3"><div class="navbar-primary elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-secondary elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-info elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-success elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-danger elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-indigo elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-purple elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-pink elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-teal elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-cyan elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-dark elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-gray-dark elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-gray elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-light elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-warning elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-white elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-orange elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div></div></div><div class="mb-4"><input type="checkbox" value="1" class="mr-1"><span>No Navbar border</span></div><h6>Dark Sidebar Variants</h6><div class="d-flex"></div><div class="d-flex flex-wrap mb-3"><div class="bg-primary elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-warning elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-info elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-danger elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-success elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-indigo elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-navy elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-purple elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-fuchsia elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-pink elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-maroon elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-orange elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-lime elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-teal elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-olive elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div></div><h6>Light Sidebar Variants</h6><div class="d-flex"></div><div class="d-flex flex-wrap mb-3"><div class="bg-primary elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-warning elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-info elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-danger elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-success elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-indigo elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-navy elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-purple elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-fuchsia elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-pink elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-maroon elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-orange elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-lime elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-teal elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="bg-olive elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div></div><h6>Brand Logo Variants</h6><div class="d-flex"></div><div class="d-flex flex-wrap mb-3"><div class="navbar-primary elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-secondary elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-info elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-success elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-danger elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-indigo elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-purple elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-pink elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-teal elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-cyan elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-dark elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-gray-dark elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-gray elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-light elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-warning elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-white elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><div class="navbar-orange elevation-2" style="width: 40px; height: 20px; border-radius: 25px; margin-right: 10px; margin-bottom: 10px; opacity: 0.8; cursor: pointer;"></div><a href="javascript:void(0)">clear</a></div></div></aside>
+    
+      <style>
+    
+        
+    .grid-body {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .bookprop-table {
+        box-shadow: 0px 12px 14px 0px;
+        height: fit-content;
+        width: 50%;
+    }
+    
+    .tr-row {
+        height: 50px;
+        /* border: solid; */
+        border-radius: 10px;
+        background: #bfbfbf;
+    }
+    .book-ad-single{
+        display: flex;
+        justify-content: space-between;
+        width:100%;
+    }
+    .book-ad-single img{
+        width: 350px;
+        height: 350px;
+        margin: 50px;
+    }
+    
+    .tr-alt-row {
+        background: white;
+    }
+      </style>
+      
+      {% endblock content %}
+      {% block script %}
+        
+<script src="{% static 'user/dist/js/object-edit.js' %}"></script>
+      {% endblock script %}

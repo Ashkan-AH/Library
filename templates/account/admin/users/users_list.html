@@ -5,7 +5,7 @@
 {% block content %}
   
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px;">
+  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0 !important;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -33,50 +33,127 @@
 
             
             {% for user in object_list %}
-            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
-              <div class="card bg-light item">
-                <div class="card-header text-muted border-bottom-0">
-                  {{user.role}} 
+            <div class="col-md-4">
+              <!-- Widget: user widget style 1 -->
+              <div class="small-box card card-widget widget-user">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                 <a href="{% url 'account:user-detail' user.id %}">
+                  
+                {% if not user.is_active %}
+                <div class="small-box widget-user-header bg-gray-dark" style="border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;">
+                  <div class="inner" style="padding: 0px;">
+                    <h3 class="widget-user-username">{% if user.get_full_name %}
+                    {{user.get_full_name|truncatewords:3}}
+                    {%else%}
+                    {{user.username|truncatechars:15}}
+                  {% endif %}</h3>
+                  {% if user.is_superuser %}
+                    <h5 class="widget-user-desc">ابر ادمین</h5>
+                  {% elif user.is_staff %}
+                      <h5 class="widget-user-desc">ادمین</h5>
+                  {% elif user.role %}
+                  <h5 class="widget-user-desc">{{user.role}}</h5>
+                  {% endif %}
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-user-times"></i>
+                  </div>
                 </div>
-                <div class="card-body pt-0">
-                  <div class="row row2">
-                    
-                      <ul class="ml-4 mb-0 fa-ul text-muted">
-                        <li class="small"><span>تماس:</span> <section>{{user.sel_number}}</section></li>
-                     
+                {% elif user.is_information_compelete %}
+                <div class="small-box widget-user-header bg-success" style="border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;">
+                  <div class="inner" style="padding: 0px;">
+                    <h3 class="widget-user-username">{% if user.get_full_name %}
+                    {{user.get_full_name|truncatewords:3}}
+                    {%else%}
+                    {{user.username|truncatechars:15}}
+                  {% endif %}</h3>
+                  {% if user.is_superuser %}
+                    <h5 class="widget-user-desc">ابر ادمین</h5>
+                  {% elif user.is_staff %}
+                      <h5 class="widget-user-desc">ادمین</h5>
+                  {% elif user.role %}
+                  <h5 class="widget-user-desc">{{user.role}}</h5>
+                  {% endif %}
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-check"></i>
+                  </div>
+                </div>
+                {% elif not user.is_information_compelete %}
+                <div class="small-box widget-user-header bg-warning" style="border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;">
+                  <div class="inner" style="padding: 0px;">
+                    <h3 class="widget-user-username">{% if user.get_full_name %}
+                      {{user.get_full_name|truncatewords:3}}
+                      {%else%}
+                      {{user.username|truncatechars:15}}
+                    {% endif %}</h3>
+                    {% if user.is_superuser %}
+                      <h5 class="widget-user-desc">ابر ادمین</h5>
+                    {% elif user.is_staff %}
+                      <h5 class="widget-user-desc">ادمین</h5>
+                  {% elif user.role %}
+                  <h5 class="widget-user-desc">{{user.role}}</h5>
+                    {% endif %}
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-edit"></i>
+                  </div>
+                </div>
+                
+                {% endif %}
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="{{user.picture.url}}" alt="{{user.username}}" style="margin-left: -5px;object-fit: cover;width: 100px;height: 100px;">
+                </div>
+                 </a>
+                 <div class="card-footer p-0" style="border-top:0px;margin-top: 40px;">
+                  <ul class="nav flex-column" style="background-color: white;padding: 0px;">
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                        کد عضویت: <span class="float-right">{{user.id}}</span>
                       
-                        <li class="small"><span>کدملی</span> <section>{{user.national_code}}</section></li>
-                        
-                        
-                         <li class="small" style="justify-content: center;"><span>  کاردانی و کار شناسی</span><section>نرم افزار</section></li>
-
-                        
-                      </ul>
-                   
-                      <section class="m-auto">01111129302026</section><span style="font-size: 12px;
-    margin-left: 40%;">کد استادی</span>
-
-                      <p class="text-muted text-sm m-auto"><b>کد عضویت: </b>11</p>
-
-                       <h2 class="lead m-auto"><b>اشکان همتی</b></h2>
-
-                    <div class="col-5 text-center m-auto">
-                      <img src="../../../uni-project/uni-project/images/Newfolder/teenager-using-tablet-library.jpg
-                      " alt="" class="img-circle img-fluid img-news">
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <div class="text-right">
-                    <a href="#" class="btn btn-sm bg-teal">
-                      افزودن به لیست سیاه
-                    </a>
-                    <a href="#" class="btn btn-sm btn-primary">
-                      <i class="fas fa-user"></i> مشاهده حساب  
-                    </a>
-                  </div>
+                    </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                        کد ملی: <span class="float-right">{{user.national_code}}</span>
+                      
+                    </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                        تلفن همراه: <span class="float-right">{{user.sel_number}}</span>
+                      
+                    </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                        تاریخ تولد: <span class="float-right">{{user.persian_birth_date}}</span>
+                    </li>
+                    {% if user.role == "کارمند" %}
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      کد پرسنلی: <span class="float-right">{{user.emp_id}}</span>
+                  </li>
+                    {% elif user.role == "دانشجو" %}
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      کد دانشجویی: <span class="float-right">{{user.st_id}}</span>
+                  </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      مقطع تحصیلی: <span class="float-right">{{user.st_grade}}</span>
+                  </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      رشته تحصیلی: <span class="float-right">{{user.st_major}}</span>
+                  </li>
+                    {% elif user.role == "استاد" %}
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      کد استادی: <span class="float-right">{{user.pro_id}}</span>
+                  </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      مقطع آموزشی: <span class="float-right">{{user.pro_grade}}</span>
+                  </li>
+                    <li class="nav-item" style="border-bottom:0px;margin: 0px 18px 7px 18px;">
+                      رشته آموزشی: <span class="float-right">{{user.pro_major}}</span>
+                  </li>
+                    {% endif %}
+                  </ul>
+                  <a href="{% url 'account:user-detail' user.id %}" class="btn btn-default" style="width: 100%;border-top-left-radius: 0px;border-top-right-radius: 0px;">
+                    مشخصات کامل <i class="fas fa-arrow-circle-right"></i>
+                  </a>
                 </div>
               </div>
+              <!-- /.widget-user -->
             </div>
             {% endfor %}
 
@@ -87,14 +164,17 @@
         <div class="card-footer">
           <nav aria-label="Contacts Page Navigation">
             <ul class="pagination justify-content-center m-0">
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
-              <li class="page-item"><a class="page-link" href="#">5</a></li>
-              <li class="page-item"><a class="page-link" href="#">6</a></li>
-              <li class="page-item"><a class="page-link" href="#">7</a></li>
-              <li class="page-item"><a class="page-link" href="#">8</a></li>
+              
+              {% if page_obj.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                  {% endif %}
+              {% for page_number in page_obj.paginator.page_range %}
+                
+              <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                  {% endif %}
             </ul>
           </nav>
         </div>

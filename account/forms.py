@@ -6,8 +6,12 @@ from reservation.models import Reservation
 from .models import User
 from jalali_date.fields import JalaliDateField
 from jalali_date.widgets import AdminJalaliDateWidget
+from ckeditor.widgets import CKEditorWidget
 
 class BookForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['description'].widget = CKEditorWidget(attrs={'id': "id_book_description"})
     class Meta:
         model = Books
         exclude = ["slug", "bookmarks", "waiting_users"]
@@ -20,10 +24,14 @@ class SearchForm(forms.Form):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ["name"]
+        fields = ["name", "picture"]
 
         
 class AuthorForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['description'].widget = CKEditorWidget(attrs={'id': "id_author_description"})
+
     class Meta:
         model = Author
         fields = ["name", "picture", "description"]
@@ -32,7 +40,7 @@ class AuthorForm(forms.ModelForm):
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ["book_id", "user_id", "status", "delivery_date", "extend_sluts"]
+        fields = ["book_id", "user_id", "extend_sluts"]
 
     def __init__(self, *args, **kwargs):
         signal = 0
@@ -61,7 +69,7 @@ class UpdateUserForm(forms.ModelForm):
         self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
     class Meta:
         model = User
-        fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "is_superuser", "is_staff", "is_active", "fathers_name", "birth_number", "emergency_number", "role", "reservation_limit"]
+        fields = ["username", "first_name", "last_name", "email", "address", "birth_number", "national_code", "fathers_name", "sel_number", "home_number", "emergency_number", "birth_date", "picture", "reservation_limit", "is_active", "is_staff", "is_superuser", "role", "st_id", "st_major", "st_grade", "emp_id", "emp_unit", "emp_grade", "pro_id", "pro_major", "pro_grade", "view_books", "view_authors", "view_reservations", "view_users", "view_categories", "update_books", "update_authors", "update_reservations", "update_users", "update_categories", "create_books", "create_authors", "create_reservations", "create_users", "create_categories", "delete_books", "delete_authors", "delete_reservations", "delete_users", "delete_categories",]
 
 class UpdateProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -69,4 +77,4 @@ class UpdateProfileForm(forms.ModelForm):
         self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
     class Meta:
         model = User
-        fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "fathers_name", "birth_number", "emergency_number", "role"]
+        fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "fathers_name", "birth_number", "emergency_number", "role", "st_id", "st_major", "st_grade", "emp_id", "emp_unit", "emp_grade", "pro_id", "pro_major", "pro_grade"]

@@ -23,5 +23,5 @@ class Author(models.Model):
     html_img.short_description = "تصویر"
 
     def persian_date(self):
-        return date2jalali(self.date_added).strftime("%Y %B %d")
+        return date2jalali(self.date_added).strftime("%d %B %Y")
 # Create your models here.

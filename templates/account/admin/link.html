@@ -1,4 +1,11 @@
-<a href="{% url link %}" class="nav-link {% if request.resolver_match.url_name == link_name %}active{% endif %}">
-    <i class="fa {{icon}} nav-icon"></i>
-    <p>{{content}}</p>
+{% if request.resolver_match.url_name == link_name %}
+<a href="{% url link %}" class="nav-link active" style="background-color: #01D28E;">
+    <i class="{{icon}} nav-icon" style="color: white"></i>
+    <p style="color: white">{{content}}</p>
 </a>
+{% else %}
+<a href="{% url link %}" class="nav-link">
+    <i class="{{icon}} nav-icon" style="color: #c2c7d0;"></i>
+    <p style="color: #c2c7d0;">{{content}}</p>
+</a>
+{% endif %}

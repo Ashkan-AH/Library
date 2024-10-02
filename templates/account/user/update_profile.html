@@ -1,311 +1,428 @@
-{% extends "../main/base.html" %}
+{% load widget_tweaks %}
 {% load static %}
-{% block title %}
-  ویرایش مشخصات
-{% endblock title %}
-{% block content %}
-  
-<div class="alertion hide" id="alertion"> 
-<hr>
-<h6 id="alertion-text"></h6>
-<hr>
-
-</div>
-<section class="hero-wrap hero-wrap-2 " style="background-image: url({% static 'main/images/Newfolder/nature.jpg' %}); height: 1030px !important;" data-stellar-background-ratio="0.5">
-  <div class="overlay" style="height: 1030px;"></div>
-  <div class="container">
-    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-  
-<div class="morepagesearch">
-  <input type="text" id="search-input" placeholder="جست جو  با نویسنده کتاب دسته بندی" >
-       
-   
-     <button class="img"  id="search-btn" >
-    <img src="{% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %} " alt="">
-  </button>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>سرزمین کتاب /تکمیل فرم ثبت نام</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-  </div>
-      <div class="col-md-9 ftco-animate pb-5">
-        <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'books:index' %}">خانه <i class="ion-ios-arrow-forward"></i></a></span> <span> ثبت نام <i class="ion-ios-arrow-forward"></i></span></p>
-        <h1 class="mb-3 bread"> ثبت مشخصات</h1>
-      </div>
-    </div>
-  </div>
- <!--   formmm    -----------------------  start-->
-  <form class="form-horizontal  form-newstyle" method="post" id="form-input" style="
-         z-index: 1;
-         position: absolute;
-         left: 13%;
-         width: 75%;
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'main/css/open-iconic-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/animate.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'main/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'main/css/magnific-popup.css' %}">
+
+    <link rel="stylesheet" href="{% static 'main/css/aos.css' %}">
+
+    <link rel="stylesheet" href="{% static 'main/css/ionicons.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/jquery.timepicker.css' %}">
+
+
+    
+    <link rel="stylesheet" href="{% static 'main/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/icomoon.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/media-phone.css' %}">
+
+    <style>
+      button.logout-btn:hover {
+        color: #01D28E;
+        
+      }
+      button.logout-btn{
+        font-size: 15px;
+        padding-top: .9rem;
+        padding-bottom: .9rem;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: #fff;
+        font-weight: 400;
+        opacity: 1 !important;
+        border: 0;
+        background-color: transparent;
+        transition: .3s all ease;
+      }
+    </style>
+
+  </head>
+  <body>
+    
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="{% url 'books:index' %}">سرزمین <span>کتاب</span></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> منو
+	      </button>
+
+		  
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a href="{% url 'books:index' %}" class="nav-link">خانه</a></li>
+				<li class="nav-item"><a href="{% url 'books:books' %}" class="nav-link">کتاب ها</a></li>
+				<li class="nav-item"><a href="{% url 'author:authors' %}" class="nav-link">نویسندگان</a></li>
+				<li class="nav-item"><a href="{% url 'books:categories' %}" class="nav-link">دسته بندی</a></li>
+				<li class="nav-item"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a></li>
+        <li class="nav-item">
+				<form id="logout-form" method="post" action="{% url 'logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="logout-btn">خروج</button>
+				  </form></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+    
+    <div class="alertion hide" id="alertion"> 
+		<hr>
+		<h6 id="alertion-text"></h6>
+		<hr>
+  
+	  </div>
+    <section class="hero-wrap hero-wrap-2 " style="background-image: url('{% static 'main/images/Newfolder/nature.jpg' %}'); height: 1030px !important;" data-stellar-background-ratio="0.5">
+      <div class="overlay" style="height: 1030px;"></div>
+      
+     <!--   formmm    -----------------------  start-->
+      <form class="form-horizontal  form-newstyle" method="post" enctype="multipart/form-data" id="form-input" style="
+             z-index: 1;
+             position: absolute;
+             left: 13%;
+             width: 75%;
+             top: 150px !important;
 ">
-{% if request.user.is_superuser %}
-  
-{{form.as_p}}
-{%else%}
-{{form.first_name}}
-{{form.last_name}}
-{{form.address}}
-{{form.national_code}}
-{{form.sel_number}}
-{{form.home_number}}
-{{form.picture}}
-{{form.birth_date}}
-{{form.emergency_number}}
-{{form.role}}
-{{form.st_id}}
-{{form.st_major}}
-{{form.st_grade}}
-{{form.co_id}}
-{{form.co_unit}}
-{{form.co_grade}}
-{{form.pro_id}}
-{{form.pro_major}}
-{{form.pro_grade}}
-
-{% endif %}
-        <section class="user-img-get" style="background-image: url({{object.picture.url}}); background-size: cover;">
-           
-            <button class="img edit-btn" id="img-edit-btn"></button>
-        </section>
-        <h2 style="
-        color: white;
-        text-align: center;
-        margin: 8px 0px 6px 0px;">نمایه</h2>
-    
-      <hr>
-      
-        <div class="user-prop">
-        <div class="form-group  user-fa">
-          <label for="id_first_name" class="col-sm-2 control-label inputName2 label-fa">نام</label>
-
-          <div class="col-sm-10 inout-fa">
-            <input type="texts" name="first_name"  class="form-control" id="id_first_name" value="{{object.first_name}}" placeholder="(الزامی)نام را در اینجا بنویسید" maxlength="150" minlength="3" required="">
-          </div>
-        </div>
-        <div class="form-group user-fa">
-          <label for="id_last_name" class="col-sm-2 control-label inputName2 label-fa">نام خانوادگی</label>
-
-          <div class="col-sm-10 inout-fa">
-            <input type="text" name="last_name" value="{{object.last_name}}" class="form-control" id="id_last_name" placeholder=" (الزامی)نام خانوادگی را در اینجا بنویسید" maxlength="150" minlength="3" required="">
-          </div>
-        </div>
-        <div class="form-group user-fa">
-          <label for="id_national_code" class="col-sm-2 control-label inputName2 label-fa">کد ملی</label>
-
-          <div class="col-sm-10 inout-fa">
-            <input type="tel" name="national_code" class="form-control" id="id_national_code" value="{{object.national_code}}" placeholder="(الزامی)کد ملی" maxlength="10" minlength="10" required="">
-          </div>
-        </div>
-        
-        
-      
-      
-      <div class="form-group user-fa">
-        <label for="id_birth_number" class="col-sm-2 control-label inputName2 label-fa"> شماره شناسنامه</label>
-
-        <div class="col-sm-10">
-          <input class="form-control" type="tel" name="birth_number" id="id_birth_number input-value" placeholder="شماره شناسنامه     (الزامی)" value="{{object.birth_number}}" maxlength="10" minlength="1" required="">
-        </div>
-      </div>
-      
-      <div class="user-prop">
-        
-        <div class="form-group user-fa">
-          <label for="id_fathers_name" class="col-sm-2 control-label inputName2 label-fa"> نام پدر</label>
-
-          <div class="col-sm-10 inout-fa">
-            <input type="text" class="form-control" name="fathers_name" id="id_fathers_name input-value" placeholder="نام پدر " minlength="3" value="{{object.fathers_name}}" maxlength="15" required="">
-          </div>
-        </div>
-         
-        <div class="form-group user-fa">
-          <label for="id_birth_date" class="col-sm-2 control-label inputName2 label-fa">تاریخ تولد</label>
-
-          <div class="col-sm-10 inout-fa">
-            <input type="date" name="birth_date" class="form-control" id="id_birth_date" value="{{object.birth_date}}" placeholder=" " required="">
-          </div>
-        </div>
-
-
-
-        <div class="user-prop" style="flex-wrap: nowrap;">
-
-
-          <div class="form-group user-fa">
-            <label for="id_sel_number" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن همراه</label>
-
-            <div class="col-sm-10 inout-fa">
-              <input type="tel" class="form-control" id="id_sel_number input-value" name="sel_number" placeholder="شماره تلفن(الزامی)" maxlength="11 " minlength="11" value="{{object.sel_number}}" required="">
-            </div>
-          </div>
-
-
-          
-          <div class="form-group user-fa">
-            <label for="id_emergency_number" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن همراه اضطراری</label>
-
-            <div class="col-sm-10 inout-fa">
-              <input type="tel" class="form-control" id="id_emergency_number input-value" name="emergency_number" placeholder="شمارع تلفن(الزامی)" maxlength="11" minlength="11" required="" value="{{object.emergency_number}}">
-            </div>
-          </div>
-
-          
-          <div class="form-group user-fa">
-            <label for="id_home_number" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن  ثابت</label>
-
-            <div class="col-sm-10 inout-fa">
-              <input type="tel" class="form-control" id="id_home_number input-value" name="home_number" placeholder="شمارع تلفن ثابت(الزامی)" maxlength="11" value="{{object.home_number}}" minlength="11" required="">
-            </div>
-          </div>
-          
-          
-        </div>
-        
-
-         <div class="user-prop">
-       
-          <div class="form-group" style="width: 100%;">
-            <label for="id_address" class="col-sm-2 control-label inputName2">آدرس  </label>
-
-            <div class="col-sm-10">
-              <textarea type="text" name="address" class="form-control" id="id_address input-value" placeholder="ادرس(الزامی)" maxlength="250" minlength="10" value="{{object.address}}" required=""></textarea>
-            </div>
-          </div>
-          
-         </div>
-
+{% csrf_token %}
+            <section class="user-img-get" style="background-position: center; background-size: cover;background-image: url('{{object.picture.url}}');" id="profile-img">
+               
+                <button class="img edit-btn" id="img-edit-btn"></button>
+            </section>
+            <h2 style="
+            color: white;
+            text-align: center;
+            margin: 8px 0px 6px 0px;">نمایه</h2>
         
           <hr>
           
-          <div class="user-prop">
-<!-- 
-            
-         <div class="form-group user-fa  user-fa">
-          {<label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa"> پست دانشگاهی </label>
-          <div class="col-sm-10 inout-fa">
-           <select name="job" id="job" class="job-selector">
-            <option value="choose">انتخاب کنید</option>
-            <option value="student">دانشجو</option>
-            <option value="professor">استاد</option>
-            <option value="Employee">کارمند</option>
+            <div class="user-prop" style="padding-top: 15px;padding-bottom: 15px;">
+            <div class="form-group  user-fa">
+              <label for="id_first_name" class="col-sm-2 control-label inputName2 label-fa">نام</label>
 
-           </select>
-
-         </div>}
-          </div>
-          <div class="form-group user-fa  user-fa">
-            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="job-selector-name">  پست دانشگاهی را انتخاب کنید  </label>
-            <div class="col-sm-10 inout-fa">
-             <select name="job" id="subject" class="job-selector">
-               <option value="software">انتخاب کنید </option>
-             </select>
-
-
+              <div class="col-sm-10 inout-fa">
+                {{form.first_name|add_class:"form-control"|attr:"required"}}
               </div>
             </div>
-          </div>
-          <div class="user-prop">
+            <div class="form-group user-fa">
+              <label for="inputEmail" class="col-sm-2 control-label inputName2 label-fa">نام خانوادگی</label>
+
+              <div class="col-sm-10 inout-fa">
+                {{form.last_name|add_class:"form-control"|attr:"required"}}
+              </div>
+            </div>
+            <div class="form-group user-fa">
+              <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa">کد ملی</label>
+
+              <div class="col-sm-10 inout-fa">
+                {{form.national_code|add_class:"form-control"|attr:"required"}}
+                
+              </div>
+            </div>
             
+            
+          
+          
           <div class="form-group user-fa">
-            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="student-number-select">پست دانشگاهی را انتخاب کنید </label>
+            <label for="inputExperience" class="col-sm-2 control-label inputName2 label-fa"> شماره شناسنامه</label>
 
-            <div class="col-sm-10 inout-fa">
-              <input type="tel" class="form-control" id="inputSkills" placeholder="پست سازمانی راانتخاب کنید" maxlength="14" minlength="14" style="
-              height: 35px !important;
-              border: solid 1px;
-          " required="">
+            <div class="col-sm-10">
+              {{form.birth_number|add_class:"form-control"|attr:"required"}}
+
             </div>
           </div>
+          
+            
+            <div class="form-group user-fa">
+              <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa"> نام پدر</label>
 
-          <div class="form-group user-fa  user-fa">
-            <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="leve-text"> 
-            پست دانشگاهی را انتخاب کنید </label>
-            <div class="col-sm-10 inout-fa">
-             <select name="job" id="joblevel" class="job-selector">
-              <option value="choose">انتخاب کنید</option>
+              <div class="col-sm-10 inout-fa">
+                
+                {{form.fathers_name|add_class:"form-control"|attr:"required"}}
+              </div>
+            </div>
+             
+            <div class="form-group user-fa">
+              <label for="inputName2" class="col-sm-2 control-label inputName2 label-fa">تاریخ تولد</label>
 
-             </select>
+              <div class="col-sm-10 inout-fa">
+                {{ form.birth_date|add_class:"form-control"|attr:"required" }}
+                
+              </div>
+            </div>
+
+
+
+            <div class="user-prop" style="flex-wrap: nowrap;">
+
+    
+              <div class="form-group user-fa">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن همراه</label>
+  
+                <div class="col-sm-10 inout-fa">
+                  {{form.sel_number|add_class:"form-control"|attr:"placeholder=0912*******"|attr:"required"}}
+                </div>
+              </div>
+  
+  
+              
+              <div class="form-group user-fa">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن همراه اضطراری</label>
+  
+                <div class="col-sm-10 inout-fa">
+                  {{form.emergency_number|add_class:"form-control"|attr:"placeholder=0912*******"|attr:"required"}}
+                </div>
+              </div>
+  
+              
+              <div class="form-group user-fa">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa">شماره تلفن  ثابت</label>
+  
+                <div class="col-sm-10 inout-fa">
+                  {{form.home_number|add_class:"form-control"|attr:"placeholder=013********"|attr:"required"}}
+                  
+                </div>
+              </div>
+              
+              
+            </div>
+            
+
+             <div class="user-prop">
+           
+              <div class="form-group" style="width: 100%;">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa">آدرس  </label>
+  
+                <div class="col-sm-12" style="margin-bottom: 20px;">
+                  {{form.address|add_class:"form-control"|attr:"rows=3"|attr:"required"}}
+                  
+
+                </div>
+              </div>
+              
+             </div>
+
+            
+              <hr>
+              
+              <div class="user-prop">
+
+                {% if not object.is_staff or not object.is_superuser %}
+                  
+             <div class="form-group user-fa  user-fa">
+              <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa"> پست دانشگاهی </label>
+              <div class="col-sm-10 inout-fa">
+               
+              {{form.role|add_class:"job-selector"|attr:"id=job"|attr:"required"}}
+
+             </div>
+              </div>
+              <div class="form-group user-fa  user-fa">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="job-selector-name">  پست دانشگاهی را انتخاب کنید  </label>
+                <div class="col-sm-10 inout-fa">
+                 <select name="job" id="id_default1" disabled class="job-selector">
+                   <option value="software">انتخاب کنید </option>
+                 </select>
+                 {{form.st_major|add_class:"job-selector"|add_class:"hide"|attr:"id=id_st_major"}}
+                 {{form.pro_major|add_class:"job-selector"|add_class:"hide"|attr:"id=id_pro_major"}}
+                 {{form.emp_grade|add_class:"form-control"|add_class:"hide"|attr:"id=id_emp_grade"}}
+  
+                  </div>
+                </div>
+              </div>
+              <div class="user-prop">
+                
+              <div class="form-group user-fa">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="student-number-select">پست دانشگاهی را انتخاب کنید </label>
+  
+                <div class="col-sm-10 inout-fa">
+                  <input type="tel" class="form-control " id="id_default2" disabled maxlength="14" minlength="14" style="
+                  height: 35px !important;
+                  border: solid 1px;
+              " required="">
+              {{form.st_id|add_class:"form-control"|add_class:"hide"|attr:"id=id_st_id"}}
+              {{form.emp_id|add_class:"form-control"|add_class:"hide"|attr:"id=id_emp_id"}}
+              {{form.pro_id|add_class:"form-control"|add_class:"hide"|attr:"id=id_pro_id"}}
+                </div>
+              </div>
+    
+              <div class="form-group user-fa  user-fa">
+                <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa" id="leve-text"> 
+                پست دانشگاهی را انتخاب کنید </label>
+                <div class="col-sm-10 inout-fa">
+                 <select name="job" disabled id="id_default3" class="job-selector">
+                  <option value="choose">انتخاب کنید</option>
+
+                 </select>
+                 {{form.st_grade|add_class:"job-selector"|add_class:"hide"|attr:"id=id_st_grade"}}
+                 {{form.pro_grade|add_class:"job-selector"|add_class:"hide"|attr:"id=id_pro_grade"}}
+                 {{form.emp_unit|add_class:"form-control"|add_class:"hide"|attr:"id=id_emp_unit"}}
+                  </div>
+                </div>
+                {% endif %}
+              
 
               </div>
-            </div> -->
-          
+              
+            
+            
+           
+              <div class="col-sm-offset-2 col-sm-10" id="div-button">
+                
+                
+                <a class="btn btn-danger btn-fa" href="{% url 'account:identifier' %}">لغو</a>
+                <button type="submit" class="btn btn-success btn-fa" id="submit-btn">تایید
+                </button>
+                
+             
+    	  </div>
+    
+    </div>
+    <div class="user-img-edit hide" id="edit-div">
+      <h3> عکس نمایه جدید</h3>
+      <section id="img-watch" style="background-position: center;"></section>
+  <input type="file" accept="image/*" name="picture" id="img-input" > 
+  <div class="edit-btns">
+    <button type="button" id="edit-btn1">تایید</button>
+    <button type="button" id="edit-btn2" style="background: red;color: white;">لغو</button>
 
-          </div>
-          
-        </div>
-        
+
+
+</div>
+    </div>
+    {{form.media}}
+       </form>
        
-          <div class="col-sm-offset-2 col-sm-10" id="div-button">
-            <button type="submit" class="btn btn-danger btn-fa " style="
-            background: #ffffff !important;
-           color: rgb(0, 0, 0);">ذخیره
-            </button>
-            
-            <button id="cancel-btn" class="btn btn-danger btn-fa">لغو 
-            </button>
-            <button class="btn btn-danger btn-fa" id="submit-btn" style="background-color: #01d28e; border:solid 2px #009563;">تایید
-            </button>
-            
-         
+    </section>
+
+    
+    <div class="alertion hide" id="alertion"> 
+      <hr>
+      <h6 id="alertion-text"></h6>
+      <hr>
+
     </div>
 
-</div>
-   </form>
-</section>
-
-
-<div class="alertion hide" id="alertion"> 
-  <hr>
-  <h6 id="alertion-text"></h6>
-  <hr>
-
-</div>
-
-
-<section class="edit-alert hide " id="edit-alertdiv">
-  <h4 id="edit-alert-text" >آیا از لغو عملیات اطمینان دارید؟</h4>
-  <div>
- <button id="edit-alert-btn1">تایید</button>
- <button  id="edit-alert-btn2" style="background-color: red;">لغو</button>
-</div>
-
-</section>
-
-<section class="edit-alert hide " id="edit-alert-submit">
-  <h4 id="edit-alert-text" >  آیا از صحت اطلاعات اطمینان دارید؟   </h4>
-  <div>
- <button type="submit" id="submit-alert-btn1">تایید</button>
- <button  id="submit-alert-btn2" style="background-color: red;">لغو</button>
-</div>
-
-</section>
-<div class="beautibackg" id="beautibackg" style="top: 1150px;"></div>
-<div class="user-img-edit hide" id="edit-div">
-  <h3> عکس نمایه جدید</h3>
-  <section id="img-watch"></section>
-<input type="file" accept="image/jpeg" name="picture" id="id_picture" >  
-<div class="edit-btns">
-<button id="edit-btn1">تایید</button>
-<button id="edit-btn2" style="background: red;color: white;">لغو</button>
-
-
-
-</div>
-</div>
+    <div class="beautibackg" id="beautibackg" style="top: 1150px;"></div>
+		
 <div class="book-page-title">
-<h1></h1>
-</div>
-<section class="ftco-section ftco-car-details">
-  <div class="container">
+	<h1></h1>
+  </div>
+		<section class="ftco-section ftco-car-details">
+      <div class="container">
+        
+        <div class="tab-pane" id="settings">
+
+          
+  <div  style="height: 350px;"></div>
+  
+    </section>
     
-    <div class="tab-pane" id="settings">
 
-      
-<div  style="height: 350px;"></div>
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+		<div class="container">
+		  <div class="row mb-5">
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2"><a href="#" class="logo">سرزمین <span>کتاب</span></a></h2>
+				<p>اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
+				<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+				  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+				  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+				  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4 ml-md-5">
+				<h2 class="ftco-heading-2">اطلاعات</h2>
+				<ul class="list-unstyled">
+				  <li><a href="#" class="py-2 d-block">درباره ما</a></li>
+				  <li><a href="#" class="py-2 d-block">خدمات</a></li>
+				  <li><a href="#" class="py-2 d-block">مجموعه های زیر نظر</a></li>
+				  <li><a href="#" class="py-2 d-block">قوانین و مقررات  </a></li>
+				  <li><a href="#" class="py-2 d-block">پشتیبانی &amp; کوکی ها </a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md">
+			   <div class="ftco-footer-widget mb-4">
+				<h2 class="ftco-heading-2">Customer Support</h2>
+				<ul class="list-unstyled">
+				  <li><a href="#" class="py-2 d-block">سوالات متداول</a></li>
+				  <li><a href="#" class="py-2 d-block">گزارش مشکل</a></li>
+				  <li><a href="#" class="py-2 d-block"> حریم خصوصی</a></li>
+				  <li><a href="#" class="py-2 d-block">راهنمای عملکرد</a></li>
+				  <li><a href="#" class="py-2 d-block"> پیوستن به اعضا</a></li>
+				</ul>
+			  </div>
+			</div>
+			<div class="col-md">
+			  <div class="ftco-footer-widget mb-4">
+				  <h2 class="ftco-heading-2"> سوالی دارید ?</h2>
+				  <div class="block-23 mb-3">
+					<ul>
+					  <li><span class="icon icon-map-marker"></span><span class="text">زیر نظر جمخوری اسلامی ایران -کانون پرورش فکری نوجوانان</span></li>
+					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">98 321 325 1263</span></a></li>
+					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@admin.com</span></a></li>
+					</ul>
+				  </div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col-md-12 text-center">
+  
+			  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+	Copyright &copy;<script>document.write(new Date().getFullYear());</script> کلیه حقوق طراحی متعلق به دانشکده میرزا کوچک صومعه سرا است و هرگونه کپی برداری پیگرد قانونی دارد <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://.com" target="_blank">amt-group</a>
+	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+			</div>
+		  </div>
+		</div>
+	  </footer>
+	  
+  
 
-</section>
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
-<script src="{% static 'js/main.js' %} "></script>
-<script src="{% static 'js/singup.js' %} "></script>
-<script src="{% static 'js/search.js' %} "></script>
-{% endblock content %}
+
+  <script src="{% static 'main/js/jquery.min.js' %}"></script>
+  <script src="{% static 'main/js/jquery-migrate-3.0.1.min.js' %}"></script>
+  <script src="{% static 'main/js/popper.min.js' %}"></script>
+  <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'main/js/jquery.easing.1.3.js' %}"></script>
+  <script src="{% static 'main/js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'main/js/jquery.stellar.min.js' %}"></script>
+  <script src="{% static 'main/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'main/js/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'main/js/aos.js' %}"></script>
+  <script src="{% static 'main/js/jquery.animateNumber.min.js' %}"></script>
+  <script src="{% static 'main/js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'main/js/jquery.timepicker.min.js' %}"></script>
+  <script src="{% static 'main/js/scrollax.min.js' %}"></script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+
+  <script src="{% static 'main/js/main.js' %}"></script>
+  <script src="{% static 'main/js/singup.js' %}"></script>
+  <script src="{% static 'main/js/search.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+
+  <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+    
+  </body>
+</html>

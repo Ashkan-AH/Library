@@ -20,7 +20,7 @@ class Category(models.Model):
         verbose_name_plural = 'دسته‌بندی‌ها'
 
     def persian_date_created(self):
-        return date2jalali(self.date_created).strftime("%Y %B %d")
+        return date2jalali(self.date_created).strftime("%d %B %Y")
     
     persian_date_created.short_description = "تاریخ ثبت"
 
@@ -49,8 +49,8 @@ class Books(models.Model):
     }
     name = models.CharField(max_length=255, verbose_name="نام کتاب", null=False, blank=False)
     author = models.ManyToManyField(Author, related_name="books", blank=False ,verbose_name="نویسندگان")
-    publisher = models.CharField(max_length=255, verbose_name="ناشر", default="نا معلوم", blank=True)
-    translator = models.CharField(max_length=150, verbose_name="مترجم", default="نا معلوم", blank=True)
+    publisher = models.CharField(max_length=255, verbose_name="ناشر", default="-", blank=True)
+    translator = models.CharField(max_length=150, verbose_name="مترجم", default="-", blank=True)
     number_of_pages = models.IntegerField(verbose_name="تعداد صفحات", default=0, blank=True)
     in_stock_user = models.IntegerField(verbose_name="موجودی رزرو نشده", default=1, blank=True)
     in_stock = models.IntegerField(verbose_name="موجودی واقعی", default=1, blank=True)
@@ -65,20 +65,19 @@ class Books(models.Model):
     date_edited = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)
     bookmarks = models.ManyToManyField(User, related_name="bookmarks", verbose_name="ذخیره شده ها", blank=True)
-     
     waiting_users = models.ManyToManyField(User, related_name="books", verbose_name="لیست انتظار")
     class Meta:
         verbose_name = "کتاب"
         verbose_name_plural = "کتاب ها"
 
     def persian_date(self):
-        return date2jalali(self.date_uploaded).strftime("%Y %B %d")
+        return date2jalali(self.date_uploaded).strftime("%d %B %Y")
     def in_stock_email(book):
         if book.in_stock_user > 0 and book.waiting_users != None:
             for user in book.waiting_users.all():
                 user = User.objects.get(id=user.id)
                 subject = f'افزایش موجودی {book.name}'
-                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.name} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/book/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری کنید.'
+                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.name} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/book/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری فرمایید.'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [user.email, ]
                 send_mail( subject, message, email_from, recipient_list )

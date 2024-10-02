@@ -14,18 +14,33 @@ let formsubmit=$.getElementById("form-input")
 let cancelBTN=$.getElementById("cancel-btn")
 let editbtn1=$.querySelector("#edit-btn1")
 let editbtn2=$.querySelector("#edit-btn2")
-let editalertdiv=$.getElementById("edit-alertdiv")
-// let jobselect=$.getElementById("job")
+let jobselect=$.getElementById("job")
 let checkbox=$.getElementById("checkbox")
-
-// let joblevel=$.getElementById("joblevel")
+let profileImage = $.getElementById("profile-img");
+let joblevel=$.getElementById("joblevel")
 let leveltext=$.getElementById("leve-text")
 let studentcode=$.getElementById("student-number-select")
 let jobselectname=$.getElementById("job-selector-name")
 
-// let inputSkillss=$.getElementById("inputSkills")
-// let subjectselect=$.getElementById("subject")
+let inputSkillss=$.getElementById("inputSkills")
+let subjectselect=$.getElementById("subject")
 let divbtn=$.getElementById("div-button")
+
+let st_id = $.getElementById("id_st_id")
+let st_major = $.getElementById("id_st_major")
+let st_grade = $.getElementById("id_st_grade")
+
+let pro_id = $.getElementById("id_pro_id")
+let pro_major = $.getElementById("id_pro_major")
+let pro_grade = $.getElementById("id_pro_grade")
+
+let emp_id = $.getElementById("id_emp_id")
+let emp_unit = $.getElementById("id_emp_unit")
+let emp_grade = $.getElementById("id_emp_grade")
+
+let default1 = $.getElementById("id_default1")
+let default2 = $.getElementById("id_default2")
+let default3 = $.getElementById("id_default3")
 
 
 
@@ -67,6 +82,7 @@ imginput.addEventListener("change",(event)=>{
         const reader= new FileReader();
         reader.onload=(event)=>{
             imgwatch.style.backgroundImage="url("+event.target.result+")"
+            profileImage.style.backgroundImage="url("+event.target.result+")"
         }
          reader.readAsDataURL(file)
         
@@ -78,9 +94,6 @@ editbtn1.addEventListener("click",()=>{
     if(imginput.value!=""){
          $.body.classList.remove("scroll-off")
     editdiv.classList.add("hide")
-    
-    imginput.value=""
-    imgwatch.style.backgroundImage=""
     $.body.classList.remove("no-interaction")
     editdiv.classList.remove("interaction")
    
@@ -103,120 +116,280 @@ editbtn1.addEventListener("click",()=>{
 
 
 editbtn2.addEventListener("click",()=>{
-    if(imginput.value!=""){
-        
-    editalertdiv.classList.remove("hide")
-    }
-
-    else{
-        editdiv.classList.add("hide")
-        $.body.classList.remove("scroll-off")
-    }
-
+    $.body.classList.remove("scroll-off")
+    editdiv.classList.add("hide")
+    imginput.value=""
+    imgwatch.style.backgroundImage=""
     $.body.classList.remove("no-interaction")
     editdiv.classList.remove("interaction")
 })
 
 
-editalertbtn1.addEventListener("click",()=>{
-    $.body.classList.remove("scroll-off")
 
-    editalertdiv.classList.add("hide")
-    editdiv.classList.add("hide")
-    $.body.classList.remove("no-interaction")
-    editalertdiv.classList.remove("interaction")
-    imginput.value=""
-    imgwatch.style.backgroundImage=""
-   
-})
-
-editalertbtn2.addEventListener("click",()=>{
-    editalertdiv.classList.add("hide")
-    
-    $.body.classList.remove("no-interaction")
-    editalertdiv.classList.remove("interaction")
-})
-
-cancelBTN.addEventListener("click",(event)=>{
-    event.preventDefault()
-    editalertdiv.classList.remove("hide")
-    $.body.classList.add("no-interaction")
-    editalertdiv.classList.add("interaction")
-})
-/*
 jobselect.addEventListener("change",()=>{
     const selectoption=jobselect.options[jobselect.selectedIndex].value
    
     switch (selectoption){
         case "دانشجو":
-            subjectselect.innerHTML='<option value="">انتخاب کنید </option><option value="کامپیوتر">کامپیوتر</option><option value="it">فناوری اطلاعات</option><option value="Wood Industry">صنایع چوب</option><option value="financial manager"> حسابداری</option><option value="architecture">معماری </option><option value="Electricity">برق </option>'
+            st_id.classList.remove("hide")
+            st_major.classList.remove("hide")
+            st_grade.classList.remove("hide")
+            pro_id.classList.add("hide")
+            pro_major.classList.add("hide")
+            pro_grade.classList.add("hide")
+            emp_id.classList.add("hide")
+            emp_unit.classList.add("hide")
+            emp_grade.classList.add("hide")
+            default1.classList.add("hide")
+            default2.classList.add("hide")
+            default3.classList.add("hide")
+st_id.setAttribute("required", "")            
+st_major.setAttribute("required", "")
+st_grade.setAttribute("required", "")
+pro_id.removeAttribute("required", "")            
+pro_major.removeAttribute("required", "")
+pro_grade.removeAttribute("required", "")
+emp_id.removeAttribute("required", "")            
+emp_unit.removeAttribute("required", "")
+emp_grade.removeAttribute("required", "")
 
-            jobselectname.innerHTML=" رشته تحصیلی دانشجو"
-            inputSkillss.setAttribute("placeholder","کد دانشجویی(الزامی)")
-            joblevel.innerHTML='<option value="">انتخاب مقطع</option><option value="کاردانی">کاردانی </option><option value="کارشناسی">کارشناسی </option>'
+            
+    
+            jobselectname.innerHTML=" رشته تحصیلی"
             studentcode.innerHTML="کد دانشجویی"
-            leveltext.innerHTML="انتخاب مقطع"
+            leveltext.innerHTML="مقطع تحصیلی"
        break;
        
        case "استاد":
-             subjectselect.innerHTML=' <option value="software">انتخاب کنید</option><option value="software">نرم افزار</option><option value="it">فناوری اطلاعات</option><option value="Wood Industry">صنایع چوب</option><option value="financial manager"> حسابداری</option><option value="architecture">معماری </option><option value="Electricity">برق </option>'
-             jobselectname.innerHTML="رشته درسی استاد "
-            joblevel.innerHTML='<option value="software">انتخاب کنید</option><option value="diplom">کاردانی </option><option value="license">کارشناسی </option><option value="diplom">  کاردانی و کارشناسی </option>'
-             inputSkillss.setAttribute("placeholder","کد استادی(الزامی)")
-            studentcode.innerHTML="کد استادی"
-            leveltext.innerHTML="انتخاب مقطع"
+        st_id.classList.add("hide")
+        st_major.classList.add("hide")
+        st_grade.classList.add("hide")
+        pro_id.classList.remove("hide")
+        pro_major.classList.remove("hide")
+        pro_grade.classList.remove("hide")
+        emp_id.classList.add("hide")
+        emp_unit.classList.add("hide")
+        emp_grade.classList.add("hide")
+        default1.classList.add("hide")
+        default2.classList.add("hide")
+        default3.classList.add("hide")
+        st_id.removeAttribute("required", "")            
+st_major.removeAttribute("required", "")
+st_grade.removeAttribute("required", "")
+pro_id.setAttribute("required", "")            
+pro_major.setAttribute("required", "")
+pro_grade.setAttribute("required", "")
+emp_id.removeAttribute("required", "")            
+emp_unit.removeAttribute("required", "")
+emp_grade.removeAttribute("required", "")
 
-
+        jobselectname.innerHTML=" رشته آموزشی"
+        studentcode.innerHTML="کد استادی"
+        leveltext.innerHTML="مقطع آموزشی"
        break;
        
-       case "کامند":
-             subjectselect.innerHTML='<option value="software">انتخاب کنید</option><option value="software"> خدمات</option><option value="it"> پژوهش و فناوری</option><option value="Wood Industry"> حراست</option><option value="financial manager"> آموزش</option><option value="architecture">شبکه </option><option value="Electricity">برق </option>'
-             studentcode.innerHTML="کد پرسنلی"
-             inputSkillss.setAttribute("placeholder"," کد پرسنلی(الزامی)")
-            joblevel.innerHTML=' <option value="software">انتخاب کنید</option><option value="آموزشکده فنی بندر انزلی - شهید خدادادی"> آموزشکده فنی بندر انزلی - شهید خدادادی</option><option value="آموزشکده فنی رستم آباد رودبار - سیدالشهداء"> آموزشکده فنی رستم آباد رودبار - سیدالشهداء </option><option value="آموزشکده فنی رشت - شهید چمران"> آموزشکده فنی رشت - شهید چمران</option>'
-             jobselectname.innerHTML="پست سازمانی"
-            leveltext.innerHTML="محل خدمت"
+       case "کارمند":
+        st_id.classList.add("hide")
+        st_major.classList.add("hide")
+        st_grade.classList.add("hide")
+        pro_id.classList.add("hide")
+        pro_major.classList.add("hide")
+        pro_grade.classList.add("hide")
+        default1.classList.add("hide")
+        default2.classList.add("hide")
+        default3.classList.add("hide")
+        emp_id.classList.remove("hide")
+        emp_unit.classList.remove("hide")
+        emp_grade.classList.remove("hide")
+        st_id.removeAttribute("required", "")            
+st_major.removeAttribute("required", "")
+st_grade.removeAttribute("required", "")
+pro_id.removeAttribute("required", "")            
+pro_major.removeAttribute("required", "")
+pro_grade.removeAttribute("required", "")
+emp_id.setAttribute("required", "")            
+emp_unit.setAttribute("required", "")
+emp_grade.setAttribute("required", "")
 
+        jobselectname.innerHTML="سمت شغلی"
+        studentcode.innerHTML="کد پرسنلی"
+        leveltext.innerHTML="محل کار"
        break;
        
-       case "choose":
-             subjectselect.innerHTML='<option value="software"> انتخاب کنید</option>'
-             leveltext.innerHTML=" پست دانشگاهی را انتخاب کنید"
+           default:
+            st_id.classList.add("hide")
+            st_major.classList.add("hide")
+            st_grade.classList.add("hide")
+            pro_id.classList.add("hide")
+            pro_major.classList.add("hide")
+            pro_grade.classList.add("hide")
+            emp_id.classList.add("hide")
+            emp_unit.classList.add("hide")
+            emp_grade.classList.add("hide")
+            default1.classList.remove("hide")
+            default2.classList.remove("hide")
+            default3.classList.remove("hide")
 
-             jobselectname.innerHTML=" پست دانشگاهی را انتخاب کنید"
-             joblevel.innerHTML='<option value="software">انتخاب کنید</option>'
-             studentcode.innerHTML=" پست دانشگاهی راانتخاب کنید"
-            inputSkillss.setAttribute("placeholder","پست دانشگاهی راانتخاب کنید")
-             
-       break;
-      default:
+            st_id.removeAttribute("required", "")            
+            st_major.removeAttribute("required", "")
+            st_grade.removeAttribute("required", "")
+            pro_id.removeAttribute("required", "")            
+            pro_major.removeAttribute("required", "")
+            pro_grade.removeAttribute("required", "")
+            emp_id.removeAttribute("required", "")            
+            emp_unit.removeAttribute("required", "")
+            emp_grade.removeAttribute("required", "")
+            jobselectname.innerHTML="پست دانشگاهی را وارد کنید"
+            studentcode.innerHTML="پست دانشگاهی را وارد کنید"
+            leveltext.innerHTML="پست دانشگاهی را وارد کنید"
 
         break;
     }
 })
+window.addEventListener("load",()=>{
+    const selectoption=jobselect.options[jobselect.selectedIndex].value
+   
+    switch (selectoption){
+        case "دانشجو":
+            st_id.classList.remove("hide")
+            st_major.classList.remove("hide")
+            st_grade.classList.remove("hide")
+            pro_id.classList.add("hide")
+            pro_major.classList.add("hide")
+            pro_grade.classList.add("hide")
+            emp_id.classList.add("hide")
+            emp_unit.classList.add("hide")
+            emp_grade.classList.add("hide")
+            default1.classList.add("hide")
+            default2.classList.add("hide")
+            default3.classList.add("hide")
+st_id.setAttribute("required", "")            
+st_major.setAttribute("required", "")
+st_grade.setAttribute("required", "")
+pro_id.removeAttribute("required", "")            
+pro_major.removeAttribute("required", "")
+pro_grade.removeAttribute("required", "")
+emp_id.removeAttribute("required", "")            
+emp_unit.removeAttribute("required", "")
+emp_grade.removeAttribute("required", "")
 
+            
+    
+            jobselectname.innerHTML=" رشته تحصیلی"
+            studentcode.innerHTML="کد دانشجویی"
+            leveltext.innerHTML="مقطع تحصیلی"
+       break;
+       
+       case "استاد":
+        st_id.classList.add("hide")
+        st_major.classList.add("hide")
+        st_grade.classList.add("hide")
+        pro_id.classList.remove("hide")
+        pro_major.classList.remove("hide")
+        pro_grade.classList.remove("hide")
+        emp_id.classList.add("hide")
+        emp_unit.classList.add("hide")
+        emp_grade.classList.add("hide")
+        default1.classList.add("hide")
+        default2.classList.add("hide")
+        default3.classList.add("hide")
+        st_id.removeAttribute("required", "")            
+st_major.removeAttribute("required", "")
+st_grade.removeAttribute("required", "")
+pro_id.setAttribute("required", "")            
+pro_major.setAttribute("required", "")
+pro_grade.setAttribute("required", "")
+emp_id.removeAttribute("required", "")            
+emp_unit.removeAttribute("required", "")
+emp_grade.removeAttribute("required", "")
 
-*/
-submitbtn.addEventListener("click",(event)=>{
+        jobselectname.innerHTML=" رشته آموزشی"
+        studentcode.innerHTML="کد استادی"
+        leveltext.innerHTML="مقطع آموزشی"
+       break;
+       
+       case "کارمند":
+        st_id.classList.add("hide")
+        st_major.classList.add("hide")
+        st_grade.classList.add("hide")
+        pro_id.classList.add("hide")
+        pro_major.classList.add("hide")
+        pro_grade.classList.add("hide")
+        default1.classList.add("hide")
+        default2.classList.add("hide")
+        default3.classList.add("hide")
+        emp_id.classList.remove("hide")
+        emp_unit.classList.remove("hide")
+        emp_grade.classList.remove("hide")
+        st_id.removeAttribute("required", "")            
+st_major.removeAttribute("required", "")
+st_grade.removeAttribute("required", "")
+pro_id.removeAttribute("required", "")            
+pro_major.removeAttribute("required", "")
+pro_grade.removeAttribute("required", "")
+emp_id.setAttribute("required", "")            
+emp_unit.setAttribute("required", "")
+emp_grade.setAttribute("required", "")
 
+        jobselectname.innerHTML="سمت شغلی"
+        studentcode.innerHTML="کد پرسنلی"
+        leveltext.innerHTML="محل کار"
+       break;
+       
+           default:
+            st_id.classList.add("hide")
+            st_major.classList.add("hide")
+            st_grade.classList.add("hide")
+            pro_id.classList.add("hide")
+            pro_major.classList.add("hide")
+            pro_grade.classList.add("hide")
+            emp_id.classList.add("hide")
+            emp_unit.classList.add("hide")
+            emp_grade.classList.add("hide")
+            default1.classList.remove("hide")
+            default2.classList.remove("hide")
+            default3.classList.remove("hide")
 
-    submitalert.classList.remove("hide")
-    $.body.classList.add("no-interaction")
-    submitalert.classList.add("interaction")
-    $.body.classList.add("scroll-off")
-    if(event.target.submit){
-        alert("dsvfs")
+            st_id.removeAttribute("required", "")            
+            st_major.removeAttribute("required", "")
+            st_grade.removeAttribute("required", "")
+            pro_id.removeAttribute("required", "")            
+            pro_major.removeAttribute("required", "")
+            pro_grade.removeAttribute("required", "")
+            emp_id.removeAttribute("required", "")            
+            emp_unit.removeAttribute("required", "")
+            emp_grade.removeAttribute("required", "")
+            jobselectname.innerHTML="پست دانشگاهی را وارد کنید"
+            studentcode.innerHTML="پست دانشگاهی را وارد کنید"
+            leveltext.innerHTML="پست دانشگاهی را وارد کنید"
+
+        break;
     }
-        
-
-
+    
 })
 
 
-submitalertbtn2.addEventListener("click",()=>{
 
-    submitalert.classList.add("hide")
-    $.body.classList.remove("no-interaction")
-    submitalert.classList.remove("interaction")
-    $.body.classList.remove("scroll-off")
-})*/
+// submitbtn.addEventListener("click",(event)=>{
+
+
+//     submitalert.classList.remove("hide")
+//     $.body.classList.add("no-interaction")
+//     submitalert.classList.add("interaction")
+//     $.body.classList.add("scroll-off")
+//     if(event.target.submit){
+//         alert("dsvfs")
+//     }
+        
+
+
+// })
+
+
+// submitalertbtn2.addEventListener("click",()=>{
+
+//     submitalert.classList.add("hide")
+//     $.body.classList.remove("no-interaction")
+//     submitalert.classList.remove("interaction")
+//     $.body.classList.remove("scroll-off")
+// })

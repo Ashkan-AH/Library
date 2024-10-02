@@ -1,70 +1,95 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>سرزمین کتاب-{% block title %}{% endblock title %}</title>
+  <title>سرزمین کتاب| {% block title %}{% endblock title %} </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{% static 'user/plugins/fontawesome-free/css/all.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'user/plugins/fontawesome-free/css/all.min.css' %}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{% static 'main/css/css/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href=" {% static 'main/css/css/css/adminlte.min.css' %}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'main/simple-star-rating/dist/stylerate.css' %}">
-
+  <link rel="stylesheet" href=" {% static 'main/css/style.css' %}">
+  {% block style %}
+    
+  {% endblock style %}
 
 
 
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" style="background-color: #f4f6f9;">
 <div class="wrapper">
   <!-- Navbar -->
-	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light user-page-nav" id="ftco-navbar " style="height: 60px;">
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light user-page-nav" id="ftco-navbar " style="height: 73px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    background-color: white !important;
+    ">
 	    <div class="container">
-	      <a class="navbar-brand" href="{% url 'books:index' %}">سرزمین <span>کتاب</span></a>
+	      <a class="navbar-brand" href="{% url 'books:index' %}" style="color: black !important;">سرزمین <span>کتاب</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
-        
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a href="{% url 'books:index' %}" class="nav-link">خانه</a>
-				</li>
-				<li class="nav-item"><a href="{% url 'books:books' %}" class="nav-link">کتاب ها</a></li>
-				<li class="nav-item"><a href="{% url 'author:authors' %}" class="nav-link">نویسندگان</a></li>
-				<li class="nav-item"><a href="{% url 'books:categories' %}" class="nav-link">دسته بندی</a></li>
-				{% if request.user.is_authenticated %}
-				  
-				<li class="nav-item {% if request.resolver_match.url_name == 'user-profile' %}
-				active
-				{% endif %}"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a></li>
-				
-				{% else %}
-				
-				<li class="nav-item"><a href="{% url 'login' %}?next={{request.path}}" class="nav-link">ورود</a></li>
-				{% endif %}
-				
+            <li class="nav-item"><a href="{% url 'books:index' %}" class="nav-link" style="color: black !important;">خانه</a></li>
+            <li class="nav-item"><a href="{% url 'books:books' %}" class="nav-link" style="color: black !important;">کتاب ها</a></li>
+            <li class="nav-item"><a href="{% url 'author:authors' %}" class="nav-link" style="color: black !important;">نویسندگان</a></li>
+            <li class="nav-item"><a href="{% url 'books:categories' %}" class="nav-link" style="color: black !important;">دسته بندی</a></li>
+            <li class="nav-item active"><a href="{% url 'account:user-profile' %}" class="nav-link">ناحیه کاربری</a></li>
+            
+            
 	        </ul>
 	      </div>
 	    </div>
 	  </nav>
+  <!-- /.navbar -->
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" style="margin: auto;">
+  <div class="content-wrapper" style="margin: auto;margin-top: 30px;">
     <!-- Content Header (Page header) -->
     
+    <section class="edit-alert hide " id="edit-alertdiv-2">
+      <h4 id="edit-alert-text" >آیا از لغو عملیات اطمینان دارید؟</h4>
+      <div>
+     <button id="edit-alert-btn1-2">تایید</button>
+     <button  id="edit-alert-btn2-2"  style="background-color: red;">لغو</button>
+    </div>
+
+    </section>
+   <form  id="comment-section" class="comment-section hide">
+    <h4>ثبت نظر در باره کتاب <a href="">کتابخانه نیمه شب</a></h4>
+     <div class="feedback">
+      <div class="rating">
+        <i class="fa fa-star star-rate  "></i>
+        <i class="fa fa-star star-rate"></i>
+        <i class="fa fa-star star-rate"></i>
+        <i class="fa fa-star star-rate"></i>
+        <i class="fa fa-star star-rate "></i>
+      </div>
+    </div>
+    <textarea type="text" placeholder="نظر خود را در اینجا بنویسید" maxlength="250" minlength="3" id="textarea" required></textarea>
+    <div style="
+    display: flex;
+    justify-content: center;">
+    <button class="rate-btn rent-btn" type="submit" >ثبت نظر</button>
+    <button class="rate-btn rent-btn" type="submit" style="background: red !important;" id="cancel-ratebtn">لغو</button>
+  </div>
+   </form>
+
     <!-- Main content -->
-    <section class="content" style="padding-left: 0px;padding-right: 0px;">
-      <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+    <section class="content">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3" style="padding-left: 30px;">
+          <div class="col-md-3">
 
             <!-- Profile Image -->
             <div class="card card-primary card-outline">
@@ -72,22 +97,34 @@
                 <div class="text-center">
                   <img class="profile-user-img img-fluid img-circle"
                        src="{{request.user.picture.url}}"
-                       style="width: 110px;height: 110px;object-fit: cover;"
-                       alt="User profile picture">
+                       alt="User profile picture" style="object-fit: cover;">
                 </div>
 
-                <h3 class="profile-username text-center">{{request.user.get_full_name}}</h3>
+                <h4 class="profile-username text-center" style="margin-top: 18px;margin-bottom: 18px;color: black;">{% if request.user.get_full_name %}
+                  {{request.user.get_full_name}}
+                {%else%}
+                  {{request.user.username}}
+                {% endif %}</h4>
 
-                <p class="text-muted text-center">{{request.user.role}}</p>
+                <p class="text-muted text-center">
+                  {% if request.user.role %}
+                  {{request.user.role}}
+                  {%else%}
+                  -
+                  {% endif %}
+                </p>
 
                 <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <a href="{% url 'account:user-profile' %}">
+                    <b>صفحه اصلی</b> <p class="float-right">مشاهده</p>
+                  </a>
+                  </li>
                   <li class="list-group-item">
                     <a href="{% url 'account:bookmarks' %}">
                     <b>موارد دخیره شده</b> <p class="float-right">مشاهده</p>
                   </a>
                   </li>
-                  
-                  
                   <li class="list-group-item">
                     <a href="{% url 'account:profile-update' %}">
                     <b> ویرایش اطلاعات حساب </b> <p class="float-right"> ویرایش</p>
@@ -106,14 +143,13 @@
                   <li class="list-group-item" style="
                   display: flex;
                   justify-content: space-between;
-                  
+                  border-bottom: 0;
                   color: #007bff;
               ">
                                   
-                                  <b>خروج از حساب کار بری</b> <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                  <b style="font-size: 20px;">خروج از حساب کار بری</b>  <form  method="post" action="{% url 'logout' %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="signout-btn" >خروج</button>
-                                  </form>
+                                    <button class="signout-btn" type="submit">خروج</button></form>
                                 
               
                                 </li>
@@ -125,24 +161,40 @@
             <!-- /.card -->
 
             <!-- About Me Box -->
-            <div class="card card-primary" dir="rtl">
+            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title" style="color: whitesmoke;float: right !important;"> در باره من</h3>
+                <h3 class="card-title float-right" style="color: white;font-weight: bold;margin: 6px;"> در باره من</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <strong><i class="fas fa-book mr-1"></i> تحصیلات</strong>
 
-                <p class="text-muted" style="direction: rtl;text-align:right;">
-                    دانشجوی مقطع کاردانی  دانشگاه میرزا کوچک صومعه سرا
-
+                <p class="text-muted" style="text-align: right;direction:rtl;">
+                    
+                    {% if request.user.role == "دانشجو" and request.user.st_grade and request.user.st_major %}
+                      دانشجوی رشته {{request.user.st_major}} در مقطع {{request.user.st_grade}}.
+                      
+                    {% elif request.user.role == "استاد" and request.user.pro_grade and request.user.pro_major %}
+                      استاد رشته {{request.user.pro_major}} در مقطع {{request.user.pro_grade}}.
+                      
+                    {% elif request.user.role == "کارمند" and request.user.emp_unit and request.user.emp_grade %}
+                      فعالیت در بخش {{request.user.emp_grade}} داخل {{request.user.emp_unit}}.
+                    {% else %}
+                      -
+                    {% endif %}
                 </p>
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> ادرس</strong>
 
-                <p class="text-muted" style="direction: rtl;text-align:right;">{{request.user.address}}</p>
+                <p class="text-muted" style="text-align: right;direction:rtl;">
+                {% if request.user.address %}
+                  {{request.user.address}}
+                {%else%}
+                  -
+                {% endif %}
+                  </p>
 
 
 
@@ -151,96 +203,100 @@
             </div>
             <!-- /.card -->
           </div>
-          <!-- /.col -->
-
 
           {% block content %}
             
           {% endblock content %}
 
 
-          
-    <footer class="ftco-footer ftco-bg-dark ftco-section" style="padding-left: 80px;padding-right: 80px; direction: rtl; text-align: right;">
-		<div class="container">
-		  <div class="row mb-5">
-			<div class="col-md">
-			  <div class="ftco-footer-widget mb-4">
-				<h2 class="ftco-heading-2"><a href="#" class="logo">سرزمین <span>کتاب</span></a></h2>
-				<p>اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
-				<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-				  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-				  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-				  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-				</ul>
-			  </div>
-			</div>
-			<div class="col-md">
-			  <div class="ftco-footer-widget mb-4 ml-md-5">
-				<h2 class="ftco-heading-2">اطلاعات</h2>
-				<ul class="list-unstyled">
-				  <li><a href="#" class="py-2 d-block">درباره ما</a></li>
-				  <li><a href="#" class="py-2 d-block">خدمات</a></li>
-				  <li><a href="#" class="py-2 d-block">مجموعه های زیر نظر</a></li>
-				  <li><a href="#" class="py-2 d-block">قوانین و مقررات  </a></li>
-				  <li><a href="#" class="py-2 d-block">پشتیبانی &amp; کوکی ها </a></li>
-				</ul>
-			  </div>
-			</div>
-			<div class="col-md">
-			   <div class="ftco-footer-widget mb-4">
-				<h2 class="ftco-heading-2">Customer Support</h2>
-				<ul class="list-unstyled">
-				  <li><a href="#" class="py-2 d-block">سوالات متداول</a></li>
-				  <li><a href="#" class="py-2 d-block">گزارش مشکل</a></li>
-				  <li><a href="#" class="py-2 d-block"> حریم خصوصی</a></li>
-				  <li><a href="#" class="py-2 d-block">راهنمای عملکرد</a></li>
-				  <li><a href="#" class="py-2 d-block"> پیوستن به اعضا</a></li>
-				</ul>
-			  </div>
-			</div>
-			<div class="col-md">
-			  <div class="ftco-footer-widget mb-4">
-				  <h2 class="ftco-heading-2"> سوالی دارید ?</h2>
-				  <div class="block-23 mb-3">
-					<ul>
-					  <li><span class="icon icon-map-marker"></span><span class="text">زیر نظر جمهوری اسلامی ایران -کانون پرورش فکری نوجوانان</span></li>
-					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">98 321 325 1263</span></a></li>
-					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@admin.com</span></a></li>
-					</ul>
-				  </div>
-			  </div>
-			</div>
-		  </div>
-		  <div class="row">
-			<div class="col-md-12 text-center">
-			  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-	Copyright &copy;<script>document.write(new Date().getFullYear());</script> کلیه حقوق طراحی متعلق به دانشکده میرزا کوچک صومعه سرا است و هرگونه کپی برداری پیگرد قانونی دارد <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="#" target="_blank">amt-group</a>
-	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-			</div>
-		  </div>
-		</div>
-	  </footer>
-      
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+  <!-- /.content-wrapper -->
+  <footer class="ftco-footer ftco-bg-dark ftco-section">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-4">
+            <h2 class="ftco-heading-2"><a href="#" class="logo">سرزمین <span>کتاب</span></a></h2>
+            <p>اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
+            <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+              <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+              <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+              <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-4 ml-md-5">
+            <h2 class="ftco-heading-2">اطلاعات</h2>
+            <ul class="list-unstyled">
+              <li><a href="#" class="py-2 d-block">درباره ما</a></li>
+              <li><a href="#" class="py-2 d-block">خدمات</a></li>
+              <li><a href="#" class="py-2 d-block">مجموعه های زیر نظر</a></li>
+              <li><a href="#" class="py-2 d-block">قوانین و مقررات  </a></li>
+              <li><a href="#" class="py-2 d-block">پشتیبانی &amp; کوکی ها </a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+           <div class="ftco-footer-widget mb-4">
+            <h2 class="ftco-heading-2">Customer Support</h2>
+            <ul class="list-unstyled">
+              <li><a href="#" class="py-2 d-block">سوالات متداول</a></li>
+              <li><a href="#" class="py-2 d-block">گزارش مشکل</a></li>
+              <li><a href="#" class="py-2 d-block"> حریم خصوصی</a></li>
+              <li><a href="#" class="py-2 d-block">راهنمای عملکرد</a></li>
+              <li><a href="#" class="py-2 d-block"> پیوستن به اعضا</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="ftco-footer-widget mb-4">
+            <h2 class="ftco-heading-2"> سوالی دارید ?</h2>
+            <div class="block-23 mb-3">
+              <ul>
+                <li><span class="icon icon-map-marker"></span><span class="text">زیر نظر جمهوری اسلامی ایران -کانون پرورش فکری نوجوانان</span></li>
+                <li><a href="#"><span class="icon icon-phone"></span><span class="text">98 321 325 1263</span></a></li>
+                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@admin.com</span></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+
+          <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> کلیه حقوق طراحی متعلق به دانشکده میرزا کوچک صومعه سرا است و هرگونه کپی برداری پیگرد قانونی دارد <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://.com" target="_blank">amt-group</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+  <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="{% static 'user/plugins/jquery/jquery.min.js' %}"></script>
+<script src=" {% static 'user/plugins/jquery/jquery.min.js' %}"></script>
 <!-- Bootstrap 4 -->
-<script src="{% static 'user/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src=" {% static 'user/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE App -->
-<script src="{% static 'user/dist/js/adminlte.min.js' %}"></script>
+<script src=" {% static 'user/dist/js/adminlte.min.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{% static 'user/dist/js/demo.js' %}"></script>
-  <script src="{% static 'main/js/newscript.js' %}"></script>
-  <script src="{% static 'main/js/star-rate.js' %}"></script>
+<script src=" {% static 'user/dist/js/demo.js' %}"></script>
+<script src=" {% static 'main/js/newscript.js' %}"></script>
+<script src=" {% static 'main/js/star-rate.js' %}"></script>
+{% block script %}
   
-  
+{% endblock script %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&amp;sensor=false"></script>
+
 
 
 </body>

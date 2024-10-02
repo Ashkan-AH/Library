@@ -22,7 +22,25 @@
     <link rel="stylesheet" href="{% static 'main/css/style.css' %} ">
     <link rel="stylesheet" href="{% static 'main/css/media-phone.css' %} ">
 	
-	
+	<style>
+		button.logout-btn:hover {
+			color: #01D28E !important;
+			
+		}
+		button.logout-btn{
+			font-size: 15px;
+			padding-top: .9rem;
+			padding-bottom: .9rem;
+			padding-left: 20px;
+			padding-right: 20px;
+			color: #fff !important;
+			font-weight: 400;
+			opacity: 1 !important;
+			border: 0;
+			background-color: transparent;
+			transition: .3s all ease;
+		}
+	</style>
   </head>
   <body>
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -50,7 +68,12 @@
 				  
 				<li class="nav-item {% if request.resolver_match.url_name == 'user-profile' %}
 				active
-				{% endif %}"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a></li>
+				{% endif %}"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a>
+				<li class="nav-item">
+				<form id="logout-form" method="post" action="{% url 'logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="logout-btn nav-link">خروج</button>
+				  </form></li>
 				
 				{% else %}
 				
@@ -161,6 +184,9 @@
   <script src="{% static 'main/js/jquery.timepicker.min.js' %} "></script>
   <script src="{% static 'main/js/scrollax.min.js' %} "></script>
   <script src="{% static 'main/js/main.js' %} "></script>
+  {% block script %}
+	
+  {% endblock script %}
   <!-- <script src="{% static 'main/js/search.js' %} "></script> -->
   </body>
 </html>

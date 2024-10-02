@@ -1,0 +1,151 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+ {{object.name}}
+{% endblock title %}
+{% block content %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px  !important;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>{{object.name}}</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
+              <li class="breadcrumb-item active"><a href="{% url 'account:authors' %}"> نویسندگان</a></li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card card-solid">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <h3 class="d-inline-block d-sm-none">{{object.name}}</h3>
+              <div class="col-12">
+                <a href="{{object.picture.url}}"><img src="{{object.picture.url}}" class="product-image" alt="{{object.name}}" style="max-width: 350px;border-radius: 5px;"></a>
+              </div>
+             
+            </div>
+            <div class="col-12 col-sm-6">
+              <h3 class="my-3">{{object.name}}</h3>
+             
+              <hr>
+              <h4>اطلاعات </h4>
+              <div class="btn-group btn-group-toggle"style="justify-content: space-evenly;width: 100%;">
+                <label class="text-center bg-gray" style="padding:10px;width: 50%;border-top-right-radius: 5px;margin:0px;border-left:solid #343A40;">
+                 
+                  لینک:
+                  <br>
+                 {{object.slug}}
+                </label>
+                <label class=" text-center bg-gray" style="padding:10px;width: 50%;margin:0px;border-top-left-radius: 5px;border-right:solid #343A40;">
+                
+                  تاریخ ایجاد:
+                  <br>
+                 {{object.persian_date}}
+                </label>
+                <label class="text-center bg-gray-dark" style="padding:10px;width: 100%;border-radius:0;margin:0px;">
+                 
+                  کد نویسنده:
+                  <br>
+                 {{object.id}}
+                </label>
+                {% if request.user.view_books %}
+                <label class=" text-center bg-gray-dark" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;width: 100%;margin:0px;border-top-left-radius: 0;border-top-right-radius: 0;">
+                  <a href="{% url 'account:author-books' object.slug %}" class="btn  btn-secondary" style="width: 100%;font-weight: bold;
+                  font-size: 17px;
+                  padding: 20px;height: 100%;border-top-left-radius: 0;border-top-right-radius: 0;">
+                   مشاهده آثار {{object.name}}
+                 </a>
+                </label>
+                {% endif %}
+                
+              </div>
+
+              <div class="mt-4" style="text-align: left;margin-left: 35px;">
+                {% if request.user.update_authors %}
+                  
+                <a href="{% url 'account:author-update' object.slug %}" class="btn btn-primary btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+              ویرایش</a>
+                {% endif %}
+                {% if request.user.delete_authors %}
+                  
+                <a href="{% url 'account:author-delete' object.slug %}" class="btn btn-danger btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+              حذف</a>
+                {% endif %}
+                 
+              </div>
+
+
+            </div>
+          </div>
+          <div class="row mt-4">
+            <nav class="w-100">
+              <div class="nav nav-tabs" id="product-tab" role="tablist">
+               
+                <a class="nav-item nav-link active disabled" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">توضیحات</a>
+            </nav>
+            <div class="tab-content p-3" id="nav-tabContent">
+              <div class="tab-pane fade active show" style="padding: 10px;" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.description|safe|linebreaksbr}}
+                 </div>
+              
+              
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <style>
+
+    
+.grid-body {
+    display: flex;
+    justify-content: center;
+}
+
+.bookprop-table {
+    box-shadow: 0px 12px 14px 0px;
+    height: fit-content;
+    width: 50%;
+}
+
+.tr-row {
+    height: 50px;
+    /* border: solid; */
+    border-radius: 10px;
+    background: #bfbfbf;
+}
+.book-ad-single{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+.book-ad-single img{
+    width: 350px;
+    height: 350px;
+    margin: 50px;
+}
+
+.tr-alt-row {
+    background: white;
+}
+  </style>
+{% endblock content %}
