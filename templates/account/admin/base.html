@@ -64,16 +64,29 @@
       
     </ul>
     
-    <form class="form-inline ml-3" style="border-radius: 5px;">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search" style="border-top-right-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-bottom-left-radius: 0px;">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit" style="border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
-            <i class="fas fa-search"></i>
-          </button>
+    <form class="form-inline ml-3" style="
+    width: 649px;
+    display: flex;
+    justify-content: center;
+">
+<div class="show-val" style="display: none;"></div>
+        <div class="input-group input-group-sm" style="
+    width: 70%;
+">
+          <input class="form-control form-control-navbar" type="search" placeholder="جستجو" id="form-control" aria-label="Search" style="border-top-left-radius: 0;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 0;">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit" style="border-top-left-radius: 5px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 5px;">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
     <ul class="navbar-nav mr-auto-navbav">
       <li class="nav-item"><form id="logout-form" method="post" action="{% url 'logout' %}">
         {% csrf_token %}
@@ -96,7 +109,7 @@
           <img src="{{request.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 45px !important; height: 45px !important;object-fit: cover;">
         </div>
         <div class="info">
-          <a href="{% url 'account:admin-profile' %}" class="d-block" >{% if user.get_full_name %}
+          <a href="{% url 'account:admin-index' %}" class="d-block" >{% if user.get_full_name %}
             {{user.get_full_name|truncatewords:3}}
             {%else%}
             {{user.username|truncatechars:15}}
@@ -109,6 +122,10 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="text-align: right; padding-right: 0;">
           <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
+           
+          <li class="nav-item">
+            {% link request 'admin-profile-update' 'ویرایش اطلاعات' "fas fa-edit" %}
+          </li>
           {% if request.user.create_authors or request.user.create_reservations or request.user.create_books or request.user.create_categories or request.user.create_users %}
             
           <li class="nav-item">
@@ -149,6 +166,12 @@
               
             <li class="nav-item">
               {% link request 'black-list' 'لیست سیاه' "fa fa-ban" %}
+            </li>
+            {% endif %}
+            {% if request.user.update_theme %}
+              
+            <li class="nav-item">
+              {% link request 'themes' 'ویرایش ظاهر صفحات' "fas fa-photo-video" %}
             </li>
             {% endif %}
           
@@ -235,6 +258,7 @@
 <script src="{% static 'user/dist/js/demo.js' %}"></script>
 
   <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+<script src="{% static 'user/dist/js/search-admin.js' %}"></script>
   
 
   

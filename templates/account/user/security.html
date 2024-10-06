@@ -47,7 +47,7 @@
 		  <li class="nav-item"><a href="{% url 'books:books' %}" class="nav-link" style="color: black !important;">کتاب ها</a></li>
 		  <li class="nav-item"><a href="{% url 'author:authors' %}" class="nav-link" style="color: black !important;">نویسندگان</a></li>
 		  <li class="nav-item"><a href="{% url 'books:categories' %}" class="nav-link" style="color: black !important;">دسته بندی</a></li>
-		  <li class="nav-item active"><a href="{% url 'account:user-profile' %}" class="nav-link">ناحیه کاربری</a></li>
+		  <li class="nav-item active"><a href="{% url 'account:user-index' %}" class="nav-link">ناحیه کاربری</a></li>
 		  <li class="nav-item">
 				<form id="logout-form" method="post" action="{% url 'logout' %}">
 					{% csrf_token %}

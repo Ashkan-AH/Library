@@ -11,14 +11,14 @@ class ReservationManager(models.Manager):
         qs = super().get_queryset()
         for reservation in qs:
             if reservation.status == "تحویل داده شده" and reservation.delivery_remaining() <= 0:
-                user = User.objects.get(id=reservation.user_id.id)
+                user = User.objects.get(id=reservation.user.id)
                 user.is_active = False
                 user.save()
                 reservation.status = "بازگردانده نشده"
                 reservation.save()
             elif reservation.status == "رزرو شده" and reservation.reservation_deadline_remaining() <= 0:
-                user = User.objects.get(id=reservation.user_id.id)
-                book = Books.objects.get(id=reservation.book_id.id)
+                user = User.objects.get(id=reservation.user.id)
+                book = Books.objects.get(id=reservation.book.id)
                 user.reservation_limit += 1
                 user.save()
                 reservation.status = "لغو رزرو"
@@ -36,8 +36,8 @@ class Reservation(models.Model):
         "بازگردانده شده": "بازگردانده شده", 
     }
     reservation_id = models.AutoField(primary_key=True, verbose_name="شماره رزرو")
-    book_id = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name="reservations", verbose_name="کد کتاب")
-    user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="reservations", verbose_name="کد کاربری")
+    book = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name="reservations", verbose_name="کتاب")
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="reservations", verbose_name="کاربر")
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد رزرو")
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, default="رزرو شده", verbose_name="وضعیت رزرو")
     delivery_date = models.DateField(verbose_name="تاریخ تحویل", blank=True, null=True)

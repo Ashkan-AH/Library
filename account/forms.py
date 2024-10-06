@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from books.models import Books, Category
 from author.models import Author
 from reservation.models import Reservation
-from .models import User
+from .models import User, PageTheme
 from jalali_date.fields import JalaliDateField
 from jalali_date.widgets import AdminJalaliDateWidget
 from ckeditor.widgets import CKEditorWidget
@@ -40,7 +40,7 @@ class AuthorForm(forms.ModelForm):
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ["book_id", "user_id", "extend_sluts"]
+        fields = ["book", "user", "extend_sluts"]
 
     def __init__(self, *args, **kwargs):
         signal = 0
@@ -78,3 +78,9 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "fathers_name", "birth_number", "emergency_number", "role", "st_id", "st_major", "st_grade", "emp_id", "emp_unit", "emp_grade", "pro_id", "pro_major", "pro_grade"]
+
+
+class UpdateThemeForm(forms.ModelForm):
+    class Meta:
+        model = PageTheme
+        exclude = ["name", "slug", "thumbnail"]

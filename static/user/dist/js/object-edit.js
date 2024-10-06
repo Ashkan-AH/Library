@@ -39,7 +39,7 @@ function previewImage(input,imageId,e) {
 }
 else{
     
-        alert("حجم تصویر باید زیر 3مگابایت باشد")
+        alert("حجم تصویر باید زیر 3 مگابایت باشد")
         input.value=""
     }
     }

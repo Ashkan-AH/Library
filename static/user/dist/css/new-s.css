@@ -20,6 +20,7 @@ textarea{
 .m-auto{
     margin: auto;
 }
+
 .btn-rate{
     
     width: 92%;
@@ -33,6 +34,38 @@ textarea{
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;    
+}
+
+.bg-edit{
+  
+    height: fit-content;
+    display: flex;
+    border-radius: 15px;
+    color: white;
+    background-color: #01d28e;
+    position: absolute;
+    top: 21%;
+    left: 37%;
+    z-index: 3;
+}
+.bg-bck{
+    
+}
+
+.bg-edit input{
+    
+    background-color: #01d28e;
+    text-align: center;
+    color: white;
+    width: 69%;
+}
+.bg-edit h3{
+    color: white;
+    font-weight: 900;
+    font-size: 110%;
+    /* margin: 5px; */
+    text-align: center;
+   
 }
 
 .btn-group-toggle label{
@@ -52,6 +85,66 @@ textarea{
     width: 90%;
     height: 50px;
 }
+.form-style{
+    
+    width: 70%;
+  
+    display: flex;
+    justify-content: center;
+}
+.search-value{
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    max-height: 370px;
+    position: absolute;
+    top: 37px;
+    background-color: #f2f4f6;
+    overflow-y: auto;
+    box-shadow: 0px 10px 22px -7px;
+   
+}
+.search-value a{
+    /* border: solid 0.5px gray; */
+    width: 400px;
+    height: 120px;
+    display: flex;
+    flex-direction: row-reverse;
+    cursor: pointer;
+    border-radius: 15px;
+    /* margin-top: 10px; */
+    /* margin-bottom: 10px; */
+    background-color: white;
+    margin: 7px 10px 7px 10px;
+}
+
+.search-value a:hover{
+    color: initial;
+    box-shadow: 0px 8px 36px -17px cornflowerblue;
+}
+
+
+
+.search-value img{
+    width: 29%;
+    height: 100%;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.search-value h6{
+    color: black;
+    width: 100%;
+    text-align: center;
+}
+.search-value section{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 75%;
+    align-content: center;
+}
+.search-value p{
+}
 .item{
     
 
@@ -59,10 +152,101 @@ textarea{
     width: 320px;
 
 }
-.img-watch{
+.uper-div{
+    height: 460px;
 
+}
+.over-fl{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.top-div{
+    height: 550px;
+}
+.writer-li{
+padding: 0px !important;
+    width: 100% !important;
+
+}
+.textedit-bg{
+    min-width: 20%;
+    min-height: 30px;
+    background-color: #1089ff;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    
+}
+.text-edit{
+    height: 320px;
+    /* border: solid; */
+    position: fixed;
+    top: 77px;
+    letter-spacing: 50%;
+    left: 30%;
+    z-index: 4;
+    background: #01d28e;
+    width: 37%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    box-shadow: 0px 9px 23px -7px black;
+    
+}
+.text-edit h3{
+    
+    color: white;
+    font-weight: 900;
+    text-align: center;
+}
+
+.text-edit div{
+    width: 40%;
+
+}
+
+
+.text-edit textarea{
+    width: 80%;
+    border-radius: 8px;
+    height: 175px;
+    max-height: 210px;
+    direction: rtl;
+
+}
+.none{
+    display: none;
+}
+
+.text-edit textarea:focus-visible{
+outline: none;
+
+}
+
+.text-edit button{
+    width: 40%;
+    margin:10px;
+    color: white;
+    border: none;
+
+}
+
+.text-edit button:focus{
+    outline: none;
+
+}
+.writer-a-style{
+       width: 95% !important;
+       margin: 10px;
+}
+.img-watch{
+    background-size: cover;
     width: 450px;
     height: 550px;
+    background-position: center;
 }
 .hide{
     display: none !important;

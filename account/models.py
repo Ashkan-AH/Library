@@ -100,6 +100,7 @@ class User(AbstractUser):
     update_reservations = models.BooleanField(verbose_name="ویرایش رزرو ها", default=False)
     update_users = models.BooleanField(verbose_name="ویرایش کاربران", default=False)
     update_categories = models.BooleanField(verbose_name="ویرایش دسته بندی", default=False)
+    update_theme = models.BooleanField(verbose_name="ویرایش ظاهر سایت", default=False)
     #Create
     create_books = models.BooleanField(verbose_name="ایجاد کتاب ها", default=False)
     create_authors = models.BooleanField(verbose_name="ایجاد نویسندگان", default=False)
@@ -112,7 +113,6 @@ class User(AbstractUser):
     delete_reservations = models.BooleanField(verbose_name="حذف رزرو ها", default=False)
     delete_users = models.BooleanField(verbose_name="حذف کاربران", default=False)
     delete_categories = models.BooleanField(verbose_name="حذف دسته بندی ها", default=False)
-
 
     objects = UserManager2()
     
@@ -138,3 +138,42 @@ class User(AbstractUser):
             return False
     is_information_compelete.boolean = True
     is_information_compelete.short_description = "کامل بودن پروفایل"
+
+
+
+
+
+
+class PageTheme(models.Model):
+    name = models.CharField(max_length=255, verbose_name="نام صفحه")
+    slug = models.SlugField(allow_unicode=True, max_length=255, verbose_name="آدرس صفحه ویرایش")
+    thumbnail = models.ImageField(upload_to="uploads/page_theme/thumbnail/", verbose_name="تصویر پیش نمایش", blank=True, default="default-thumbnail.jpg")
+    date_edited = models.DateField(verbose_name="آخرین ویرایش", auto_now=True)
+    text1 = models.TextField(verbose_name="متن شماره ۱", blank=True)
+    text2 = models.TextField(verbose_name="متن شماره ۲", blank=True)
+    text3 = models.TextField(verbose_name="متن شماره ۳", blank=True)
+    text4 = models.TextField(verbose_name="متن شماره ۴", blank=True)
+    text5 = models.TextField(verbose_name="متن شماره ۵", blank=True)
+    text6 = models.TextField(verbose_name="متن شماره ۶", blank=True)
+    text7 = models.TextField(verbose_name="متن شماره ۷", blank=True)
+    text8 = models.TextField(verbose_name="متن شماره ۸", blank=True)
+    text9 = models.TextField(verbose_name="متن شماره ۹", blank=True)
+    text10 = models.TextField(verbose_name="متن شماره ۱۰", blank=True)
+    text11 = models.TextField(verbose_name="متن شماره ۱۱", blank=True)
+    text12 = models.TextField(verbose_name="متن شماره ۱۲", blank=True)
+    text13 = models.TextField(verbose_name="متن شماره ۱۳", blank=True)
+    text14 = models.TextField(verbose_name="متن شماره ۱۴", blank=True)
+    text15 = models.TextField(verbose_name="متن شماره ۱۵", blank=True)
+    text16 = models.TextField(verbose_name="متن شماره ۱۶", blank=True)
+    text17 = models.TextField(verbose_name="متن شماره ۱۷", blank=True)
+    image1 = models.ImageField(upload_to=f"uploads/page_theme/", verbose_name="تصویر شماره ۱", blank=True, default="default-thumbnail.jpg")
+    image2 = models.ImageField(upload_to=f"uploads/page_theme/", verbose_name="تصویر شماره ۲", blank=True, default="default-thumbnail.jpg")
+    image3 = models.ImageField(upload_to=f"uploads/page_theme/", verbose_name="تصویر شماره ۳", blank=True, default="default-thumbnail.jpg")
+    image4 = models.ImageField(upload_to=f"uploads/page_theme/", verbose_name="تصویر شماره ۴", blank=True, default="default-thumbnail.jpg")
+    image5 = models.ImageField(upload_to=f"uploads/page_theme/", verbose_name="تصویر شماره ۵", blank=True, default="default-thumbnail.jpg")
+    class Meta:
+        verbose_name = "ظاهر صفحه"
+        verbose_name_plural = "ظاهر صفحات"
+
+    def __str__(self):
+        return self.name

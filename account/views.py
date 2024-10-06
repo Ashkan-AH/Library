@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from books.models import Books, Category
 from author.models import Author
-from .models import User
+from .models import User, PageTheme
 from .mixins import *
 
 from django.http import HttpResponse
@@ -232,7 +232,7 @@ class UserDetail(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, Det
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["reservations"] = Reservation.objects.filter(Q(user_id=id)).order_by("status")
+        context["reservations"] = Reservation.objects.filter(Q(user=id)).order_by("status")
         return context
 
 class UserUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateUsersAccessMixin, UpdateView):
@@ -274,7 +274,7 @@ class ReservationCreate(LoginRequiredMixin, StaffAccessMixin, CreateReservations
 def delivered_action(request, pk):
     if (request.user.is_staff or request.user.is_superuser) and request.user.update_reservations:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
-        book = get_object_or_404(Books, id=reservation.book_id.id)
+        book = get_object_or_404(Books, id=reservation.book.id)
         if reservation.status == "رزرو شده":
             reservation.status = "تحویل داده شده"
             book.in_stock -= 1
@@ -290,8 +290,8 @@ def delivered_action(request, pk):
 def cancel_action(request, pk):
     if (request.user.is_staff or request.user.is_superuser) and request.user.update_reservations:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
-        user = User.objects.get(id=reservation.user_id.id)
-        book = get_object_or_404(Books, id=reservation.book_id.id)
+        user = User.objects.get(id=reservation.user.id)
+        book = get_object_or_404(Books, id=reservation.book.id)
         if reservation.status == "رزرو شده":
             reservation.status = "لغو رزرو"
             user.reservation_limit += 1
@@ -310,8 +310,8 @@ def cancel_action(request, pk):
 def returned_action(request, pk):
     if (request.user.is_staff or request.user.is_superuser) and request.user.update_reservations:
         reservation = get_object_or_404(Reservation, reservation_id=pk)
-        book = get_object_or_404(Books, id=reservation.book_id.id)
-        user = User.objects.get(id=reservation.user_id.id)
+        book = get_object_or_404(Books, id=reservation.book.id)
+        user = User.objects.get(id=reservation.user.id)
         if reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده":
             user.reservation_limit += 1
             user.save()
@@ -415,24 +415,61 @@ class UserProfile(LoginRequiredMixin, UserAccessMixin, TemplateView):
         context["delivered_books"] = self.request.user.reservations.filter(status="تحویل داده شده")
         return context
 class AdminProfile(LoginRequiredMixin, StaffAccessMixin, TemplateView):
-    template_name = "account/admin/profile1.html"
+    template_name = "account/admin/index.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["users"] = User.objects.all()[0:5]
+        context["books"] = Books.objects.all()[0:5]
+        context["users_count"] = User.objects.all().count()
+        context["books_count"] = Books.objects.all().count()
+        context["admins_count"] = User.objects.filter(Q(is_staff=True)|Q(is_superuser=True)).count()
+        context["reservations_count"] = Reservation.objects.filter(status="بازگردانده شده").count()
+        context["categories"] = Category.objects.all()[0:5]
+        context["reservations"] = Reservation.objects.all()[0:5]
+        return context
     
 @login_required
 def identifier(request):
     if request.user.is_superuser or request.user.is_staff:
-        return HttpResponseRedirect("admin-profile")
+        return HttpResponseRedirect("admin-panel")
     else:
-        return HttpResponseRedirect("user-profile")
+        return HttpResponseRedirect("user-panel")
 
 
-class ProfileUpdate(UserAccessMixin, LoginRequiredMixin, UpdateView):
+class UserProfileUpdate(UserAccessMixin, LoginRequiredMixin, UpdateView):
     model = User
     template_name = "account/user/update_profile.html"
     form_class = UpdateProfileForm
     success_url = reverse_lazy("account:identifier")
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
+class AdminProfileUpdate(StaffAccessMixin, LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = "account/admin/users/user_update.html"
+    form_class = UpdateUserForm
+    success_url = reverse_lazy("account:admin-index")
+    def get_object(self):
+        return User.objects.get(id=self.request.user.id)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = User.objects.get(id=self.request.user.id)
+        return context
     
+class ThemeList(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, ListView):
+    model = PageTheme
+    template_name = "account/admin/themes/themes_list.html"
+
+    
+class ThemeUpdate(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, UpdateView):
+    model = PageTheme
+    template_name = "account/admin/themes/theme_update.html"
+    form_class = UpdateThemeForm
+    success_url = reverse_lazy("account:themes")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["theme"] = PageTheme.objects.get(slug=slug)
+        return context
     
 
 class BookmarkList(LoginRequiredMixin, ListView):

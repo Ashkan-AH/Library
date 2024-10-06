@@ -48,7 +48,10 @@ urlpatterns = [
     path("black-list/", views.BlackList.as_view(), name="black-list"),
     path("bookmarks/", views.BookmarkList.as_view(), name="bookmarks"),
     path("waiting-list/", views.WaitingList.as_view(), name="waiting-list"),
-    path("profile-update/", views.ProfileUpdate.as_view(), name="profile-update"),
+    path("user-profile-update/", views.UserProfileUpdate.as_view(), name="user-profile-update"),
+    path("admin-profile-update/", views.AdminProfileUpdate.as_view(), name="admin-profile-update"),
+    path("themes/", views.ThemeList.as_view(), name="themes"),
+    path("themes/<str:slug>/", views.ThemeUpdate.as_view(), name="theme-update"),
     path('security/', TemplateView.as_view(template_name="account/user/security.html"), name="security"),
 
     
@@ -58,7 +61,7 @@ urlpatterns = [
 
 
     path("create/", views.CreationView.as_view(), name="create"), 
-    path("admin-profile/", views.AdminProfile.as_view(), name="admin-profile"), 
-    path("user-profile/", views.UserProfile.as_view(), name="user-profile"), 
+    path("admin-panel/", views.AdminProfile.as_view(), name="admin-index"), 
+    path("user-panel/", views.UserProfile.as_view(), name="user-index"), 
     path("", views.identifier, name="identifier"), 
 ]

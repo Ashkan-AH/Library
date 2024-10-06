@@ -18,7 +18,7 @@ urlpatterns = [
 
     path("waiting/add/<int:id>/", views.waiting_add, name="waiting-add"),
 
-    path("reservation/create/<int:book_id>/", views.reservation_add, name="reservation-add"),
+    path("reservation/create/<int:book>/", views.reservation_add, name="reservation-add"),
 
 
 

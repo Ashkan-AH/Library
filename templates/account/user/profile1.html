@@ -83,7 +83,7 @@
                           {% for reservation in request.user.reservations.all %}
                           <div class="col-md-4">
                             <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
-                              <div class="img rounded d-flex align-items-end" style="background-image: url({{reservation.book_id.picture.url}});">
+                              <div class="img rounded d-flex align-items-end" style="background-image: url({{reservation.book.picture.url}});">
                               </div><div class="text lastbook-fa">
                                 <div class="last-res-bookdate">
                                   <section>
@@ -93,15 +93,15 @@
                                
                                   </section>
                                   <section>
-                                     <h2 style="direction: rtl;text-align: right;" class="mb-0"><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id.name}}</a></h2>
+                                     <h2 style="direction: rtl;text-align: right;" class="mb-0"><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book.name}}</a></h2>
                                      <div class="d-flex mb-3" style="direction: rtl;">
-                                        <span class="cat">{{reservation.book_id.author_str}}</span>
+                                        <span class="cat">{{reservation.book.author_str}}</span>
                                      </div>
                                   </section>
                                 </div>
                                 <section class="col-2000" style="display: flex;">
                                   {% if reservation.status == "رزرو شده" %}
-                                    <a href="{% url 'books:reservation-add' reservation.book_id.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
+                                    <a href="{% url 'books:reservation-add' reservation.book.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
                                   {% elif reservation.status == "تحویل داده شده" %}
                                     <a href="#" class="btn bg-indigo py-2 mr-1 disabled"> تحویل داده شده</a>
                                   {% elif reservation.status == "لغو رزرو" %}
@@ -113,7 +113,7 @@
                                   {% endif %}
                                     
                                              
-                                   <a href="{% url 'books:book-detail' reservation.book_id.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
+                                   <a href="{% url 'books:book-detail' reservation.book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
                                 </section>
                               </div>
                             </div>
@@ -585,7 +585,7 @@
                                       <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
                                         
-                                          <a href="{% url 'account:profile-update' %}" class="btn btn-danger btn-fa"   style="background-color: #01d28e; border:solid 2px #009563;width: 120px;">ویرایش
+                                          <a href="{% url 'account:user-profile-update' %}" class="btn btn-danger btn-fa"   style="background-color: #01d28e; border:solid 2px #009563;width: 120px;">ویرایش
                                           </a>
                                           
                                         </div>

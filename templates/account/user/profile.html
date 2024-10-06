@@ -93,7 +93,7 @@
                   {% for reservation in request.user.reservations.all %}
                           <div class="col-md-4">
                             <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
-                              <div class="img rounded d-flex align-items-end" style="background-image: url({{reservation.book_id.picture.url}});">
+                              <div class="img rounded d-flex align-items-end" style="background-image: url({{reservation.book.picture.url}});">
                               </div><div class="text lastbook-fa">
                                 <div class="last-res-bookdate">
                                   <section>
@@ -103,15 +103,15 @@
                                
                                   </section>
                                   <section>
-                                     <h2 style="direction: rtl;text-align: right;" class="mb-0"><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id.name}}</a></h2>
+                                     <h2 style="direction: rtl;text-align: right;" class="mb-0"><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book.name}}</a></h2>
                                      <div class="d-flex mb-3" style="direction: rtl;">
-                                        <span class="cat">{{reservation.book_id.author_str}}</span>
+                                        <span class="cat">{{reservation.book.author_str}}</span>
                                      </div>
                                   </section>
                                 </div>
                                 <section class="col-2000" style="display: flex;">
                                   {% if reservation.status == "رزرو شده" %}
-                                    <a href="{% url 'books:reservation-add' reservation.book_id.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
+                                    <a href="{% url 'books:reservation-add' reservation.book.id %}" class="btn btn-outline-primary py-2 mr-1">رزرو شده</a>
                                   {% elif reservation.status == "تحویل داده شده" %}
                                     <a href="#" class="btn bg-indigo py-2 mr-1 disabled"> تحویل داده شده</a>
                                   {% elif reservation.status == "لغو رزرو" %}
@@ -123,7 +123,7 @@
                                   {% endif %}
                                     
                                              
-                                   <a href="{% url 'books:book-detail' reservation.book_id.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
+                                   <a href="{% url 'books:book-detail' reservation.book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
                                 </section>
                               </div>
                             </div>
@@ -225,13 +225,11 @@
 
               <div class="container">
                 <div class="row justify-content-center">
-                  {% if reserved_books %}
-                    {% for reservation in reserved_books %}
                     <div class="col-md-12">
                       <div class="car-details  book-single book-f">
           
                            <div class="img rounded img-profile-bookprop col-3" style="
-                           background-image: url( {{reservation.book_id.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
+                           background-image: url( {{reservation.book.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
                             <section class="col-3" style="display: flex;flex-direction: column;
                             flex-wrap: wrap;
                             align-content: stretch;
@@ -240,7 +238,7 @@
                               <div class="text text-col">
                               <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
                            نام اثر:
-                                <span style="font-weight: lighter;"><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id.name}}</a></span>
+                                <span style="font-weight: lighter;">سیب</span>
                               </h3>
                             </div>
                       
@@ -248,15 +246,13 @@
                             <div class="text text-col">
                               <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
                             نویسنده:
-                                <span style="font-weight: lighter;"> {% for author in reservation.book_id.author.all %}
-                                  <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
-                                {% endfor %} </span>
+                                <span style="font-weight: lighter;">ببب </span>
                               </h3>
                             </div>
                       <div class="text text-col ">
                               <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
                             تاریخ رزرو:
-                                <span style="font-weight: lighter;">{{reservation.persian_date_added|date:'Y/m/d'}}</span>
+                                <span style="font-weight: lighter;">۱۲۳</span>
                               </h3>
                             </div>
                             
@@ -272,12 +268,12 @@
                             text-align: center;
                             direction: rtl;">
                                 <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">{{reservation.reservation_deadline_remaining}}
+                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">۱۲۳
                                   </label></p>
                                   
                               </div>
                                 <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">کد رزرو  : {{reservation.reservation_id}}</p>
+                                  <p style="font-size: 21px;">کد رزرو  : ۱۲۳</p>
                               </div>
                               </section>
                               <section class="fa-220">                     
@@ -291,10 +287,6 @@
                                     </section>  
               </div>
             </div>
-                    {% endfor %}
-                    {%else%}
-                    <h5 style="direction: rtl;">هنوز کتابی رزرو نکردید.</h5>
-                  {% endif %}
                   
         </div>
       </div>
@@ -309,13 +301,11 @@
            <section class="ftco-section bg-light" style="background: white !important;">
             <div class="container">
               <div class="row">
-                {% if delivered_books %}
-                    {% for reservation in delivered_books %}
                     <div class="col-md-12">
                       <div class="car-details  book-single book-f">
           
                            <div class="img rounded img-profile-bookprop col-3" style="
-                           background-image: url( {{reservation.book_id.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
+                           background-image: url( {{reservation.book.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
                             <section class="col-3" style="display: flex;flex-direction: column;
                             flex-wrap: wrap;
                             align-content: stretch;
@@ -324,7 +314,7 @@
                               <div class="text text-col">
                               <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
                            نام اثر:
-                                <span style="font-weight: lighter;"><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id.name}}</a></span>
+                                <span style="font-weight: lighter;"><a href="">زمستان سرد</a></span>
                               </h3>
                             </div>
                       
@@ -332,15 +322,13 @@
                             <div class="text text-col">
                               <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
                             نویسنده:
-                                <span style="font-weight: lighter;"> {% for author in reservation.book_id.author.all %}
-                                  <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
-                                {% endfor %} </span>
+                                <span style="font-weight: lighter;"> نیما یوشیج </span>
                               </h3>
                             </div>
                       <div class="text text-col ">
                               <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
                             تاریخ رزرو:
-                                <span style="font-weight: lighter;">{{reservation.persian_date_added|date:'Y/m/d'}}</span>
+                                <span style="font-weight: lighter;">12/2/1403</span>
                               </h3>
                             </div>
                             
@@ -356,12 +344,12 @@
                             text-align: center;
                             direction: rtl;">
                                 <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">{{reservation.reservation_deadline_remaining}}
+                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">5
                                   </label></p>
                                   
                               </div>
                                 <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">کد رزرو  : {{reservation.reservation_id}}</p>
+                                  <p style="font-size: 21px;">کد رزرو  : 123</p>
                               </div>
                               </section>
                               <section class="fa-220">                     
@@ -375,10 +363,6 @@
                                     </section>  
               </div>
             </div>
-                    {% endfor %}
-                    {%else%}
-                    <h5 style="text-align: center;direction: rtl;">هنوز کتابی تحویل نگرفتید.</h5>
-                  {% endif %}
                   
 
                 
@@ -682,7 +666,7 @@
                               <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
                                 
-                                  <a href="{% url 'account:profile-update' %}" class="btn btn-danger btn-fa"   style="background-color: #01d28e; border:solid 2px #009563;width: 120px;">ویرایش
+                                  <a href="{% url 'account:user-profile-update' %}" class="btn btn-danger btn-fa"   style="background-color: #01d28e; border:solid 2px #009563;width: 120px;">ویرایش
                                   </a>
                                   
                                 </div>

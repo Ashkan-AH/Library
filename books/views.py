@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
@@ -5,7 +6,7 @@ from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from reservation.models import Reservation
-from account.models import User
+from account.models import User, PageTheme
 from author.models import Author
 from .models import Books, Category
 
@@ -45,11 +46,11 @@ def waiting_add(request, id):
 
 
 @login_required
-def reservation_add(request, book_id):
-    book = Books.objects.get(id=book_id)
+def reservation_add(request, book):
+    book = Books.objects.get(id=book)
     user = User.objects.get(id=request.user.id)
-    if Reservation.objects.filter(Q(book_id=book_id), Q(user_id=request.user.id), Q(status="رزرو شده")).exists():
-        reservation = Reservation.objects.get(Q(book_id=book_id), Q(user_id=request.user.id), Q(status="رزرو شده"))
+    if Reservation.objects.filter(Q(book=book), Q(user=request.user.id), Q(status="رزرو شده")).exists():
+        reservation = Reservation.objects.get(Q(book=book), Q(user=request.user.id), Q(status="رزرو شده"))
         reservation.status = "لغو رزرو"
         book.in_stock_user += 1
         user.reservation_limit += 1
@@ -58,7 +59,7 @@ def reservation_add(request, book_id):
         user.save()
     else:
         if book.in_stock_user > 0 and user.reservation_limit > 0:
-            Reservation.objects.create(book_id=book, user_id=user)
+            Reservation.objects.create(book=book, user=user)
     return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
 
@@ -101,6 +102,8 @@ def search_result(request):
     "categories_page_range": get_page_range(categories_page),
 
     "search_text": search, 
+    "footer": PageTheme.objects.get(slug="footer"),
+    "theme": PageTheme.objects.get(slug="search-result"),
     }
     return render(request, "main/search_result.html", context)
 
@@ -126,11 +129,15 @@ class BookList(ListView):
         if "slug" in self.kwargs:
             slug = self.kwargs.get("slug")
             context["author_name"] = Author.objects.get(slug=slug).name
+        context["theme"] = PageTheme.objects.get(slug="books")
+        context["footer"] = PageTheme.objects.get(slug="footer")
         return context
 
 
 def index(request):
     context = {
+        "theme": PageTheme.objects.get(slug="index"), 
+        "footer": PageTheme.objects.get(slug="footer"), 
         "books": [book for book in Books.objects.all().order_by("?")[0:8]],
         "authors": [author for author in Author.objects.all().order_by("?")[0:8]],
         "categories": [category for category in Category.objects.all()[0:4]],
@@ -164,8 +171,10 @@ class BookDetail(DetailView):
         return book1
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["reservation"] = Reservation.objects.filter(Q(book_id=book1.id), Q(user_id=self.request.user.id), Q(status="تحویل داده شده")|Q(status="رزرو شده")).first()
+        context["reservation"] = Reservation.objects.filter(Q(book=book1.id), Q(user=self.request.user.id), Q(status="تحویل داده شده")|Q(status="رزرو شده")).first()
         context["books"] = [book for book in Books.objects.filter(Q(category__in=(book1.category.all())), ~Q(slug=book1.slug)).order_by("?")[0:3]]
+        context["theme"] = PageTheme.objects.get(slug="books")
+        context["footer"] = PageTheme.objects.get(slug="footer")
         return context
         
     
@@ -174,6 +183,11 @@ class CategoryList(ListView):
     paginate_by = 12
     template_name = "main/books/categories.html"
     model = Category
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["theme"] = PageTheme.objects.get(slug="categories")
+        context["footer"] = PageTheme.objects.get(slug="footer")
+        return context
 class CategoryBookList(ListView):
     template_name = "main/books/books.html"
     def get_queryset(self):
@@ -186,4 +200,6 @@ class CategoryBookList(ListView):
         slug = self.kwargs.get("slug")
         selected_category = get_object_or_404(Category, slug=slug)
         context["category"] = selected_category
+        context["theme"] = PageTheme.objects.get(slug="books")
+        context["footer"] = PageTheme.objects.get(slug="footer")
         return context

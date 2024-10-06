@@ -16,7 +16,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'account:admin-index' %}">خانه</a></li>
               <li class="breadcrumb-item active"><a href="{% url 'account:reservations' %}"> رزرو ها</a></li>
             </ol>
           </div>
@@ -79,11 +79,11 @@
                   کتاب رزرو شده:
                   <br>
                   {% if request.user.view_books %}
-                  <a href="{% url 'account:book-detail' object.book_id.slug %}">
-                    {{object.book_id.name}}
+                  <a href="{% url 'account:book-detail' object.book.slug %}">
+                    {{object.bookme}}
                   </a>
                   {%else%}
-                  {{object.book_id.name}}
+                  {{object.book.name}}
                   {% endif %}
                 </label>
                 <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-left: solid #6C757D;">
@@ -91,15 +91,15 @@
                   کاربر گیرنده:
                   <br>
                   {% if request.user.view_users %}
-                  <a href="{% url 'account:user-detail' object.user_id.id %}">
-                    {% if object.user_id.get_full_name %}
-                      {{object.user_id.get_full_name|truncatewords:4}}
+                  <a href="{% url 'account:user-detail' object.user.id %}">
+                    {% if object.user.get_full_name %}
+                      {{object.user.get_full_name|truncatewords:4}}
                     {%else%}
-                      {{object.user_id.username|truncatechars:25}}
+                      {{object.user.username|truncatechars:25}}
                     {% endif %}
                   </a>
                   {%else%}
-                  {{object.user_id.get_full_name|truncatewords:4}}
+                  {{object.user.get_full_name|truncatewords:4}}
                   {% endif %}
                 </label>
                 <label class="text-center bg-gray-dark" style="width: 50%;margin:0px;border-radius:0;padding:10px;border-right: solid #6C757D;">

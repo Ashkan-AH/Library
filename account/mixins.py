@@ -71,6 +71,11 @@ class UpdateCategoriesAccessMixin():
         if request.user.update_categories:
             return super().dispatch(request, *args, **kwargs)
         raise PermissionDenied("شما دسترسی ویرایش دسته بندی ها را ندارید!")
+class UpdateThemeAccessMixin():
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.update_theme:
+            return super().dispatch(request, *args, **kwargs)
+        raise PermissionDenied("شما دسترسی ویرایش صفحات را ندارید!")
 class CreateBooksAccessMixin():
     def dispatch(self, request, *args, **kwargs):
         if request.user.create_books:

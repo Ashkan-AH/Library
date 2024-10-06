@@ -1,0 +1,76 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+  صفحات
+{% endblock title %}
+{% block content %}
+  
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px  !important;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>صفحات قابل ویرایش</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'account:admin-index' %}">خانه</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'account:themes' %}">صفحات</a></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="row d-flex align-items-stretch" style="justify-content: space-evenly !important;">
+
+
+            {% for theme in object_list %}
+            <div class="card bg-light" style="
+            max-width: 270px;
+            border-radius: 5px;
+            margin: 0px 25px 0px 25px;
+            ">
+                     
+        
+          <a href="{% url 'account:theme-update' theme.slug %}">
+          <div class="card-body pt-0" style="width:270px;height: 150px; background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.8)), url('{{theme.thumbnail.url}}');border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;background-size: cover;">
+            <h4 style="position: absolute;bottom: 45px;font-weight: bold;right: 10px;">{{theme.name|truncatewords:4}}</h3>
+          </div>
+        </a>
+        <div class="card-footer" style="display: flex; padding: 0px;">
+          
+          <a href="{% url 'account:theme-update' theme.slug %}" class="btn btn-sm btn-primary" style="width: 100%; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+            ویرایش   
+        </a>
+      </div>
+
+
+
+      
+</div> 
+            {% endfor %}
+ </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+      </div>
+      <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+  
+  
+  <!-- <script src="../../dist/js/adminlte.min.js"></script> -->

@@ -17,7 +17,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{% url 'account:admin-profile' %}">خانه</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'account:admin-index' %}">خانه</a></li>
           </ol>
         </div>
       </div>
@@ -274,9 +274,9 @@
            <h4> اطلاعات رزرو </h4>
            <hr>
            <div class="row">
-             <div class="form-group col">{{reservation_form.book_id|as_crispy_field}}</div>
+             <div class="form-group col">{{reservation_form.book|as_crispy_field}}</div>
    
-             <div class="form-group col">{{reservation_form.user_id|as_crispy_field}}</div>
+             <div class="form-group col">{{reservation_form.user|as_crispy_field}}</div>
              <div class="form-group col">{{reservation_form.extend_sluts|as_crispy_field}}</div>
            </div>
  

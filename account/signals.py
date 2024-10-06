@@ -52,30 +52,10 @@ def create_category(sender, instance, *args, **kwargs):
         instance.slug = create_unique_slug(instance)
 
 
-@receiver(post_delete, sender=Reservation)
-def book_delete_increase(sender, instance, *args, **kwargs):
-    book = Books.objects.get(id=instance.book_id.id)
-    user = User.objects.get(id=instance.user_id.id)
-    
-    if instance.status == "رزرو شده":
-        book.in_stock_user += 1
-        book.save()
-        user.reservation_limit += 1
-        user.save()
-    elif instance.status == "تحویل داده شده" or instance.status == "بازگردانده نشده":
-        book.in_stock_user += 1
-        book.in_stock += 1
-        book.save()
-        user.reservation_limit += 1
-        user.save()
-    
-    
-
-
 @receiver(pre_save, sender=Reservation)
 def book_create_reservation_reduce(sender, instance, *args, **kwargs):
-    user = User.objects.get(id=instance.user_id.id)
-    book = Books.objects.get(id=instance.book_id.id)
+    user = User.objects.get(id=instance.user.id)
+    book = Books.objects.get(id=instance.book.id)
     if instance.reservation_id is None:
         if user.reservation_limit > 0:
             if instance.status == "رزرو شده":

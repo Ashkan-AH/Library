@@ -40,14 +40,14 @@
                   <a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a>
                 </td>
                 {% if request.user.view_books and request.user.is_staff or request.user.is_superuser %}
-                  <td><a href="{% url 'account:book-detail' reservation.book_id.slug %}">{{reservation.book_id}}</a></td>
+                  <td><a href="{% url 'account:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
                 {% else %}
-                  <td><a href="{% url 'books:book-detail' reservation.book_id.slug %}">{{reservation.book_id}}</a></td>
+                  <td><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
                 {% endif %}
-                    {% if reservation.user_id.id == request.user.id or not request.user.view_users %}
-                    <td>{{reservation.user_id}}</td>
+                    {% if reservation.user.id == request.user.id or not request.user.view_users %}
+                    <td>{{reservation.user}}</td>
                     {% else %}
-                    <td><a href="{% url 'account:user-detail' reservation.user_id.id %}">{{reservation.user_id}}</a></td>
+                    <td><a href="{% url 'account:user-detail' reservation.user.id %}">{{reservation.user}}</a></td>
                     {% endif %}
                 <td>{{reservation.persian_date_added}}</td>
                 <td>{% if reservation.status == "رزرو شده" %}
