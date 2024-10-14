@@ -10,17 +10,16 @@
   <div class="card">
     <div class="card-header p-2">
       <ul class="nav nav-pills">
-        <li class="nav-item"><a class="nav-link "  id="nav" href="#timeline" data-toggle="tab">وضعیت رزرو ها</a></li>
+        <li class="nav-item"><a class="nav-link active "  id="nav" href="#timeline" data-toggle="tab">وضعیت رزرو ها</a></li>
         <li class="nav-item"><a class="nav-link " id="nav" href="#settings" data-toggle="tab">اطلاعات حساب</a></li>
       </ul>
     </div><!-- /.card-header -->
     <div class="card-body">
       <div class="tab-content">
-        <h3 class="no-active-title" id="no-active-title">با استفاده از دکمه های بالا میتوانید  پنل خود را مدیریت کنید</h3>
        
 
         <!-- /.tab-pane -->
-        <div id="tab" class="tab-pane hide"  style="display: block;" id="timeline">
+        <div id="tab" class="tab-pane"  style="display: block;" id="timeline">
 
 
 
@@ -58,7 +57,7 @@
                 <!-- small box -->
                 <div class="small-box btn bg-primary" style="width: 200px;">
                   <div class="inner">
-                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{reserved_books.count}}</h3>
+                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{reserved_books_count}}</h3>
     
                     <p style="color: whitesmoke;text-align: right;font-size: 18px;direction: rtl;"> رزرو شده   </p>
                   </div>
@@ -70,7 +69,7 @@
                 <!-- small box -->
                 <div class="small-box btn bg-indigo" style="width: 200px;">
                   <div class="inner">
-                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{delivered_books.count}}</h3>
+                    <h3 style="color: whitesmoke;text-align: right;direction: rtl;">{{delivered_books_count}}</h3>
     
                     <p style="color: whitesmoke;text-align: right;font-size: 18px;direction: rtl;">  در حال مطالعه </p>
                   </div>
@@ -78,19 +77,18 @@
                 </div>
               </div>
               <!-- ./col -->
-        <h4 class="no-active-title" id="bookactivitititle" >با استفاده از دکمه های بالا میتوانید  کتاب های خود را مدیریت کنید  </h4>
             </div>
 <!--user-book-propstart-->
 
-          <div class="userp-book-prop hide">
+          <div class="userp-book-prop">
 <h1 style="text-align: center;font-weight: bold;">تاریخچه رزرو</h1>
 
 
-            <section class="ftco-section bg-light" style="background: white !important;">
+            <section class="ftco-section bg-light" style="background: white !important;padding: 0;">
               <div class="container">
                 <div class="row">
                   {% if request.user.reservations.exists %}
-                  {% for reservation in request.user.reservations.all %}
+                  {% for reservation in reservations_page.object_list %}
                           <div class="col-md-4">
                             <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
                               <div class="img rounded d-flex align-items-end" style="background-image: url({{reservation.book.picture.url}});">
@@ -123,7 +121,7 @@
                                   {% endif %}
                                     
                                              
-                                   <a href="{% url 'books:book-detail' reservation.book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
+                                   <a href="{% url 'books:book-detail' reservation.book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده کتاب</a>
                                 </section>
                               </div>
                             </div>
@@ -136,23 +134,24 @@
                           
                   {% endif %}
 
-
-                  
-                  
-
-
-
-                  
-                  
-
-
-                  
-                  
-
-
-                  
-                  
+              </div>
+              <div class="row mt-5">
+                <div class="col text-center">
+                  <div class="block-27">
+                    <ul>
+                      {% if reservations_page.has_previous %}
+              <li class="page-item"><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.previous_page_number }}&waiting_books_page={{ waiting_books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in reservations_page_range %}
                 
+              <li class="{% if page_number == reservations_page.number %}active{% endif %}"><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ page_number }}&waiting_books_page={{ waiting_books_page.number }}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if reservations_page.has_next %}
+              <li><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.next_page_number }}&waiting_books_page={{ waiting_books_page.number }}">&gt;</a></li>
+                  {% endif %}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div></section>
             
@@ -165,10 +164,10 @@
           <div class="userp-book-prop hide ">
 <h1 style="text-align: center;font-weight: bold;">  در صف انتظار</h1>
 
-            <section class="ftco-section bg-light" style="background: white !important;">
+            <section class="ftco-section bg-light" style="background: white !important;padding: 0;">
               <div class="container">
                 <div class="row">
-                  {% for book in request.user.books.all %}
+                  {% for book in waiting_books_page.object_list %}
                   <div class="col-md-4">
                     <div class="car-wrap rounded" style="transition: all 0.8s ease 0s;">
                       <div class="img rounded d-flex align-items-end" style="background-image: url({{book.picture.url}});">
@@ -191,7 +190,7 @@
                           <a href="{% url 'books:waiting-add' book.id %}" class="btn btn-outline-info py-2 mr-1">خروج از صف</a>
                           
                                      
-                           <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده جزءیات</a>
+                           <a href="{% url 'books:book-detail' book.slug %}" class="btn btn-secondary py-2 ml-1">مشاهده کتاب</a>
                         </section>
                       </div>
                     </div>
@@ -203,13 +202,16 @@
                   <div class="col text-center">
                     <div class="block-27">
                       <ul>
-                        <li><a href="#">&lt;</a></li>
-                        <li class="active"><span>1</span></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&gt;</a></li>
+                        {% if waiting_books_page.has_previous %}
+              <li class="page-item"><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{ waiting_books_page.previous_page_number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in waiting_books_page_range %}
+                
+              <li class="{% if page_number == waiting_books_page.number %}active{% endif %}"><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{page_number }}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if waiting_books_page.has_next %}
+              <li><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{ waiting_books_page.next_page_number }}">&gt;</a></li>
+                  {% endif %}
                       </ul>
                     </div>
                   </div>
@@ -222,74 +224,108 @@
 
           <div class="userp-book-prop hide" >
             <h1 style="text-align: center;font-weight: bold;">کتاب های رزرو شده</h1>
-
-              <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-12">
-                      <div class="car-details  book-single book-f">
-          
-                           <div class="img rounded img-profile-bookprop col-3" style="
-                           background-image: url( {{reservation.book.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
-                            <section class="col-3" style="display: flex;flex-direction: column;
-                            flex-wrap: wrap;
-                            align-content: stretch;
-                            justify-content: space-evenly;
-                            align-items: flex-end;">
-                              <div class="text text-col">
-                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
-                           نام اثر:
-                                <span style="font-weight: lighter;">سیب</span>
-                              </h3>
-                            </div>
-                      
+            <div class="container">
+              <div class="row justify-content-center">
                 
-                            <div class="text text-col">
-                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
-                            نویسنده:
-                                <span style="font-weight: lighter;">ببب </span>
-                              </h3>
-                            </div>
-                      <div class="text text-col ">
-                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
-                            تاریخ رزرو:
-                                <span style="font-weight: lighter;">۱۲۳</span>
-                              </h3>
-                            </div>
-                            
-                          </section>
-                              
-                              
-                            
-                              <section class="col-3" style="display: flex;flex-direction: column;
-                            flex-wrap: wrap;
-                            align-content: stretch;
-                            justify-content: space-evenly;
-                            align-items: center;
-                            text-align: center;
-                            direction: rtl;">
-                                <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">۱۲۳
-                                  </label></p>
-                                  
-                              </div>
-                                <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">کد رزرو  : ۱۲۳</p>
-                              </div>
-                              </section>
-                              <section class="fa-220">                     
-                                      <section class="chart">
-                                        <div class="pie" id="pie">
-                                            <div>
-                                              <h1 id="pie-inner-value"></h1>
-                                            </div>
-                                        </div>
-                                      </section>
-                                    </section>  
-              </div>
-            </div>
+
+
+
+                {% for reservation in reserved_books_page.object_list %}
+                  <div class="col-md-12">
+                  <div class="car-details  book-single book-f">
+      
+                       <div class="img rounded img-profile-bookprop" style="
+                       background-image: url({{reservation.book.picture.url}});border-radius: 20px !important;background-size: cover; height: 258px !important;"></div>
+                        <section class="col-0 col-002">
+                          <div class="text text-col">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                       نام اثر:
+                            <span style="font-weight: lighter;direction: rtl;"><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book.name}}</a></span>
+                          </h3>
+                        </div>
                   
+            
+                        <div class="text text-col">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                        نویسنده:
+                            <span style="font-weight: lighter;direction: rtl;">  {% for author in reservation.book.author.all %}
+                              <a href="{% url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
+                              
+                            {% endfor %} </span>
+                          </h3>
+                        </div>
+                  <div class="text text-col ">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                        تاریخ رزرو:
+                            <span style="font-weight: lighter;direction: rtl;"> {{reservation.persian_date_added|date:"Y/m/d"}} </span>
+                          </h3>
+                        </div>
+                        <div class="text text-col">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                       تاریخ انقضای رزرو :
+                            <span style="font-weight: lighter;direction: rtl;">{{reservation.reservation_deadline|date:"Y/m/d"}}</span>
+                          </h3>
+                        </div>
+                      </section>
+                        <div class="bookday"    id="bookday-2">   
+                          <section class="rent-btn-style" id="rent-btn-style-2" style="
+                            
+                                width: 40%;
+                                height: 50px;
+                                margin-left: auto;
+                            ">
+                              <a class="btn btn-lg" href="{%url 'books:book-detail' reservation.book.slug %}" style="color: white;font-weight: bold;background-color: #01D28E;font-size: 19px;
+    margin-bottom: 10px;">مشاهده کتاب</a>
+                          </section>
+                          
+                        <section class="fa-220">                     
+                          <section class="chart">
+                            <div class="pie" id="pie-2" style="background: conic-gradient(rgb(1, 210, 142) 100%, rgb(234, 234, 234) 0deg);">
+                                <div>
+                                  <h1 id="pie-inner-value-2"><br>                                      </h1>
+                                </div>
+                            </div>
+                          </section>
+                          <div class="fa-221">
+                            <div>
+                            
+                          </div>
+                            <div>
+                              <label for="">: مدت زمان باقیمانده</label><label id="time-read-label-2">{{reservation.reservation_deadline_remaining}} 
+                              </label><label>روز </label>
+                          </div>
+                            <div>
+                              <label for="">: کد رزرو  </label><label>{{reservation.reservation_id}}</label>
+                          </div>
+                          </div>
+                        </section> 
+                        </div> 
+          </div>
+        </div>
+                {% endfor %}
+                
+                
+      </div>
+      <div class="row mt-5">
+        <div class="col text-center">
+          <div class="block-27">
+            <ul>
+              {% if reserved_books_page.has_previous %}
+              <li class="page-item"><a href="?reserved_books_page={{reserved_books_page.previous_page_number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{ waiting_books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in reserved_books_page_range %}
+                
+              <li class="{% if page_number == reserved_books_page.number %}active{% endif %}"><a href="?reserved_books_page={{page_number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{waiting_books_page.number }}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if reserved_books_page.has_next %}
+              <li><a href="?reserved_books_page={{reserved_books_page.next_page_number}}&delivered_books_page={{delivered_books_page.number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{ waiting_books_page.number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </div>
         </div>
       </div>
+    </div>
+            
 
             </div>
 <!--user-book-prop-end-->
@@ -297,92 +333,124 @@
 <!--user-book-propstart-->
 
           <div class="userp-book-prop hide" >
-           <h1 style="text-align: center;">  کتاب های درحال مطالعه</h1>
-           <section class="ftco-section bg-light" style="background: white !important;">
+           <h1 style="text-align: center;font-weight: bold;">  کتاب های درحال مطالعه</h1>
+           <section class="ftco-section bg-light" style="background: white !important;padding: 0;">
             <div class="container">
-              <div class="row">
-                    <div class="col-md-12">
-                      <div class="car-details  book-single book-f">
-          
-                           <div class="img rounded img-profile-bookprop col-3" style="
-                           background-image: url( {{reservation.book.picture.url}});margin: 10px;height: 235px !important;max-width: 23%;border-radius: 20px !important;"></div>
-                            <section class="col-3" style="display: flex;flex-direction: column;
-                            flex-wrap: wrap;
-                            align-content: stretch;
-                            justify-content: space-evenly;
-                            align-items: flex-end;">
-                              <div class="text text-col">
-                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
-                           نام اثر:
-                                <span style="font-weight: lighter;"><a href="">زمستان سرد</a></span>
-                              </h3>
-                            </div>
-                      
+              <div class="row justify-content-center">
                 
-                            <div class="text text-col">
-                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
-                            نویسنده:
-                                <span style="font-weight: lighter;"> نیما یوشیج </span>
-                              </h3>
-                            </div>
-                      <div class="text text-col ">
-                              <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
-                            تاریخ رزرو:
-                                <span style="font-weight: lighter;">12/2/1403</span>
-                              </h3>
-                            </div>
-                            
-                          </section>
-                              
-                              
-                            
-                              <section class="col-3" style="display: flex;flex-direction: column;
-                            flex-wrap: wrap;
-                            align-content: stretch;
-                            justify-content: space-evenly;
-                            align-items: center;
-                            text-align: center;
-                            direction: rtl;">
-                                <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">مدت زمان باقیمانده: <label id="time-read-label" style="font-family: koodak;">5
-                                  </label></p>
-                                  
-                              </div>
-                                <div style="align-items: center !important;flex-direction: column !important;">
-                                  <p style="font-size: 21px;">کد رزرو  : 123</p>
-                              </div>
-                              </section>
-                              <section class="fa-220">                     
-                                      <section class="chart">
-                                        <div class="pie" id="pie">
-                                            <div>
-                                              <h1 id="pie-inner-value"></h1>
-                                            </div>
-                                        </div>
-                                      </section>
-                                    </section>  
-              </div>
-            </div>
+
+
+                {% for reservation in delivered_books_page.object_list %}
+                
+                <div class="col-md-12">
+                  <div class="car-details  book-single book-f">
+      
+                       <div class="img rounded img-profile-bookprop" style="
+                       background-image: url({{reservation.book.picture.url}});border-radius: 20px !important;background-size: cover; height: 258px !important;"></div>
+                        <section class="col-0 col-002">
+                          <div class="text text-col">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                       نام اثر:
+                            <span style="font-weight: lighter;direction: rtl;"><a href="{%url 'books:book-detail' reservation.book.slug %}">{{reservation.book.name}}</a></span>
+                          </h3>
+                        </div>
                   
-
+            
+                        <div class="text text-col">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                        نویسنده:
+                            <span style="font-weight: lighter;direction: rtl;">  {% for author in reservation.book.author.all %}
+                              <a href="{%url 'author:author-detail' author.slug %}">{{author.name}}</a>, 
+                              
+                            {% endfor %} </span>
+                          </h3>
+                        </div>
+                  <div class="text text-col ">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                        تاریخ تحویل:
+                            <span style="font-weight: lighter;direction: rtl;"> {{reservation.persian_delivery_date|date:"Y/m/d"}} </span>
+                          </h3>
+                        </div>
+                        <div class="text text-col">
+                          <h3 class="heading mb-0 pl-3" style="font-size: 20px !important;text-align: end;font-weight: bold;">
+                       تاریخ بازگرداندن :
+                            <span style="font-weight: lighter;direction: rtl;">{{reservation.persian_deadline|date:"Y/m/d"}}</span>
+                          </h3>
+                        </div>
+                      </section>
+                        <div class="bookday" id="bookday">   
+                          <section class="rent-btn-style" id="rent-btn-style" style="
+                            
+                                width: 40%;
+                                height: 50px;
+                                margin-left: auto;
+                            ">
+                              {% if reservation.delivery_remaining >= 3 %}
+                              <a class="btn btn-lg" href="{%url 'books:book-detail' reservation.book.slug %}" style="color: white;font-weight: bold;background-color: #01D28E;font-size: 19px;
+    margin-bottom: 10px;">مشاهده کتاب</a>
+                            {%else%}
+                            {% if reservation.extend_request %}
+                            
+                            <a class="btn btn-primary disabled btn-lg" href="#" style="font-weight: bold;font-size: 19px;
+    margin-bottom: 10px;">درحال بررسی</a>
+                            {%else%}
+                            <a class="btn btn-lg" href="{%url 'books:extend-request' reservation.reservation_id %}" style="color: white;font-weight: bold;background-color: orangered;font-size: 19px;
+    margin-bottom: 10px;">درخواست تمدید</a>
+                            {% endif %}
+                              {% endif %}
+                          </section>
+                          
+                        <section class="fa-220">                     
+                          <section class="chart">
+                            <div class="pie" id="pie">
+                                <div>
+                                  <h1 id="pie-inner-value"></h1>
+                                </div>
+                            </div>
+                          </section>
+                          <div class="fa-221">
+                            <div>
+                            <label for="">: مدت زمان مطالعه</label><label dir="rtl">14 روز</label>
+                          </div>
+                            <div>
+                            <label for="">: دفعات مجاز درخواست تمدید</label><label dir="rtl">{{reservation.extend_sluts}}</label>
+                          </div>
+                            <div>
+                              <label for="">
+                                : مدت رمان باقیمانده</label>
+                                <label id="time-read-label">{{reservation.delivery_remaining}}
+                              </label><label dir="rtl">روز</label>
+                          </div>  
+                            <div>
+                              <label for="">: کد رزرو  </label><label>{{reservation.reservation_id}}</label>
+                          </div>
+                          </div>
+                        </section> 
+                        </div> 
+          </div>
+        </div>
+                {% endfor %}
                 
+      </div>
+      <div class="row mt-5">
+        <div class="col text-center">
+          <div class="block-27">
+            <ul>
+              {% if delivered_books_page.has_previous %}
+              <li class="page-item"><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.previous_page_number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{ waiting_books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in delivered_books_page_range %}
                 
-
-
-
-                
-                
-
-
-                
-                
-
-
-                
-                
-              
-            </div>
-          </div></section>
+              <li class="{% if page_number == delivered_books_page.number %}active{% endif %}"><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{page_number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{waiting_books_page.number }}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if delivered_books_page.has_next %}
+              <li><a href="?reserved_books_page={{reserved_books_page.number}}&delivered_books_page={{delivered_books_page.next_page_number}}&reservations_page={{ reservations_page.number }}&waiting_books_page={{ waiting_books_page.number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div></section>
 <!--user-book-prop-end-->
 
 
@@ -390,7 +458,7 @@
         </div>
         <!-- /.tab-pane -->
 
-        <section class="ftco-section ftco-car-details" id="ftcosection">
+        <section class="ftco-section ftco-car-details" id="ftcosection" style="padding: 0;">
           <div class="container">
                     
             <div id="tab"  class="tab-pane hide " id="settings">
@@ -688,3 +756,8 @@
 <!-- /.content -->
 </div>
 {% endblock content %}
+{% block script %}
+<script src=" {% static 'user/dist/js/chart.js' %}"></script>
+<script src=" {% static 'user/dist/js/chart2.js' %}"></script>
+  
+{% endblock script %}

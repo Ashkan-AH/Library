@@ -1,0 +1,70 @@
+.comment-section {
+    width: 500px;
+    height: 350px;
+    background-color: #007bff;
+    border-radius: 15px;
+    position: fixed;
+    top: 100px;
+    right: 34%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.rent-btn2{
+    
+    width: 30%;
+    background-color: #ff0000 !important;
+    color: white;
+    font-size: 1.5rem;
+    padding: -5%;
+    text-align: center;
+    align-content: center;  
+    border: none;
+    flex-wrap: wrap;
+    font-weight: 900;
+    justify-content: center !important;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+.star-rate{
+    font-size: 32px !important;
+     cursor: pointer;
+   }
+
+.rate-btn2 {
+    width: 30%;
+    background-color: #01d28e !important;
+    color: white;
+    font-size: 1.5rem;
+    padding: -5%;
+    text-align: center;
+    align-content: center;
+    flex-wrap: wrap;
+    font-weight: 900;
+    justify-content: center !important;
+    border-radius: 5px;
+    border: none;
+    margin: 5px;
+}
+
+.comment-section textarea{
+    direction: rtl;
+    width: 90% !important;
+    height: 105px;
+  
+  }
+
+  
+.comment-section a,h4{
+    text-align: center;
+    color: white !important;
+  }
+  .rent-btn:hover{
+    outline: none;
+  }
+
+  

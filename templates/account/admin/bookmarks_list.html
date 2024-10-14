@@ -1,0 +1,95 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+  کتاب‌های ذخیره شده
+{% endblock title %}
+{% block content %}
+  
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px  !important;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>کتاب‌های ذخیره شده</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'account:admin-index' %}">خانه</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'account:books' %}">کتاب ها</a></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="row d-flex align-items-stretch" style="justify-content: space-evenly !important;">
+
+
+            {% for book in object_list %}
+            <div class="card bg-light" style="
+            max-width: 262px;   
+            max-width: 262px;
+            border-radius: 5px;
+            margin: 0px 25px 0px 25px;
+            ">
+                     
+        
+          <a href="{% url 'account:book-detail' book.slug %}">
+          <div class="card-body pt-0" style="width:180px;height: 230px; background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.8)), url('{{book.picture.url}}');border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;background-size: cover;">
+            <h4 style="position: absolute;bottom: 45px;font-weight: bold;right: 10px;">{{book.name|truncatewords:4}}</h3>
+          </div>
+        </a>
+        <div class="card-footer" style="display: flex; padding: 0px;">
+            
+          <a href="{% url 'account:book-detail' book.slug %}" class="btn btn-sm btn-primary" style="width: 50%; border-bottom-left-radius: 0px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+              مشاهده   
+          </a>
+          <a href="{% url 'books:bookmark-add' book.id %}" class="btn btn-sm btn-danger" style="width: 50%; border-bottom-left-radius: 5px;border-bottom-right-radius: 0px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+              حذف   
+          </a>
+      </div>
+
+
+
+      
+</div> 
+            {% endfor %}
+ </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <nav aria-label="Contacts Page Navigation">
+          <ul class="pagination justify-content-center m-0">
+            
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                {% endif %}
+            {% for page_number in page_obj.paginator.page_range %}
+              
+            <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                {% endif %}
+          </ul>
+        </nav>
+      </div>
+      <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+  
+  
+  <!-- <script src="../../dist/js/adminlte.min.js"></script> -->

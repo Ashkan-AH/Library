@@ -41,6 +41,8 @@ class Reservation(models.Model):
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد رزرو")
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, default="رزرو شده", verbose_name="وضعیت رزرو")
     delivery_date = models.DateField(verbose_name="تاریخ تحویل", blank=True, null=True)
+    deadline = models.DateField(verbose_name="تاریخ بازگشت کتاب", blank=True, null=True)
+    extend_request = models.BooleanField(verbose_name="درخواست تمدید", default=False)
     extend_sluts = models.IntegerField(verbose_name="تعداد درخواست مهلت اضافه باقی مانده", default=2)
 
     objects = ReservationManager()
@@ -49,41 +51,42 @@ class Reservation(models.Model):
 
     def persian_date_added(self):
         return date2jalali(self.date_added)
+    
     def persian_delivery_date(self):
-        if self.delivery_date is not None:
+        if self.delivery_date:
             return date2jalali(self.delivery_date)
-        return '-'
-        
-
-    def deadline(self):
-        if self.delivery_date is not None:
-            return date2jalali(self.delivery_date + timedelta(days=14))
-        return '-'
+        return None
+    
+    def persian_deadline(self):
+        if self.deadline:
+            return date2jalali(self.deadline)
+        return None
+    
     def reservation_deadline(self):
         if self.status == "رزرو شده":
             return date2jalali(self.date_added + timedelta(days=7))
-        return '-'
+        return None
+    
     def reservation_deadline_remaining(self):
-        if self.reservation_deadline is not '-':
-            resault = (self.date_added.date() + timedelta(days=7) - timezone.now().date()).days
-            if resault < 0:
+        if self.reservation_deadline:
+            result = (self.date_added.date() + timedelta(days=7) - timezone.now().date()).days
+            if result < 0:
                 return 0
             else:
-                return resault
-        return '-'
+                return result
+        return None
+    
     def delivery_remaining(self):
-        if self.delivery_date is not None and self.deadline is not '-':
-            resault = ((self.delivery_date + timedelta(days=14)) - timezone.now().date()).days
-            if resault < 0:
+        if self.delivery_date and self.deadline:
+            result = ((self.delivery_date + timedelta(days=14)) - timezone.now().date()).days
+            if result < 0:
                 return 0
             else:
-                return resault
-        return '-'
+                return result
+        return None
         
-            
     persian_date_added.short_description = "تاریخ رزرو"
     persian_delivery_date.short_description = "تاریخ تحویل کتاب"
-    deadline.short_description = "تاریخ بازگشت کتاب"
     delivery_remaining.short_description = "تعداد روز های باقی مانده"
 
     def __str__(self)->int:
@@ -93,3 +96,6 @@ class Reservation(models.Model):
         verbose_name = "رزرو"
         verbose_name_plural = "رزرو‌ها"
         ordering = ["-date_added"]
+
+
+

@@ -1,6 +1,6 @@
 {% extends "account/admin/base.html" %}
 {% block title %}
-رزرو ها
+درخواست های تمدید
 {% endblock title %}
 {% block content %}
 
@@ -8,7 +8,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title float-left">لیست رزرو ها</h3>
+          <h3 class="card-title float-left">درخواست های تمدید</h3>
 
           <!-- <div class="card-tools float-right">
             <div class="input-group input-group-sm" style="width: 150px;">
@@ -28,7 +28,6 @@
                 <th>کتاب</th>
                 <th>کاربر</th>
                 <th>تاریخ رزرو</th>
-                <th>وضعیت</th>
                 <th></th>
               </tr>
             </thead>
@@ -50,27 +49,13 @@
                     <td><a href="{% url 'account:user-detail' reservation.user.id %}">{{reservation.user}}</a></td>
                     {% endif %}
                 <td>{{reservation.persian_date_added}}</td>
-                <td>{% if reservation.status == "رزرو شده" %}
-                      <span class="badge badge-info" style="font-size: 13px;">رزرو شده</span>
-                    {% elif reservation.status == "تحویل داده شده" %}
-                      <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
-                    {% elif reservation.status == "بازگردانده نشده" %}
-                      <span class="badge badge-danger" style="font-size: 13px;">بازگردانده نشده</span>
-                    {% elif reservation.status == "بازگردانده شده" %}
-                      <span class="badge badge-success" style="font-size: 13px;">بازگردانده شده</span>
-                    {% elif reservation.status == "لغو رزرو" %}
-                      <span class="badge badge-danger" style="font-size: 13px;">لغو رزرو</span>
-                    {% endif %}</td>
+                
                   {% if request.user.update_reservations %}
                     <td>
-                      <a href="{% url 'account:reservation-delete' reservation.reservation_id %}" class="btn btn-danger btn-sm">حذف رزرو</a>
-                      {% if reservation.status == "رزرو شده" %}
-                      <a class="btn btn-primary btn-sm" href="{% url 'account:delivered-action' reservation.reservation_id %}">تحویل داده شد</a>
-                      <a class="btn btn-danger btn-sm" href="{% url 'account:cancel-action' reservation.reservation_id %}">لغو رزرو</a>
-                      {% elif reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده" %}
-                      <a class="btn btn-success btn-sm" href="{% url 'account:returned-action' reservation.reservation_id %}">بازگردانده شده</a>
-
-                      {% endif %}
+                      <a class="btn btn-sm" style="background-color: orangered;
+                      color: white;
+                      font-weight: bold;
+                      font-size: 16px;" href="{% url 'account:extend-action' reservation.reservation_id %}">تمدید</a>
                     </td>
                   {% endif %}
               </tr>

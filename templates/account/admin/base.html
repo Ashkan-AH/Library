@@ -31,8 +31,6 @@
   <link rel="stylesheet" href="{% static 'user/plugins/daterangepicker/daterangepicker.css' %}">
   <!-- summernote -->
   <link rel="stylesheet" href="{% static 'user/plugins/summernote/summernote-bs4.css' %}">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- Bootstrap 4 RTL -->
   <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
   <!-- Custom style for RTL -->
@@ -64,29 +62,7 @@
       
     </ul>
     
-    <form class="form-inline ml-3" style="
-    width: 649px;
-    display: flex;
-    justify-content: center;
-">
-<div class="show-val" style="display: none;"></div>
-        <div class="input-group input-group-sm" style="
-    width: 70%;
-">
-          <input class="form-control form-control-navbar" type="search" placeholder="جستجو" id="form-control" aria-label="Search" style="border-top-left-radius: 0;
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-            border-bottom-left-radius: 0;">
-          <div class="input-group-append">
-            <button class="btn btn-navbar" type="submit" style="border-top-left-radius: 5px;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 5px;">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </form>
+   {% include "account/admin/search_bar.html" %}
     <ul class="navbar-nav mr-auto-navbav">
       <li class="nav-item"><form id="logout-form" method="post" action="{% url 'logout' %}">
         {% csrf_token %}
@@ -123,9 +99,6 @@
           <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
            
-          <li class="nav-item">
-            {% link request 'admin-profile-update' 'ویرایش اطلاعات' "fas fa-edit" %}
-          </li>
           {% if request.user.create_authors or request.user.create_reservations or request.user.create_books or request.user.create_categories or request.user.create_users %}
             
           <li class="nav-item">
@@ -133,22 +106,75 @@
           </li>
           {% endif %}
           {% if request.user.view_users %}
-            
+          <li class="nav-item {% if request.resolver_match.url_name == 'users' or request.resolver_match.url_name == 'black-list' %}
+              menu-open
+            {% endif %}">
+            <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-users"></i>
+            <p>
+            کاربران
+            <i class="right fas fa-angle-left"></i>
+            </p>
+            </a>
+            <ul class="nav nav-treeview">
           <li class="nav-item">
-            {% link request 'users' 'کاربران' "fa fa-users" %}
+            {% link request 'users' 'لیست کاربران' "fas fa-list" %}
           </li>
+              
+            <li class="nav-item">
+              {% link request 'black-list' 'لیست سیاه' "fa fa-ban" %}
+            </li>
+        </ul>
+      </li>
           {% endif %}
           {% if request.user.view_reservations %}
             
-          <li class="nav-item">
-            {% link request "reservations" "رزرو ها" "fa fa-address-book" %}
-          </li>
+          
+          <li class="nav-item {% if request.resolver_match.url_name == 'reservations' %}
+              menu-open
+            {% endif %}">
+            <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-address-book"></i>
+            <p>
+            رزرو ها
+            <i class="right fas fa-angle-left"></i>
+            </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                {% link request "reservations" "لیست رزرو ها" "fas fa-list" %}
+              </li>
+              
+              <li class="nav-item">
+                {% link request 'extends' 'درخواست های تمدید' "fas fa-stamp" %}
+              </li>
+        </ul>
+      </li>
           {% endif %}
           {% if request.user.view_books %}
             
-          <li class="nav-item">
-            {% link request "books" "کتاب ها" "fa fa-book" %}
-          </li>
+          
+          
+          <li class="nav-item {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'waiting-list' %}
+              menu-open
+            {% endif %}">
+            <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-book"></i>
+            <p>
+            کتاب ها
+            <i class="right fas fa-angle-left"></i>
+            </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                {% link request "books" "لیست کتاب ها" "fas fa-list" %}
+              </li>
+              
+              <li class="nav-item">
+                {% link request 'waiting-list' 'صف انتظار' "fas fa-hourglass-half	" %}
+              </li>
+        </ul>
+      </li>
           {% endif %}
           {% if request.user.view_authors %}
             
@@ -162,19 +188,35 @@
             {% link request "categories" "دسته بندی‌ها" "fa fa-th" %}
           </li>
           {% endif %}
-            {% if request.user.view_users %}
-              
-            <li class="nav-item">
-              {% link request 'black-list' 'لیست سیاه' "fa fa-ban" %}
-            </li>
-            {% endif %}
+            
             {% if request.user.update_theme %}
               
             <li class="nav-item">
-              {% link request 'themes' 'ویرایش ظاهر صفحات' "fas fa-photo-video" %}
+              {% link request 'themes' 'ویرایش ظاهر صفحات' "fas fa-image" %}
             </li>
             {% endif %}
-          
+          <li class="nav-item {% if request.resolver_match.url_name == 'books' or request.resolver_match.url_name == 'waiting-list' %}
+          menu-open
+        {% endif %}">
+        <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-user-alt"></i>
+        <p>
+        شخصی
+        <i class="right fas fa-angle-left"></i>
+        </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            {% link request 'admin-profile-update' 'ویرایش اطلاعات' "fas fa-edit" %}
+          </li>
+          <li class="nav-item">
+            {% link request 'admin-bookmarks' 'ذخیره شده ها' "fas fa-bookmark" %}
+          </li>
+    </ul>
+  </li>
+            
+            
+            
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -258,7 +300,6 @@
 <script src="{% static 'user/dist/js/demo.js' %}"></script>
 
   <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
-<script src="{% static 'user/dist/js/search-admin.js' %}"></script>
   
 
   

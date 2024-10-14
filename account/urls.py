@@ -33,9 +33,11 @@ urlpatterns = [
     path("reservations/delete/<int:pk>/", views.ReservationDelete.as_view(), name="reservation-delete"),
     path("reservations/<int:pk>/", views.ReservationDetail.as_view(), name="reservation-detail"),
     path("reservations/", views.ReservationList.as_view(), name="reservations"),
+    path("extends/", views.ExtendList.as_view(), name="extends"),
     path("delivered/<int:pk>/", views.delivered_action, name="delivered-action"),
     path("cancel/<int:pk>/", views.cancel_action, name="cancel-action"),
     path("returned/<int:pk>/", views.returned_action, name="returned-action"),
+    path("extend/<int:pk>/", views.extend_action, name="extend-action"),
 
 
     path("create/users/", views.UserCreate.as_view(), name="user-create"),
@@ -46,13 +48,16 @@ urlpatterns = [
     
 
     path("black-list/", views.BlackList.as_view(), name="black-list"),
-    path("bookmarks/", views.BookmarkList.as_view(), name="bookmarks"),
+    path("user-bookmarks/", views.UserBookmarkList.as_view(), name="user-bookmarks"),
+    path("admin-bookmarks/", views.AdminBookmarkList.as_view(), name="admin-bookmarks"),
     path("waiting-list/", views.WaitingList.as_view(), name="waiting-list"),
     path("user-profile-update/", views.UserProfileUpdate.as_view(), name="user-profile-update"),
     path("admin-profile-update/", views.AdminProfileUpdate.as_view(), name="admin-profile-update"),
     path("themes/", views.ThemeList.as_view(), name="themes"),
     path("themes/<str:slug>/", views.ThemeUpdate.as_view(), name="theme-update"),
     path('security/', TemplateView.as_view(template_name="account/user/security.html"), name="security"),
+    path("search/", views.search_item, name="search-item"),
+    path("search-result/", views.search_result, name="search-result"),
 
     
     path('signup/', views.Registration.as_view(), name='signup'),
@@ -61,7 +66,7 @@ urlpatterns = [
 
 
     path("create/", views.CreationView.as_view(), name="create"), 
-    path("admin-panel/", views.AdminProfile.as_view(), name="admin-index"), 
-    path("user-panel/", views.UserProfile.as_view(), name="user-index"), 
+    path("admin-index/", views.AdminIndex.as_view(), name="admin-index"), 
+    path("user-index/", views.UserProfile.as_view(), name="user-index"), 
     path("", views.identifier, name="identifier"), 
 ]

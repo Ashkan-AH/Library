@@ -3,6 +3,9 @@
 {% block title %}
   صفحه اصلی
 {% endblock title %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'main/css/categories.css' %}">
+{% endblock style %}
 {% block content %}
   
 <!-- Info boxes -->
@@ -92,96 +95,43 @@
   
         <div class="col-md-6">
           <!-- USERS LIST -->
-          <div class="card uper-div" style="">
+          {% if request.user.view_users %}
+            <div class="card uper-div">
             <div class="card-header">
-              <h3 class="card-title">اعضای جدید</h3>
-  
-              <div class="card-tools">
-                <span class="badge badge-danger">8عضو جدید</span>
-                
-                
-              </div>
+              <h3 class="card-title" style="float: right;font-weight: bold;">کاربران اخیر</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0 over-fl">
-              <ul class="users-list clearfix">
-                <li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
+              <ul class="users-list clearfix" style="padding-right: 0;">
+                {% for user in users %}
+                <li><a class="users-list-name" href="{% url 'account:user-detail' user.id %}">
+                  <img src="{{user.picture.url}}" alt="User Image" style="width: 60px;height: 60px;object-fit: cover;"></a>
+                  <a class="users-list-name" href="{% url 'account:user-detail' user.id %}">{% if user.get_full_name %}
+                    {{user.get_full_name}}
+                    {%else%}
+                    {{user.username}}
+                  {% endif %}</a>
                 </li>
-                
-                
-                
-                
-                
-                
-                
-              <li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  <span class="users-list-date">5روز</span>
-                </li></ul>
+                {% endfor %}
+              </ul>
               <!-- /.users-list -->
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-center">
-              <a href="javascript::">مشاهده همه کار بران</a>
+              <a href="{% url 'account:users' %}">مشاهده همه کار بران</a>
             </div>
             <!-- /.card-footer -->
           </div>
+          {% endif %}
           <!--/.card -->
         </div>
         
       <div class="col-md-6">
           <!-- USERS LIST -->
-          <div class="card uper-div">
+          {% if request.user.view_authors %}
+            <div class="card uper-div">
             <div class="card-header">
-              <h3 class="card-title">نویسنده ها</h3>
+              <h3 class="card-title" style="font-weight: bold;float: right;">نویسندگان</h3>
   
               <div class="card-tools">
                 
@@ -193,52 +143,37 @@
             <div class="card-body p-0 over-fl">
               <ul class="users-list clearfix">
                   
-                  <li class="writer-li">
-                  <a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block  writer-a-style">
-                      <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
+                 {% for author in authors %}
+                 <li class="writer-li">
+                  <a itemscope="" itemtype="" itemid="" href="{% url 'account:author-detail' author.slug %}" class="author-block  writer-a-style" style="width: 100% !important;margin: 10px 0px 10px 0px;">
+                      <img itemprop="image" src="{{author.picture.url}}" alt="{{author.name}}">
                       <div class="left">
-                            <h2 itemprop="name">جلال آل احمد</h2>
-                            <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
+                            <h2 itemprop="name">{{author.name}}</h2>
+                            <div class="desc">{{author.description|striptags|truncatewords:10}}</div>
                       </div>
                   </a>                
                 </li>
+                 {% endfor %}
                 
-                  <li class="writer-li">
-                  <a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block  writer-a-style">
-                      <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
-                      <div class="left">
-                            <h2 itemprop="name">جلال آل احمد</h2>
-                            <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
-                      </div>
-                  </a>                
-                </li>
-                  
-                <li class="writer-li">
-                  <a itemscope="" itemtype="" itemid="" href="writer-single.html" class="author-block  writer-a-style">
-                      <img itemprop="image" src="https://www.ketabrah.ir/img/authors/a-1312.jpg" alt="جلال آل احمد">
-                      <div class="left">
-                          <h2 itemprop="name">جلال آل احمد</h2>
-                          <div class="desc">جلال آل‌ احمد نویسنده‌ی تأثیرگذار معاصر ایران، روشنفکر سوسیالیست، مترجم و منتقد...</div>
-                      </div>
-                  </a>                
-                </li>
              </ul>
               <!-- /.users-list -->
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-center">
-              <a href="javascript::" class="btn bg-green">مشاهده همه  </a>
+              <a href="{% url 'account:authors' %}">مشاهده همه  </a>
             </div>
             <!-- /.card-footer -->
           </div>
+          {% endif %}
           <!--/.card -->
         </div></div>
       <!-- /.row -->
   
       
+      {% if request.user.view_books %}
       <div class="card top-div">
         <div class="card-header border-transparent">
-          <h3 class="card-title">صف انتظار</h3>
+          <h3 class="card-title" style="font-weight: bold;float: right;">صف انتظار</h3>
   
           <div class="card-tools">
             
@@ -248,180 +183,100 @@
         <!-- /.card-header -->
         <div class="card-body p-0 over-fl">
           <div class="table-responsive">
-            <table class="table m-0">
+            <table class="table m-0" style="text-align: center;">
               <thead>
               <tr>
                 <th>نام کاربری</th>
                 <th>نقش</th>
-                <th>افراد در صف</th>
                 <th>نام کتاب</th>
+                <th>نویسنده</th>
               </tr>
               </thead>
               <tbody>
+              {% for book in waiting_books %}
+              {% for user in book.waiting_users.all %}
               <tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-success">5</span></td>
+                <td><a href="{% url 'account:user-detail' user.id %}">{% if user.get_full_name %}
+                  {{user.get_full_name}}
+                  {%else%}
+                  {{user.username}}
+                {% endif %}</a></td>
+                <td>{% if user.is_superuser %}
+                  ابر ادمین
+                  {% elif user.is_superuser %}
+                  ادمین
+                  {%else%}
+                  {{user.role}}
+                {% endif %}</td>
                 <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
+                  <a href="{% url 'account:book-detail' book.slug %}" class="sparkbar" data-color="#00a65a" data-height="20">{{book.name}}</a>
+                </td>
+                <td>
+                  <p>{{book.author_str}}</p>
                 </td>
               </tr>
-              
-              
-              
-              
-              
-              
-              <tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-danger">30</span></td>
-                <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
-                </td>
-              </tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-warning">18</span></td>
-                <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
-                </td>
-              </tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-success">5</span></td>
-                <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
-                </td>
-              </tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-success">20</span></td>
-                <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
-                </td>
-              </tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-success">20</span></td>
-                <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
-                </td>
-              </tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td>استاد</td>
-                <td><span class="badge badge-success">20</span></td>
-                <td>
-                  <a href="#" class="sparkbar" data-color="#00a65a" data-height="20">کتابخانه نیمه شب</a>
-                </td>
-              </tr></tbody>
+              {% endfor %}
+                
+              {% endfor %}
+                
+              </tbody>
             </table>
           </div>
           <!-- /.table-responsive -->
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-          <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">مشاهده همه</a>
+          <a href="{% url 'account:waiting-list' %}" class="btn btn-sm btn-info float-left">مشاهده همه</a>
           
         </div>
         <!-- /.card-footer -->
       </div>
+      {% endif %}
       <!-- /.card -->
     </div>
     <!-- /.col -->
   
     <div class="col-md-4">
       
-      
-      
-      
-      
-      
-      
-      
-      
-  
-      
-      
-  
-      
-      <div class="card uper-div " style="
-  /* width: 96%; */
-  ">
+      {% if request.user.view_books %}
+        <div class="card uper-div ">
         <div class="card-header">
-          <h3 class="card-title">کتاب ها</h3>
+          <h3 class="card-title" style="font-weight: bold;float: right;">کتاب ها</h3>
   
           
         </div>
         <!-- /.card-header -->
         <div class="card-body p-0 over-fl">
           <ul class="products-list product-list-in-card pl-2 pr-2">
-            
-            <!-- /.item -->
-            <li class="item">
+            {% for book in books %}
+            <li class="item" style="width: 290px;">
               <div class="product-img">
-                <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                <img src="{{book.picture.url}}" alt="Product Image" class="img-size-50">
               </div>
               <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">کتابخانه نیمه شب</a>
-                <span class="product-description">اثری از فروغ فرخزاد است که در دسته بندی  کودکان است و...</span>
+                <a href="{% url 'account:book-detail' book.slug %}" class="product-title">{{book.name}}</a>
+                <span class="product-description">{{book.description|truncatewords:10|striptags}}</span>
               </div>
             </li>
-            
-            
-            
-            
-            <li class="item">
-              <div class="product-img">
-                <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-              </div>
-              <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">کتابخانه نیمه شب</a>
-                <span class="product-description">اثری از فروغ فرخزاد است که در دسته بندی  کودکان است و...</span>
-              </div>
-            </li><li class="item">
-              <div class="product-img">
-                <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-              </div>
-              <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">کتابخانه نیمه شب</a>
-                <span class="product-description">اثری از فروغ فرخزاد است که در دسته بندی  کودکان است و...</span>
-              </div>
-            </li><li class="item">
-              <div class="product-img">
-                <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-              </div>
-              <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">کتابخانه نیمه شب</a>
-                <span class="product-description">اثری از فروغ فرخزاد است که در دسته بندی  کودکان است و...</span>
-              </div>
-            </li><li class="item">
-              <div class="product-img">
-                <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-              </div>
-              <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">کتابخانه نیمه شب</a>
-                <span class="product-description">اثری از فروغ فرخزاد است که در دسته بندی  کودکان است و...</span>
-              </div>
-            </li><!-- /.item -->
+            {% endfor %}
           </ul>
         </div>
         <!-- /.card-body -->
         <div class="card-footer text-center">
-          <a href="javascript:void(0)" class="uppercase">مشاهده همه </a>
+          <a href="{% url 'account:books' %}" class="uppercase">مشاهده همه </a>
         </div>
         <!-- /.card-footer -->
       </div>
+      {% endif %}
       <!-- /.card -->
     <div class="col-md-6" style="
-  /* width: 89% !important; */
-  /* border: solid; */
-  max-width: 100%;
+  max-width: 100%;padding: 0;
   ">
           <!-- USERS LIST -->
-          <div class="card top-div">
+          {% if request.user.view_users %}
+            <div class="card top-div">
             <div class="card-header">
-              <h3 class="card-title">لیست سیاه</h3>
+              <h3 class="card-title" style="font-weight: bold;float: right;">لیست سیاه</h3>
   
               <div class="card-tools">
                 
@@ -431,112 +286,37 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0 over-fl">
-              <ul class="users-list clearfix">
+              <ul class="users-list clearfix" style="direction: rtl;">
                 
-                
-                
-                
-                
-                
-                
-                
-              <li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li><li>
-                  <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                  <a class="users-list-name" href="#">احمد وکیلی</a>
-                  
-                </li></ul>
+                {% for user in blocked_users %}
+                <li><a class="users-list-name" href="{% url 'account:user-detail' user.id %}">
+                  <img src="{{user.picture.url}}" alt="User Image" style="width: 60px;height: 60px;object-fit: cover;"></a>
+                  <a class="users-list-name" href="{% url 'account:user-detail' user.id %}">{% if user.get_full_name %}
+                    {{user.get_full_name}}
+                    {%else%}
+                    {{user.username}}
+                  {% endif %}</a>
+                </li>
+                {% endfor %}
+              </ul>
               <!-- /.users-list -->
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-center">
-              <a href="javascript::">مشاهده لیست</a>
+              <a href="{% url 'account:black-list' %}">مشاهده لیست</a>
             </div>
             <!-- /.card-footer -->
           </div>
+          {% endif %}
           <!--/.card -->
         </div></div>
     <!-- /.col -->
   </div>
   <!-- /.row -->
-  <div class="card top-div">
+  {% if request.user.view_reservations %}
+    <div class="card top-div">
         <div class="card-header border-transparent">
-          <h3 class="card-title">رزرو ها </h3>
+          <h3 class="card-title" style="font-weight: bold;float: right;">رزرو ها </h3>
   
           <div class="card-tools">
             
@@ -546,95 +326,70 @@
         <!-- /.card-header -->
         <div class="card-body p-0 over-fl">
           <div class="table-responsive">
-            <table class="table m-0">
+            <table class="table m-0" style="text-align: center;">
               <thead>
-              <tr>
-                <th>نام کاربری</th>
-                <th>نام کتاب</th>
-                <th>نویسنده</th><th>کد رزرو</th>
-                <th>تاریخ رزرو</th>
-              <th>دسته یندی</th></tr>
+                <tr>
+                  <th>شماره رزرو</th>
+                  <th>کتاب</th>
+                  <th>کاربر</th>
+                  <th>تاریخ رزرو</th>
+                  <th>وضعیت</th>
+                  <th></th>
+                </tr>
               </thead>
               <tbody>
-              <tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr>
-              
-              
-              
-              
-              
-              
-              <tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr><tr>
-                <td><a href="pages/examples/invoice.html">علی محرمی</a></td>
-                <td><a href="#">کتابخانه نیمه شب</a></td>
-                <td><a href="#">نیما یوشیج</a></td><td><span class="badge badge-success">545454</span></td>
-                <td>
-  <p>1403/9/88</p>             
-                </td>
-              <td><a href="#">انگیزشی</a></td></tr></tbody>
+                {% for reservation in reservations %}
+                
+                <tr>
+                  <td>
+                    <a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a>
+                  </td>
+                  {% if request.user.view_books and request.user.is_staff or request.user.is_superuser %}
+                    <td><a href="{% url 'account:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
+                  {% else %}
+                    <td><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
+                  {% endif %}
+                      {% if reservation.user.id == request.user.id or not request.user.view_users %}
+                      <td>{{reservation.user}}</td>
+                      {% else %}
+                      <td><a href="{% url 'account:user-detail' reservation.user.id %}">{{reservation.user}}</a></td>
+                      {% endif %}
+                  <td>{{reservation.persian_date_added}}</td>
+                  <td>{% if reservation.status == "رزرو شده" %}
+                        <span class="badge badge-info" style="font-size: 13px;">رزرو شده</span>
+                      {% elif reservation.status == "تحویل داده شده" %}
+                        <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
+                      {% elif reservation.status == "بازگردانده نشده" %}
+                        <span class="badge badge-danger" style="font-size: 13px;">بازگردانده نشده</span>
+                      {% elif reservation.status == "بازگردانده شده" %}
+                        <span class="badge badge-success" style="font-size: 13px;">بازگردانده شده</span>
+                      {% elif reservation.status == "لغو رزرو" %}
+                        <span class="badge badge-danger" style="font-size: 13px;">لغو رزرو</span>
+                      {% endif %}</td>
+                    {% if request.user.is_superuser or request.user.is_staff and request.user.update_reservations %}
+                      <td>
+                        <a href="{% url 'account:reservation-delete' reservation.reservation_id %}" class="btn btn-danger btn-sm">حذف رزرو</a>
+                        {% if reservation.status == "رزرو شده" %}
+                        <a class="btn btn-primary btn-sm" href="{% url 'account:delivered-action' reservation.reservation_id %}">تحویل داده شد</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'account:cancel-action' reservation.reservation_id %}">لغو رزرو</a>
+                        {% elif reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده" %}
+                        <a class="btn btn-success btn-sm" href="{% url 'account:returned-action' reservation.reservation_id %}">بازگردانده شده</a>
+  
+                        {% endif %}
+                      </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
           </div>
           <!-- /.table-responsive -->
         </div>
         <!-- /.card-body -->
         <div class="card-footer clearfix">
-          <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">مشاهده همه</a>
+          <a href="{% url 'account:reservations' %}" class="btn btn-sm btn-info float-left">مشاهده همه</a>
           
         </div>
 </div>
+  {% endif %}
 {% endblock content %}

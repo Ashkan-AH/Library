@@ -101,3 +101,22 @@ class Books(models.Model):
     persian_date.short_description = "آخرین ویرایش"
     html_img.short_description = "تصویر"
 
+
+
+class Comment(models.Model):
+    book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name='comments', verbose_name="کتاب")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name="کاربر")
+    text = models.TextField(verbose_name="متن")
+    rating = models.IntegerField(default=0, verbose_name="امتیاز")
+    date_created = models.DateTimeField(verbose_name="تاریخ ایجاد",auto_now_add=True)
+
+    def __str__(self) -> str:
+        if self.user:
+            return f"{self.user.username} : {self.text[:30]}"
+        else:
+            return f"No Author : {self.text[:30]}"
+        
+    class Meta:
+        ordering = ["-date_created"]
+        verbose_name = 'نظر'
+        verbose_name_plural = 'نظرات'

@@ -1,0 +1,77 @@
+{% load static %}
+            <style>
+                .desc p{
+                    color: black !important;
+                }
+            </style>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script>
+                $(document).ready(function()
+            {
+                $("#search").keyup(function()
+            {
+                let query = $(this).val();
+                console.log(query);
+                $.ajax({
+                    url:'/account/search/', 
+                    data:{
+                        "q":query
+                    },
+                    dataType:"json", 
+                    success:function(data){
+                        console.log(data);
+                        $("#search-value").empty();
+                        if(data.length>0){
+                            for (let i = 0; i<data.length; i++){
+                                if(data[i].type == "book"){
+                                    let name = (data[i].name).slice(0, 15) + "..."
+                                    let description = (data[i].description).slice(0, 75) + "..."
+                                    $("#search-value").append(`<a href="${window.location.protocol}//${window.location.host}/account/books/${data[i].slug}/"><section><h6>${name}</h6><hr><p style="margin-bottom:10px;margin-right:5px;">${description}</p></section><img src="${data[i].picture}" alt="${name}"></a>`);}
+                                    else if(data[i].type == "author"){
+                                        let name = (data[i].name).slice(0, 15) + "..."
+                                        let description = (data[i].description).slice(0, 75) + "..."
+                                        $("#search-value").append(`<a href="${window.location.protocol}//${window.location.host}/account/authors/${data[i].slug}/"><section><h6>${name}</h6><hr><p style="margin-bottom:10px;margin-right:5px;">${description}</p></section><img src="${data[i].picture}" alt="${name}"></a>`);
+                                    }
+                                    else if(data[i].type == "category"){
+                                        $("#search-value").append(`<a href="${window.location.protocol}//${window.location.host}/account/categories/${data[i].slug}/"><section><h6>${data[i].name}</h6><hr><p></p></section><img src="${data[i].picture}" alt="${data[i].name}"></a>`);
+                                    }
+                                    else if(data[i].type == "user"){
+                                        $("#search-value").append(`<a href="${window.location.protocol}//${window.location.host}/account/users/${data[i].id}/"><section><h6>${data[i].username}</h6><hr><p style="margin-bottom:10px;margin-right:5px;">${data[i].role}</p></section><img src="${data[i].picture}" alt="${data[i].username}"></a>`);
+                                    }
+                                    else if(data[i].type == "reservation"){
+                                        $("#search-value").append(`<a href="${window.location.protocol}//${window.location.host}/account/reservations/${data[i].id}/"><section><h6>رزرو شماره${data[i].id}</h6><hr><p style="margin-bottom:10px;margin-right:5px;"></p></section><img src="{%static 'user/default.jpg'%}" alt="${data[i].id}"></a>`);
+                                    }
+                                }}
+                                else if(query && data.length==0){
+                                    $("#search-value").append(`<a href="#" style="pointer-events: none;cursor: default;"><section><h6>موردی یافت نشد!</h6><hr><p style="margin-bottom:10px;margin-right:5px;"></p></section><img src="{%static 'main/images/close.png'%}" alt=""></a>`);
+                                }
+                            }
+                        });
+                    });
+                });
+                </script>
+                 <form action="{% url 'account:search-result' %}" method="get" class="form-inline ml-3" style="
+                 width: 649px;
+                 display: flex;
+                 justify-content: center;
+             ">
+             <div class="show-val" id="show-val">
+                <div class="search-value" id="search-value"></div>
+             </div>
+                     <div class="input-group input-group-sm" style="
+                 width: 70%;
+             ">
+                       <input class="form-control form-control-navbar" type="search" placeholder="جستجو" id="search" name="search" aria-label="Search" style="border-top-left-radius: 0;
+                         border-top-right-radius: 5px;
+                         border-bottom-right-radius: 5px;
+                         border-bottom-left-radius: 0;">
+                       <div class="input-group-append">
+                         <button class="btn btn-navbar" type="submit" style="border-top-left-radius: 5px;
+                         border-top-right-radius: 0;
+                         border-bottom-right-radius: 0;
+                         border-bottom-left-radius: 5px;">
+                           <i class="fas fa-search"></i>
+                         </button>
+                       </div>
+                     </div>
+                   </form>

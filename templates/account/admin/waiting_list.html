@@ -1,0 +1,92 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+صف انتظار
+{% endblock title %}
+{% block content %}
+
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">صف انتظار</h3>
+
+          <!-- <div class="card-tools float-right">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <form action="" method="get">
+                {{searchForm}}
+                <button type="submit">search</button>
+              </form>
+            </div>
+          </div> -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>کاربر</th>
+                <th>کتاب</th>
+                <th>نویسنده</th>
+                <th>ناشر</th>
+                <th>مترجم</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if object_list %}
+                هست
+              {%else%}
+              نیست
+              {% endif %}
+              {% for book in object_list %}
+              {% for user in book.waiting_users.all %}
+                
+              <tr>
+                <td>
+                  <a href="{% url 'account:user-detail' user.id %}">{{user.username}}</a>
+                </td>
+                <td>
+                  <a href="{% url 'account:book-detail' book.slug %}">{{book.name}}</a>
+                </td>
+                <td>
+                  {{book.author_str}}
+                </td>
+                <td>
+                  {{book.publisher}}
+                </td>
+                <td>
+                  {{book.translator}}
+                </td>
+                <td>
+                  <a href="{% url 'books:waiting-add' book.id %}" class="btn btn-danger">حذف</a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if page_obj.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                  {% endif %}
+              {% for page_number in page_obj.paginator.page_range %}
+                
+              <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  
+{% endblock content %}

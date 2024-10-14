@@ -43,7 +43,7 @@
                     <h4>زمان باقی مانده برای دریافت</h4>
                   </div>
             </div>
-              {% elif object.status == "لغو رزرو" %}
+              {% elif object.status == "لغو رزرو" or object.status == "بازگردانده شده" %}
               <div class="col-12" style="margin: 10px;margin-top: 20px;">
                 <div style="display:inline;width:120px;height:120px;margin-right: 80px;pointer-events: none;">
                   
@@ -53,7 +53,7 @@
                     <h4>زمان باقی مانده برای دریافت</h4>
                   </div>
             </div>
-              {% elif object.status == "تحویل داده شده" or object.status == "بازگردانده شده" or object.status == "بازگردانده نشده" %}
+              {% elif object.status == "تحویل داده شده" or object.status == "بازگردانده نشده" %}
               <div class="col-12" style="margin: 10px;margin-top: 20px;">
                 <div style="display:inline;width:120px;height:120px;margin-right: 80px;pointer-events: none;">
                   
@@ -80,7 +80,7 @@
                   <br>
                   {% if request.user.view_books %}
                   <a href="{% url 'account:book-detail' object.book.slug %}">
-                    {{object.bookme}}
+                    {{object.book.name}}
                   </a>
                   {%else%}
                   {{object.book.name}}
@@ -152,7 +152,7 @@
                  
                   تاریخ انقضای نگهداری:
                   <br>
-                 {{object.deadline}}
+                 {{object.persian_deadline}}
                 </label>
                 {%else%}
                 <label class="text-center bg-gray" style="width: 50%;margin:0px;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-left-radius: 0px;border-bottom-right-radius: 5px;padding:10px;border-left: solid #343A40;">
@@ -177,6 +177,12 @@
 
               <div class="mt-4" style="text-align: left;margin-left: 35px;">
                 {% if request.user.update_reservations %}
+                {% if reservation.extend_sluts > 0 and reservation.extend_request and reservation.status == "تحویل داده شده" %}
+                <a class="btn" style="background-color: orangered;
+                color: white;
+                font-weight: bold;
+                font-size: 16px;" href="{% url 'account:extend-action' reservation.reservation_id %}">تمدید</a>
+                {% endif %}
                 {% if reservation.status == "رزرو شده" %}
                 <a class="btn btn-primary" href="{% url 'account:delivered-action' reservation.reservation_id %}" style="font-weight: bold;">تحویل داده شد</a>
                 <a class="btn btn-danger" href="{% url 'account:cancel-action' reservation.reservation_id %}" style="font-weight: bold;">لغو رزرو</a>

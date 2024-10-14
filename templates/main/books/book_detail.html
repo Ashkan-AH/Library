@@ -5,6 +5,11 @@
 {% block title %}
 {{object.name}}
 {% endblock title %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'user/dist/css/new-s.css' %} ">
+<link rel="stylesheet" href="{% static 'main/css/rate.css' %} ">
+  
+{% endblock style %}
 {% block content %}
   
 <div class="alertion hide" id="alertion"> 
@@ -124,13 +129,35 @@
 		   <p>برای رزرو <b>کتاب قدرت هیجانات</b>&nbsp;و دسترسی به هزاران کتاب دیگر، <a style="font-weight:bold" target="_blank" href="{% url 'books:index' %}"> در سرزمین کتاب </a> را رایگان ثبت نام&nbsp;کنید.</p>
 		</div>
 		{% if request.user.is_authenticated %}
+		<form  id="comment-section" class="comment-section hide">
+			<h4 style="font-weight: bold;">ثبت نظر در باره کتاب {{object.name}}</h4>
+			 <div class="feedback">
+			  <div class="rating">
+				<i class="fa fa-star star-rate"></i>
+				<i class="fa fa-star star-rate"></i>
+				<i class="fa fa-star star-rate"></i>
+				<i class="fa fa-star star-rate"></i>
+				<i class="fa fa-star star-rate"></i>
+			  </div>
+			</div>
+			<textarea type="text" placeholder="نظر خود را در اینجا بنویسید" maxlength="250" minlength="3" id="textarea" required></textarea>
+			<div style="
+			display: flex;
+			justify-content: center;">
+			<button class="rate-btn rent-btn" type="submit" >ثبت نظر</button>
+			<button class="rate-btn rent-btn" type="submit" style="background: red !important;" id="cancel-ratebtn">لغو</button>
+		  </div>
+		   </form>
+		   <button id="comment-btn" class="btn btn-lg py-2 mr-1" style="background-color: #6610F2;color: white;width: 170px;height: 50px;font-size: 20px;">نظر بدهید</button>
 			{% if not object.is_bookmarked %}
 				<a href="{% url 'books:bookmark-add' object.id %}" class="btn btn-warning btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;">ذخیره</a>
 			{% else %}
 				<a href="{% url 'books:bookmark-add' object.id %}" class="btn btn-outline-warning btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;">ذخیره شده</a>
 			{% endif %}
 			{% if not reservation %}
+			 
 				{% if object.in_stock_user > 0 %}
+				
 					{% if request.user.reservation_limit > 0 %}
 						<a href="{% url 'books:reservation-add' object.id %}" class="btn btn-primary btn-lg py-2 mr-1" style="width: 170px;height: 50px;font-size: 20px;"> رزرو</a>
 					{% else %}
@@ -507,5 +534,9 @@
 	{% endif %}
 </section>
 
-<script src="{% static 'main/js/booksingle.js' %}"></script>
 {% endblock content %}
+{% block script %}
+<script src="{% static 'main/js/booksingle.js' %}"></script>
+<script src=" {% static 'main/js/star-rate.js' %}"></script>
+  
+{% endblock script %}

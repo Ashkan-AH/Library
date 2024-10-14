@@ -20,6 +20,8 @@ urlpatterns = [
 
     path("reservation/create/<int:book>/", views.reservation_add, name="reservation-add"),
 
+    path("extend-request/<int:id>/", views.extend_request, name="extend-request"),
+
 
 
     path("categories/", views.CategoryList.as_view(), name="categories"),

@@ -1,7 +1,6 @@
-from typing import Any
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
@@ -25,6 +24,17 @@ def search_item(request):
 
 
 @login_required
+def extend_request(request, id):
+    reservation = get_object_or_404(Reservation, id=id)
+    if reservation.extend_sluts > 0 and reservation.extend_request == False and  reservation.status == "تحویل داده شده":
+        reservation.extend_request = True
+        reservation.save()
+    else:
+        raise Http404("شما شرایط درخواست تمدید را ندارید.")
+    return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+
+@login_required
 def bookmark_add(request, id):
     book = get_object_or_404(Books, id=id)
     if book.bookmarks.filter(id=request.user.id).exists():
@@ -32,6 +42,7 @@ def bookmark_add(request, id):
     else:
         book.bookmarks.add(request.user)
     return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
 
 @login_required
 def waiting_add(request, id):

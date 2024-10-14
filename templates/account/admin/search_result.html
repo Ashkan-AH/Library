@@ -1,0 +1,344 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+نتیجه جستجو "{{search_text}}"
+{% endblock title %}
+{% block content %}
+{% if not books_page and not authors_page and not categories_page and not users_page and not reservaions_page %}
+  <h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">نتیجه ای یافت نشد.</h1>
+  {%else%}
+  <h1 style="direction: rtl;text-align: right;margin-bottom: 20px;">نتیجه جستجو "{{search_text}}"</h1>
+
+{%endif%}
+{% if books_page %}
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">کتاب ها</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>کد</th>
+                <th>نام</th>
+                <th>نویسنده</th>
+                <th>ناشر</th>
+                <th>مترجم</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in books_page.object_list %}
+              
+              <tr>
+                <td>
+                  <a href="{% url 'account:book-detail' book.slug %}">{{book.id}}</a>
+                </td>
+                  <td>{{book.name}}</td>
+                    <td>{% for author in book.author.all %}
+                      <a href="{% url 'account:author-detail' author.slug %}">{{author.name}}</a>, 
+                    {% endfor %}</td>
+                  <td>{{book.publisher}}</td>
+                <td>{{book.translator}}</td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if books_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&users_page={{users_page.number}}&reservations_page={{reservations_page.number}}&books_page={{ books_page.previous_page_number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in books_page_range %}
+                
+              <li class="page-item {% if page_number == books_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{page_number}}&users_page={{users_page.number}}&reservaions_page={{reservaions_page.number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if books_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{ books_page.next_page_number }}&users_page={{ users_page.number }}&reservations_page={{ reservations_page.number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endif %}
+{% if authors_page %}
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">نویسندگان</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>کد</th>
+                <th>نام</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for author in authors_page.object_list %}
+              
+              <tr>
+                <td>
+                  <a href="{% url 'account:author-detail' author.slug %}">{{author.id}}</a>
+                </td>
+                <td>{{author.name}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if authors_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.previous_page_number}}&categories_page={{categories_page.number}}&users_page={{users_page.number}}&reservations_page={{reservations_page.number}}&books_page={{ books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in authors_page_range %}
+                
+              <li class="page-item {% if page_number == authors_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{page_number}}&categories_page={{categories_page.number}}&books_page={{books_page.number}}&users_page={{users_page.number}}&reservaions_page={{reservaions_page.number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if authors_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.next_page_number}}&categories_page={{categories_page.number}}&books_page={{ books_page.number }}&users_page={{ users_page.number }}&reservations_page={{ reservations_page.number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endif %}
+{% if categories_page %}
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">دسته بندی ها</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>کد</th>
+                <th>نام</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for category in categories_page.object_list %}
+              
+              <tr>
+                <td>
+                  <a href="{% url 'account:category-detail' category.slug %}">{{category.id}}</a>
+                </td>
+                <td>{{category.name}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if categories_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.previous_page_number}}&users_page={{users_page.number}}&reservations_page={{reservations_page.number}}&books_page={{ books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in categories_page_range %}
+                
+              <li class="page-item {% if page_number == categories_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{page_number}}&books_page={{books_page.number}}&users_page={{users_page.number}}&reservaions_page={{reservaions_page.number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if categories_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.next_page_number}}&books_page={{ books_page.number }}&users_page={{ users_page.number }}&reservations_page={{ reservations_page.number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endif %}
+{% if users_page %}
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">کاربران</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>کد</th>
+                <th>نام</th>
+                <th>نقش</th>
+                <th>ایمیل</th>
+                <th>کد ملی</th>
+                <th>نام پدر</th>
+                <th>تاریخ تولد</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users_page.object_list %}
+              
+              <tr>
+                <td>
+                  <a href="{% url 'account:user-detail' user.id %}">{{user.id}}</a>
+                </td>
+                  <td>{% if user.get_full_name %}
+                    {{user.get_full_name}}
+                    {%else%}
+                    {{user.username}}
+                  {% endif %}</td>
+                  <td>{% if user.is_superuser %}
+                    ابر ادمین
+                    {% elif user.is_staff %}
+                    ادمین
+                    {% elif user.role %}
+                    {{user.role}}
+                  {% endif %}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.national_code}}</td>
+                <td>{{user.fathers_name}}</td>
+                <td>{{user.persian_birth_date}}</td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if users_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&users_page={{users_page.previous_page_number}}&reservations_page={{reservations_page.number}}&books_page={{ books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in users_page_range %}
+                
+              <li class="page-item {% if page_number == users_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{books_page.number}}&users_page={{page_number}}&reservaions_page={{reservaions_page.number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if users_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{ books_page.number }}&users_page={{ users_page.next_page_number }}&reservations_page={{ reservations_page.number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endif %}
+{% if reservations_page %}
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">رزرو ها</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>شماره رزرو</th>
+                <th>کتاب</th>
+                <th>کاربر</th>
+                <th>تاریخ رزرو</th>
+                <th>وضعیت</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for reservation in reservations_page.object_list %}
+              <tr>
+                <td>
+                  <a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a>
+                </td>
+                {% if request.user.view_books %}
+                  <td><a href="{% url 'account:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
+                {% else %}
+                  <td><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
+                {% endif %}
+                    {% if reservation.user.id == request.user.id or not request.user.view_users %}
+                    <td>{{reservation.user}}</td>
+                    {% else %}
+                    <td><a href="{% url 'account:user-detail' reservation.user.id %}">{{reservation.user}}</a></td>
+                    {% endif %}
+                <td>{{reservation.persian_date_added}}</td>
+                <td>{% if reservation.status == "رزرو شده" %}
+                      <span class="badge badge-info" style="font-size: 13px;">رزرو شده</span>
+                    {% elif reservation.status == "تحویل داده شده" %}
+                      <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
+                    {% elif reservation.status == "بازگردانده نشده" %}
+                      <span class="badge badge-danger" style="font-size: 13px;">بازگردانده نشده</span>
+                    {% elif reservation.status == "بازگردانده شده" %}
+                      <span class="badge badge-success" style="font-size: 13px;">بازگردانده شده</span>
+                    {% elif reservation.status == "لغو رزرو" %}
+                      <span class="badge badge-danger" style="font-size: 13px;">لغو رزرو</span>
+                    {% endif %}</td>
+                  {% if request.user.update_reservations %}
+                    <td>
+                      <a href="{% url 'account:reservation-delete' reservation.reservation_id %}" class="btn btn-danger btn-sm">حذف رزرو</a>
+                      {% if reservation.status == "رزرو شده" %}
+                      <a class="btn btn-primary btn-sm" href="{% url 'account:delivered-action' reservation.reservation_id %}">تحویل داده شد</a>
+                      <a class="btn btn-danger btn-sm" href="{% url 'account:cancel-action' reservation.reservation_id %}">لغو رزرو</a>
+                      {% elif reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده" %}
+                      <a class="btn btn-success btn-sm" href="{% url 'account:returned-action' reservation.reservation_id %}">بازگردانده شده</a>
+
+                      {% endif %}
+                    </td>
+                  {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if reservations_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&users_page={{users_page.number}}&reservations_page={{reservations_page.previous_page_number}}&books_page={{ books_page.number }}">&lt;</a></li>
+              {% endif %}
+              {% for page_number in reservations_page_range %}
+                
+              <li class="page-item {% if page_number == reservations_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{books_page.number}}&users_page={{users_page.number}}&reservaions_page={{page_number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if reservations_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?search={{search_text}}&authors_page={{authors_page.number}}&categories_page={{categories_page.number}}&books_page={{ books_page.number }}&users_page={{ users_page.number }}&reservations_page={{ reservations_page.next_page_number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endif %}
+  
+{% endblock content %}
