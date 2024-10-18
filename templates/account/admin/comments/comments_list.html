@@ -1,0 +1,94 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+نظرات
+{% endblock title %}
+{% block content %}
+
+<div class="row" style="margin-top: 25px;">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title float-left">لیست نظرات</h3>
+
+          <!-- <div class="card-tools float-right">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <form action="" method="get">
+                {{searchForm}}
+                <button type="submit">search</button>
+              </form>
+            </div>
+          </div> -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 400px;">
+          <table class="table table-head-fixed" style="text-align: center;">
+            <thead>
+              <tr>
+                <th>کد نظر</th>
+                <th>متن</th>
+                <th>امتیاز</th>
+                <th>کاربر</th>
+                <th>کتاب</th>
+                <th>وضعیت</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for comment in object_list %}
+              
+              <tr>
+                <td><a href="{% url 'account:comment-detail' comment.id %}">{{comment.id}}</a></td>
+                <td>{{comment.text|truncatewords:5}}</td>
+                <td>{{comment.rating}}</td>
+                <td><a href="{% url 'account:user-detail' comment.user.id %}">{% if comment.user.get_full_name %}
+                  {{comment.user.get_full_name}}
+                  {%else%}
+                  {{comment.user.username}}
+                {% endif %}</a></td>
+                <td><a href="{% url 'account:book-detail' comment.book.slug %}">{{comment.book.name}}</a></td>
+                <td>{% if comment.status == "تایید شده" %}
+                      <span class="badge badge-success" style="font-size: 14px;">تایید شده</span>
+                  {% elif comment.status == "درحال بررسی" %}
+                    <span class="badge badge-primary" style="background-color: orangered;font-size: 14px;">درحال بررسی</span>
+                  {% elif comment.status == "رد شده" %}
+                    <span class="badge badge-danger" style="font-size: 14px;">رد شده</span>
+                {% endif %}</td>
+                <td>
+                  {% if request.user.delete_comments %}
+                  <a href="{% url 'account:comment-delete' comment.id %}" class="btn btn-danger" style="font-size: 14px;font-weight: bold;">حذف</a>
+                  
+                  {% endif %}
+                  {% if request.user.update_comments and comment.status == "درحال بررسی" %}
+                  <a href="{% url 'account:confirm-action' comment.id %}" class="btn btn-success" style="font-size: 14px;font-weight: bold;">تایید</a>
+                  <a href="{% url 'account:reject-action' comment.id %}" class="btn btn-danger" style="font-size: 14px;font-weight: bold;">رد</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <nav aria-label="Contacts Page Navigation">
+            <ul class="pagination justify-content-center m-0">
+              
+              {% if page_obj.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                  {% endif %}
+              {% for page_number in page_obj.paginator.page_range %}
+                
+              <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                  {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  
+{% endblock content %}

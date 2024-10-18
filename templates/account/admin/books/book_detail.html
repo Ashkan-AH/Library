@@ -181,104 +181,123 @@
             <nav class="w-100">
               <div class="nav nav-tabs" id="product-tab" role="tablist">
                
-                <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">توضیحات</a>
-                <a class="nav-item nav-link active" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="true">نظرات</a>
+                <a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="true">توضیحات</a>
+                {% if request.user.view_comments %}
+                <a class="nav-item nav-link active" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="false">نظرات</a>
+                {% endif %}
               </div>
+
             </nav>
-            <div class="tab-content p-3" id="nav-tabContent">
-              <div class="tab-pane fade" style="padding: 10px;" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.description|safe|linebreaksbr}}
+            <div class="tab-content p-3" id="nav-tabContent" style="width: 100%;" >
+              <div class="tab-pane fade active show" style="padding: 10px;" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.description|safe|linebreaksbr}}
                  </div>
-              <div class="tab-pane fade active show" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
-                <div class="post clearfix">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../../../uni-project/uni-project/images/d1ownload.jpg" alt="User Image">
-                    <span class="username">
-                      <a href="#">علی احمدی</a>
-                    </span>
-                    <span class="description">1404/01/22</span>
+                 {% if request.user.view_comments %}
+              <div class="tab-pane fade" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
+                  {% for comment in comments %}
+                  <div class="post clearfix">
+                    <div style="display: flex;flex-direction: row;align-items: center;">
+                      
+                    <div style="width: 50%;">
+                      {% if request.user.view_users %}
+                      <a href="{% url 'account:user-detail' comment.user.id %}"><img src="{{comment.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 65px !important; height: 65px !important;object-fit: cover;"></a>
+                      
+                      <span class="username">
+                        <a href="{% url 'account:user-detail' comment.user.id %}"  style="color: black;font-size: 18px;font-weight: bold;">{% if comment.user.get_full_name %}
+                          {{comment.user.get_full_name}}
+                          {%else%}
+                          {{comment.user.username}}
+                        {% endif %}</a>
+                      </span>
+                        {%else%}
+                      <img src="{{comment.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 65px !important; height: 65px !important;object-fit: cover;">
+                      
+                      <span class="username">
+                        {% if comment.user.get_full_name %}
+                          {{comment.user.get_full_name}}
+                          {%else%}
+                          {{comment.user.username}}
+                        {% endif %}
+                      </span>
+                      {% endif %}
+                    </div>
+                    <!-- /.user-block -->
+                    <div style="width: 50%;text-align: left;">
+                      <p class="description" style="font-weight: 600;margin: 1px;">{{comment.persian_date_created|date:'Y/m/d'}}</p>
+                      {% if comment.status == "تایید شده" %}
+                      <p class="badge badge-success" style="font-size: 14px;margin: 1px;">تایید شده</p>
+                  {% elif comment.status == "درحال بررسی" %}
+                    <p class="badge badge-primary" style="background-color: orangered;font-size: 14px;margin: 1px;">درحال بررسی</p>
+                  {% elif comment.status == "رد شده" %}
+                    <p class="badge badge-danger" style="font-size: 14px;margin: 1px;">رد شده</p>
+                {% endif %}
+                    <p class="star-rate" style="width: 100%;">
+                      
+                     {% if comment.rating == 0 %}
+                     <span class="fa fa-star "></span>
+                     <span class="fa fa-star "></span>
+                     <span class="fa fa-star "></span>
+                     <span class="fa fa-star"></span>
+                     <span class="fa fa-star"></span>
+                     {% elif comment.rating == 1 %}
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star "></span>
+                     <span class="fa fa-star "></span>
+                     <span class="fa fa-star"></span>
+                     <span class="fa fa-star"></span>
+                     {% elif comment.rating == 2 %}
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star "></span>
+                     <span class="fa fa-star"></span>
+                     <span class="fa fa-star"></span>
+                     {% elif comment.rating == 3 %}
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star"></span>
+                     <span class="fa fa-star"></span>
+                     {% elif comment.rating == 4 %}
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star"></span>
+                     {% elif comment.rating == 5 %}
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     <span class="fa fa-star checked"></span>
+                     {% endif %}
+                    </p>
+                    </div>
+                    </div>
+                    <p class="td-28" style="margin-top: 10px;">
+                      <a href="{% url 'account:comment-detail' comment.id %}" style="color: black;font-size: 18px;font-weight: 400;">{{comment.text}}</a>
+                    </p>
                   </div>
-                  <!-- /.user-block -->
-                  <p class="star-rate">
-                    
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star"></span>
-                   <span class="fa fa-star"></span>
-                  </p>
-                  <p class="td-25">
-                    
-                    کتاب بسیار خوبی رود و من لذت بردم 
-                    پسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با >ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با >ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                
-                  </p>
-                </div>
-
-                <div class="post clearfix">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../../../uni-project/uni-project/images/d1ownload.jpg" alt="User Image">
-                    <span class="username">
-                      <a href="#">علی احمدی</a>
-                    </span>
-                    <span class="description">1404/01/22</span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p class="star-rate">
-                    
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star"></span>
-                   <span class="fa fa-star"></span>
-                  </p>
-                  <p class="td-25">
-                    
-                    کتاب بسیار خوبی رود و من لذت بردم 
-                    پسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                
-                  </p>
-                </div>
-
-                <div class="post clearfix">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../../../uni-project/uni-project/images/d1ownload.jpg" alt="User Image">
-                    <span class="username">
-                      <a href="#">علی احمدی</a>
-                    </span>
-                    <span class="description">1404/01/22</span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p class="star-rate">
-                    
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star checked"></span>
-                   <span class="fa fa-star"></span>
-                   <span class="fa fa-star"></span>
-                  </p>
-                  <p class="td-25">
-                    
-                    کتاب بسیار خوبی رود و من لذت بردم 
-                    پسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با &gt;ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                
-                  </p>
-                </div>
+                  {% endfor %}
               
-                <div class="card-footer">
+                <div class="card-footer" style="background-color: white;border-top: 0;">
                   <nav aria-label="Contacts Page Navigation">
                     <ul class="pagination justify-content-center m-0">
-                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item"><a class="page-link" href="#">4</a></li>
-                      <li class="page-item"><a class="page-link" href="#">5</a></li>
-                      <li class="page-item"><a class="page-link" href="#">6</a></li>
-                      <li class="page-item"><a class="page-link" href="#">7</a></li>
-                      <li class="page-item"><a class="page-link" href="#">8</a></li>
+                      
+                      {% if comments_page.has_previous %}
+                      <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?comments_page={{ comments_page.previous_page_number }}">&lt;</a></li>
+                      {% endif %}
+                  {% for page_number in comments_page_range %}
+                  <li class="page-item {% if page_number == comments_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?comments_page={{page_number}}">{{page_number}}</a></li>
+                  {% endfor %}
+                  {% if comments_page.has_next %}
+                  <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?comments_page={{ comments_page.number }}">&gt;</a></li>
+                  {% endif %}
                     </ul>
                   </nav>
                 </div>
               </div>
+              
+              {% endif %}
+
             </div>
           </div>
         </div>

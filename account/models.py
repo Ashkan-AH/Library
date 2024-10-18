@@ -94,6 +94,7 @@ class User(AbstractUser):
     view_reservations = models.BooleanField(verbose_name="مشاهده رزرو ها", default=False)
     view_users = models.BooleanField(verbose_name="مشاهده کاربران", default=False)
     view_categories = models.BooleanField(verbose_name="مشاهده دسته بندی ها", default=False)
+    view_comments = models.BooleanField(verbose_name="مشاهده نظرات", default=False)
     #Update
     update_books = models.BooleanField(verbose_name="ویرایش کتاب ها", default=False)
     update_authors = models.BooleanField(verbose_name="ویرایش نویسندگان", default=False)
@@ -101,18 +102,21 @@ class User(AbstractUser):
     update_users = models.BooleanField(verbose_name="ویرایش کاربران", default=False)
     update_categories = models.BooleanField(verbose_name="ویرایش دسته بندی", default=False)
     update_theme = models.BooleanField(verbose_name="ویرایش ظاهر سایت", default=False)
+    update_comments = models.BooleanField(verbose_name="ویرایش نظرات", default=False)
     #Create
     create_books = models.BooleanField(verbose_name="ایجاد کتاب ها", default=False)
     create_authors = models.BooleanField(verbose_name="ایجاد نویسندگان", default=False)
     create_reservations = models.BooleanField(verbose_name="ایجاد رزرو ها", default=False)
     create_users = models.BooleanField(verbose_name="ایجاد کاربران", default=False)
     create_categories = models.BooleanField(verbose_name="ایجاد دسته بندی ها", default=False)
+    create_comments = models.BooleanField(verbose_name="ایجاد نظرات", default=False)
     #Delete
     delete_books = models.BooleanField(verbose_name="حذف کتاب ها", default=False)
     delete_authors = models.BooleanField(verbose_name="حذف نویسندگان", default=False)
     delete_reservations = models.BooleanField(verbose_name="حذف رزرو ها", default=False)
     delete_users = models.BooleanField(verbose_name="حذف کاربران", default=False)
     delete_categories = models.BooleanField(verbose_name="حذف دسته بندی ها", default=False)
+    delete_comments = models.BooleanField(verbose_name="حذف نظرات", default=False)
 
     objects = UserManager2()
     

@@ -2,12 +2,15 @@ from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from django.core.paginator import Paginator
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 from reservation.models import Reservation
 from account.models import User, PageTheme
 from author.models import Author
-from .models import Books, Category
+from .models import Books, Category, Comment
+from .forms import CommentForm
 
 def search_item(request):
     query = request.GET.get("q", "")
@@ -173,22 +176,83 @@ class BookDetail(DetailView):
     template_name = "main/books/book_detail.html"
     def get_object(self):
         slug = self.kwargs.get("slug")
-        global book1
-        book1 = Books.objects.get(slug=slug)
-        if book1.waiting_users.filter(id=self.request.user.id).exists():
-            book1.is_waiting = True
-        if book1.bookmarks.filter(id=self.request.user.id).exists():
-            book1.is_bookmarked = True
-        return book1
+        book = Books.objects.get(slug=slug)
+        if book.waiting_users.filter(id=self.request.user.id).exists():
+            book.is_waiting = True
+        if book.bookmarks.filter(id=self.request.user.id).exists():
+            book.is_bookmarked = True
+        return book
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["reservation"] = Reservation.objects.filter(Q(book=book1.id), Q(user=self.request.user.id), Q(status="تحویل داده شده")|Q(status="رزرو شده")).first()
-        context["books"] = [book for book in Books.objects.filter(Q(category__in=(book1.category.all())), ~Q(slug=book1.slug)).order_by("?")[0:3]]
+        slug = self.kwargs.get("slug")
+        book = Books.objects.get(slug=slug)
+        if book.comments.filter(status="تایید شده").exists():
+            comments = book.comments.filter(status="تایید شده").count()
+            rating0 = book.comments.filter(Q(status="تایید شده"), Q(rating=0)).count()
+            rating0_percentage = rating0*100//comments
+            rating1 = book.comments.filter(Q(status="تایید شده"), Q(rating=1)).count()
+            rating1_percentage = rating1*100//comments
+            rating2 = book.comments.filter(Q(status="تایید شده"), Q(rating=2)).count()
+            rating2_percentage = rating2*100//comments
+            rating3 = book.comments.filter(Q(status="تایید شده"), Q(rating=3)).count()
+            rating3_percentage = rating3*100//comments
+            rating4 = book.comments.filter(Q(status="تایید شده"), Q(rating=4)).count()
+            rating4_percentage = rating4*100//comments
+            rating5 = book.comments.filter(Q(status="تایید شده"), Q(rating=5)).count()
+            rating5_percentage = rating5*100//comments
+            context["rating0"] = rating0
+            context["rating0_percentage"] = rating0_percentage
+            context["rating1"] = rating1
+            context["rating1_percentage"] = rating1_percentage
+            context["rating2"] = rating2
+            context["rating2_percentage"] = rating2_percentage
+            context["rating3"] = rating3
+            context["rating3_percentage"] = rating3_percentage
+            context["rating4"] = rating4
+            context["rating4_percentage"] = rating4_percentage
+            context["rating5"] = rating5
+            context["rating5_percentage"] = rating5_percentage
+        else:
+            context["rating0"] = 0
+            context["rating0_percentage"] = 0
+            context["rating1"] = 0
+            context["rating1_percentage"] = 0
+            context["rating2"] = 0
+            context["rating2_percentage"] = 0
+            context["rating3"] = 0
+            context["rating3_percentage"] = 0
+            context["rating4"] = 0
+            context["rating4_percentage"] = 0
+            context["rating5"] = 0
+            context["rating5_percentage"] = 0
+
+        context["reservation"] = Reservation.objects.filter(Q(book=book.id), Q(user=self.request.user.id), Q(status="تحویل داده شده")|Q(status="رزرو شده")).first()
+        context["got_book"] = Reservation.objects.filter(Q(book=book.id), Q(user=self.request.user.id), (Q(status="بازگردانده شده")|Q(status="تحویل داده شده")))
+        context["comments"] = book.comments.filter(status="تایید شده")
+        context["form"] = CommentForm
+        context["books"] = [book for book in Books.objects.filter(Q(category__in=(book.category.all())), ~Q(slug=book.slug)).order_by("?")[0:3]]
         context["theme"] = PageTheme.objects.get(slug="books")
         context["footer"] = PageTheme.objects.get(slug="footer")
         return context
-        
     
+
+
+class CommentCreate(LoginRequiredMixin, CreateView):
+    form_class = CommentForm
+    model = Comment
+    def form_valid(self, form):
+        slug = self.kwargs.get("slug")
+        book = Books.objects.get(slug=slug)
+        if self.request.user.reservations.filter(Q(book=book.id), (Q(status="بازگردانده شده")|Q(status="تحویل داده شده"))):
+            comment = form.save(commit=False)
+            rating = self.request.POST.get('rating')
+            comment.book = book
+            comment.user = self.request.user
+            comment.rating = rating  # ذخیره امتیاز
+            comment.save()
+            return HttpResponseRedirect(reverse_lazy("books:book-detail", kwargs={"slug": slug}))
+
 
 class CategoryList(ListView):
     paginate_by = 12

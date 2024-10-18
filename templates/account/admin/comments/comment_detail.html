@@ -1,0 +1,223 @@
+{% extends "account/admin/base.html" %}
+{% block title %}
+ نظر "{{object.text}}"
+{% endblock title %}
+{% block style %}
+  
+{% endblock style %}
+{% block content %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px  !important;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>{{object.name}}</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'account:admin-index' %}">خانه</a></li>
+              <li class="breadcrumb-item active"><a href="{% url 'account:comments' %}"> نظرات</a></li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card card-solid">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-sm-6" style="padding-right: 0;">
+              <div class="col-12">
+                <a href="{{object.book.picture.url}}"><img src="{{object.book.picture.url}}" class="product-image" alt="{{object.book.name}}" style="max-width: 350px;border-radius: 5px;"></a>
+              </div>
+             
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="text-align: center;align-items: center;
+    justify-content: center;">
+                <div class="image">
+                  <img src="{{object.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 65px !important; height: 65px !important;object-fit: cover;">
+                </div>
+                <div class="info">
+                  {% if request.user.view_users %}
+                  <a href="{% url 'account:user-detail' object.user.id %}" class="d-block" style="font-size: 22px;font-weight: bold;color: black;">
+                    {% if object.user.get_full_name %}
+                    {{object.user.get_full_name}}
+                    {%else%}
+                      {{object.user.username}}
+                    {% endif %}
+                    </a>
+                    {%else%}
+                    <p style="font-size: 22px;font-weight: bold;color: black;">
+                      {% if object.user.get_full_name %}
+                      {{object.user.get_full_name}}
+                      {%else%}
+                        {{object.user.username}}
+                      {% endif %}
+                      </p>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="btn-group btn-group-toggle"style="justify-content: space-evenly;width: 100%;">
+                <label class="text-center bg-gray" style="padding:10px;width: 50%;border-top-right-radius: 5px;margin:0px;border-left:solid #343A40;">
+                 
+                  نام کتاب:
+                  <br>
+                 {% if request.user.view_books %}
+                 <a href="{% url 'account:book-detail' object.book.slug %}">{{object.book.name}}</a>
+                 {%else%}
+                   <p>{{object.book.name}}</p>
+                 {% endif %}
+                </label>
+                <label class=" text-center bg-gray" style="padding:10px;width: 50%;margin:0px;border-top-left-radius: 5px;border-right:solid #343A40;">
+                
+                  کد نظر:
+                  <br>
+                 {{object.id}}
+                </label>
+                <label class="text-center bg-gray-dark" style="padding:10px;width: 50%;margin:0px;border-left:solid #6C757D;">
+                 
+                  تاریخ ایجاد:
+                  <br>
+                <p>{{object.persian_date_created|date:'Y/m/d'}}</p>
+                </label>
+                <label class=" text-center bg-gray-dark" style="padding:10px;width: 50%;margin:0px;border-right:solid #6C757D;">
+                
+                  وضغیت:
+                  <br>
+                 <p>{{object.status}}</p>
+                </label>
+                <label class="text-center bg-gray" style="padding:6px;width: 100%;border-radius:0;margin:0px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                 
+                  امتیاز:
+                  <br>
+                  <p style="font-size: 21px;">
+                      {% if object.rating == 0 %}
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      {% elif object.rating == 1 %}
+                      <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                      {% elif object.rating == 2 %}
+                      <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                      {% elif object.rating == 3 %}
+                      <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                      {% elif object.rating == 4 %}
+                      <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                      {% elif object.rating == 5 %}
+                      <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                        
+                      {% endif %}
+                    </span>
+                    
+                  </p>
+                </label>
+                
+                
+              </div>
+
+              <div class="mt-4" style="text-align: left;margin-left: 35px;">
+                {% if request.user.update_comments %}
+                  
+                <a href="{% url 'account:comment-update' object.id %}" class="btn btn-primary btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+              ویرایش</a>
+                {% endif %}
+                {% if request.user.delete_comments %}
+                  
+                <a href="{% url 'account:comment-delete' object.id %}" class="btn btn-danger btn-lg btn-flat" style="border-radius: 3px;font-weight: bold;">
+              حذف</a>
+                {% endif %}
+                 
+              </div>
+
+
+            </div>
+          </div>
+          <div class="row mt-4">
+            <nav class="w-100">
+              <div class="nav nav-tabs" id="product-tab" role="tablist">
+               
+                <a class="nav-item nav-link active disabled" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">متن نظر</a>
+            </nav>
+            <div class="tab-content p-3" id="nav-tabContent">
+              <div class="tab-pane fade active show" style="padding: 10px;" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> {{object.text|linebreaksbr}}
+                 </div>
+              
+              
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <style>
+
+    
+.grid-body {
+    display: flex;
+    justify-content: center;
+}
+
+.bookprop-table {
+    box-shadow: 0px 12px 14px 0px;
+    height: fit-content;
+    width: 50%;
+}
+
+.tr-row {
+    height: 50px;
+    /* border: solid; */
+    border-radius: 10px;
+    background: #bfbfbf;
+}
+.book-ad-single{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+.book-ad-single img{
+    width: 350px;
+    height: 350px;
+    margin: 50px;
+}
+
+.tr-alt-row {
+    background: white;
+}
+  </style>
+{% endblock content %}

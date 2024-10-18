@@ -3,20 +3,19 @@ from datetime import timedelta
 from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, TemplateView
 from django.db.models import Q
-from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from books.models import Books, Category
+from books.models import Books, Category, Comment
 from author.models import Author
 from .models import User, PageTheme
 from .mixins import *
 from django.core.paginator import Paginator
 from reservation.models import Reservation
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
@@ -367,6 +366,7 @@ class CreationView(LoginRequiredMixin, StaffAccessMixin, TemplateView):
         context["book_form"] = BookForm
         context["category_form"] = CategoryForm
         context["reservation_form"] = ReservationForm
+        context["comment_form"] = CommentForm
         return context
 
 #----------------------------------Books----------------------------------------
@@ -386,6 +386,13 @@ class BookDetail(LoginRequiredMixin, StaffAccessMixin, ViewBooksAccessMixin, Det
         slug = self.kwargs.get("slug")
         book = get_object_or_404(Books, slug=slug)
         context["reading_number"] = book.reservations.filter(status="تحویل داده شده").count()
+        comments = book.comments.all()
+        comments_page_number = self.request.GET.get("comments_page", 1)
+        comments_paginator = Paginator(comments, 10)
+        comments_page = comments_paginator.get_page(comments_page_number)
+        context["comments"] = comments
+        context["comments_page"] = comments_page
+        context["comments_page_range"] = get_page_range(comments_page)
         return context
     
 
@@ -441,7 +448,6 @@ class CategoryBooksList(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAcce
 
 class CategoryCreate(LoginRequiredMixin, StaffAccessMixin, CreateCategoriesAccessMixin, CreateView):
     model = Category
-    template_name = "account/admin/categories/category_create.html"
     form_class = CategoryForm
     success_url = reverse_lazy("account:categories")
 
@@ -612,7 +618,7 @@ def delivered_action(request, pk):
             book.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
     else:
-        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+        raise Http404("اجازه انجام این کار را ندارید.")
     
 
 @login_required
@@ -631,7 +637,7 @@ def cancel_action(request, pk):
             book.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
     else:
-        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+        raise Http404("اجازه انجام این کار را ندارید.")
     
 
 @login_required
@@ -651,7 +657,7 @@ def returned_action(request, pk):
             book.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
     else:
-        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+        raise Http404("اجازه انجام این کار را ندارید.")
     
 
 @login_required
@@ -665,7 +671,7 @@ def extend_action(request, pk):
             reservation.save()
         return HttpResponseRedirect(request.META["HTTP_REFERER"])
     else:
-        raise PermissionDenied("اجازه دیدن این صفحه را ندارید.")
+        raise Http404("اجازه انجام این کار را ندارید.")
     
 #--------------------------------Themes--------------------------------------
 class ThemeList(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, ListView):
@@ -683,3 +689,72 @@ class ThemeUpdate(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, 
         slug = self.kwargs.get("slug")
         context["theme"] = PageTheme.objects.get(slug=slug)
         return context
+    
+#-------------------------------Comments-------------------------------------
+class CommentList(StaffAccessMixin, ViewCommentsAccessMixin, LoginRequiredMixin, ListView):
+    model = Comment
+    template_name = "account/admin/comments/comments_list.html"
+
+
+class CommentDetail(StaffAccessMixin, ViewCommentsAccessMixin, LoginRequiredMixin, DetailView):
+    template_name = "account/admin/comments/comment_detail.html"
+    def get_object(self):
+        id = self.kwargs.get("id")
+        return Comment.objects.get(id=id)
+    
+
+
+class CommentCreate(StaffAccessMixin, CreateCommentsAccessMixin, LoginRequiredMixin, CreateView):
+    model=Comment
+    form_class = CommentForm
+    success_url="account:comments"
+
+
+class CommentUpdate(StaffAccessMixin, UpdateCommentsAccessMixin, LoginRequiredMixin, UpdateView):
+    model=Comment
+    form_class = CommentForm
+    template_name = "account/admin/comments/comment_update.html"
+    def get_success_url(self):
+        pk = self.kwargs.get("pk")
+        return reverse_lazy("account:comment-detail", kwargs={"id": pk})
+        
+
+class CommentDelete(LoginRequiredMixin, DeleteView):
+    success_url = "account:comments"
+    def get_object(self):
+        pk = self.kwargs.get("pk")
+        comment = Comment.objects.get(id=pk)
+        if ((self.request.user.is_staff or self.request.user.is_superuser) and self.request.user.delete_comments) or self.request.user == comment.user:
+            return comment
+        return Http404("شما اجازه انجام این کار را ندارید.")
+    
+    def get_template_names(self):
+        pk = self.kwargs.get("pk")
+        comment = Comment.objects.get(id=pk)
+        if (self.request.user is comment.user and (self.request.user.is_staff or self.request.user.is_superuser)) or ((self.request.user.is_staff or self.request.user.is_superuser) and self.request.user.delete_comments):
+            return ["account/admin/comments/comment_confirm_delete.html"]
+        elif self.request.user == comment.user:
+            return ["account/user/comment_confirm_delete.html"]
+        raise Http404("شما اجازه انجام این کار را ندارید.")
+
+
+@login_required
+def confirm_action(request, id):
+    if (request.user.is_staff or request.user.is_superuser) and request.user.update_comments:
+        comment = Comment.objects.get(id=id) 
+        comment.status = "تایید شده"       
+        comment.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+    else:
+        raise Http404("اجازه انجام این کار را ندارید.")
+
+
+@login_required
+def reject_action(request, id):
+    if (request.user.is_staff or request.user.is_superuser) and request.user.update_comments:
+        comment = Comment.objects.get(id=id) 
+        comment.status = "رد شده"       
+        comment.save()
+        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+    else:
+        raise Http404("اجازه انجام این کار را ندارید.")

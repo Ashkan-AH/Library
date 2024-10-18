@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Books, Category
+from .models import Books, Category, Comment
 # Register your models here.
 @admin.register(Books)
 class BooksAdmin(admin.ModelAdmin):
@@ -10,6 +10,7 @@ class BooksAdmin(admin.ModelAdmin):
     ordering = ["-date_edited"]
     
 
+admin.site.register(Comment)
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields={"slug": ["name"]}

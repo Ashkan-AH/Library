@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from books.models import Books, Category
+from books.models import Books, Category, Comment
 from author.models import Author
 from reservation.models import Reservation
 from .models import User, PageTheme
@@ -25,6 +25,12 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ["name", "picture"]
+
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["text", "rating", "user", "book", "status"]
 
         
 class AuthorForm(forms.ModelForm):

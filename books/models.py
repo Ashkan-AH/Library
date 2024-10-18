@@ -104,18 +104,27 @@ class Books(models.Model):
 
 
 class Comment(models.Model):
+    STATUS_CHOICES = {
+        "تایید شده":"تایید شده",
+        "درحال بررسی":"درحال بررسی",
+        "رد شده":"رد شده",
+    }
     book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name='comments', verbose_name="کتاب")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name="کاربر")
     text = models.TextField(verbose_name="متن")
     rating = models.IntegerField(default=0, verbose_name="امتیاز")
+    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default="درحال بررسی", verbose_name="وضعیت")
     date_created = models.DateTimeField(verbose_name="تاریخ ایجاد",auto_now_add=True)
 
     def __str__(self) -> str:
         if self.user:
-            return f"{self.user.username} : {self.text[:30]}"
+            return f"{self.user.username} : {self.text[:30]}..."
         else:
-            return f"No Author : {self.text[:30]}"
+            return f"No Author : {self.text[:30]}..."
         
+    def persian_date_created(self):
+        return date2jalali(self.date_created)
+    persian_date_created.short_description = "تاریخ ایجاد"
     class Meta:
         ordering = ["-date_created"]
         verbose_name = 'نظر'

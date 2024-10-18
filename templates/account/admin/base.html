@@ -188,6 +188,12 @@
             {% link request "categories" "دسته بندی‌ها" "fa fa-th" %}
           </li>
           {% endif %}
+          {% if request.user.view_comments %}
+            
+          <li class="nav-item">
+            {% link request "comments" "نظرات" "fas fa-comment" %}
+          </li>
+          {% endif %}
             
             {% if request.user.update_theme %}
               
@@ -248,9 +254,16 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.2
+  <footer class="main-footer" style="padding: 14px;
+    height: 70px;">
+    <div class="float-left d-none d-sm-block">
+      <b>Version</b> 3.0.0-rc.1
+    </div>
+    <div class="float-right" style="text-align: left;direction: ltr;">
+      <strong>Copyright © 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+    reserved.
+    <br>
+    Modified By <a href="#" style="font-weight: bold;">AMT-Group</a>.
     </div>
   </footer>
 
