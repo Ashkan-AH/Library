@@ -33,11 +33,6 @@
               </tr>
             </thead>
             <tbody>
-              {% if object_list %}
-                هست
-              {%else%}
-              نیست
-              {% endif %}
               {% for book in object_list %}
               {% for user in book.waiting_users.all %}
                 
@@ -69,16 +64,15 @@
         <div class="card-footer">
           <nav aria-label="Contacts Page Navigation">
             <ul class="pagination justify-content-center m-0">
-              
-              {% if page_obj.has_previous %}
-              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+              {% if books_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?books_page={{ books_page.previous_page_number }}">&lt;</a></li>
                   {% endif %}
-              {% for page_number in page_obj.paginator.page_range %}
+              {% for page_number in books_page_range%}
                 
-              <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+              <li class="page-item {% if page_number == books_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?books_page={{page_number}}">{{page_number}}</a></li>
               {% endfor %}
-              {% if page_obj.has_next %}
-              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+              {% if books_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?books_page={{ books_page.next_page_number }}">&gt;</a></li>
                   {% endif %}
             </ul>
           </nav>

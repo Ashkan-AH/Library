@@ -139,11 +139,17 @@ class UserProfileUpdate(UserAccessMixin, LoginRequiredMixin, UpdateView):
 
 class UserBookmarkList(UserAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/user/bookmarks.html"
-    paginate_by = 9
     def get_queryset(self):
         return Books.objects.filter(bookmarks__in=[self.request.user.id])
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        books = Books.objects.filter(bookmarks__in=[self.request.user.id])
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 9)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
         context["footer"] = PageTheme.objects.get(slug="footer")
         return context
 
@@ -346,15 +352,35 @@ class AdminProfileUpdate(StaffAccessMixin, LoginRequiredMixin, UpdateView):
 
 class AdminBookmarkList(StaffAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/admin/bookmarks_list.html"
-    paginate_by = 24
     def get_queryset(self):
         return Books.objects.filter(bookmarks__in=[self.request.user.id])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        books = Books.objects.filter(bookmarks__in=[self.request.user.id])
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 24)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
+        return context
+        
     
 
 class WaitingList(StaffAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/admin/waiting_list.html"
     def get_queryset(self):
         return Books.objects.exclude(waiting_users__isnull=True)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        books = Books.objects.exclude(waiting_users__isnull=True)
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 15)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
+        return context
     
 
 class CreationView(LoginRequiredMixin, StaffAccessMixin, TemplateView):
@@ -373,7 +399,16 @@ class CreationView(LoginRequiredMixin, StaffAccessMixin, TemplateView):
 class BookList(LoginRequiredMixin, StaffAccessMixin, ViewBooksAccessMixin, ListView):
     template_name = "account/admin/books/books_list.html"
     model = Books
-    paginate_by = 24
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        books = Books.objects.all()
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 24)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
+        return context
 
 
 class BookDetail(LoginRequiredMixin, StaffAccessMixin, ViewBooksAccessMixin, DetailView):
@@ -423,7 +458,16 @@ class BookDelete(LoginRequiredMixin, StaffAccessMixin, DeleteBooksAccessMixin, D
 class CategoryList(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessMixin, ListView):
     template_name = "account/admin/categories/categories_list.html"
     model = Category
-    paginate_by = 18
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = Category.objects.all()
+        categories_page_number = self.request.GET.get("categories_page", 1)
+        categories_paginator = Paginator(categories, 18)
+        categories_page = categories_paginator.get_page(categories_page_number)
+        context["categories"] = categories
+        context["categories_page"] = categories_page
+        context["categories_page_range"] = get_page_range(categories_page)
+        return context
     
 
 class CategoryDetail(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessMixin, DetailView):
@@ -435,13 +479,19 @@ class CategoryDetail(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessM
 
 class CategoryBooksList(LoginRequiredMixin, StaffAccessMixin, ViewCategoriesAccessMixin, ListView):
     template_name = "account/admin/books/books_list.html"
-    paginate_by = 18
     def get_queryset(self):
         slug = self.kwargs.get("slug")
         return Books.objects.filter(category__slug=slug)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
+        books = Books.objects.filter(category__slug=slug)
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 18)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
         context["category"] = Category.objects.get(slug=slug)
         return context
     
@@ -474,7 +524,16 @@ class CategoryDelete(LoginRequiredMixin, StaffAccessMixin, DeleteCategoriesAcces
 class AuthorList(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin, ListView):
     template_name = "account/admin/authors/authors_list.html"
     model = Author
-    paginate_by = 24
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        authors = Author.objects.all()
+        authors_page_number = self.request.GET.get("authors_page", 1)
+        authors_paginator = Paginator(authors, 24)
+        authors_page = authors_paginator.get_page(authors_page_number)
+        context["authors"] = authors
+        context["authors_page"] = authors_page
+        context["authors_page_range"] = get_page_range(authors_page)
+        return context
     
 
 class AuthorDetail(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin, DetailView):
@@ -486,13 +545,19 @@ class AuthorDetail(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin,
 
 class AuthorBooksList(LoginRequiredMixin, StaffAccessMixin, ViewAuthorsAccessMixin, ListView):
     template_name = "account/admin/books/books_list.html"
-    paginate_by = 24
     def get_queryset(self):
         slug = self.kwargs.get("slug")
         return Books.objects.filter(author__slug=slug)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
+        books = Books.objects.filter(author__slug=slug)
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 24)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
         context["author"] = Author.objects.get(slug=slug)
         return context
 
@@ -523,8 +588,17 @@ class AuthorDelete(LoginRequiredMixin, StaffAccessMixin, DeleteAuthorsAccessMixi
 #----------------------------------Users----------------------------------------
 class UserList(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, ListView):
     template_name = "account/admin/users/users_list.html"
-    paginate_by = 12
     model = User
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = User.objects.all()
+        users_page_number = self.request.GET.get("users_page", 1)
+        users_paginator = Paginator(users, 12)
+        users_page = users_paginator.get_page(users_page_number)
+        context["users"] = users
+        context["users_page"] = users_page
+        context["users_page_range"] = get_page_range(users_page)
+        return context
 
 
 class UserDetail(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, DetailView):
@@ -566,15 +640,33 @@ class UserDelete(LoginRequiredMixin, StaffAccessMixin, DeleteUsersAccessMixin, D
 
 class BlackList(StaffAccessMixin, LoginRequiredMixin, ViewUsersAccessMixin, ListView):
     template_name = "account/admin/black_list.html"
-    paginate_by = 12
     def get_queryset(self):
         return User.objects.filter(is_active=False)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = User.objects.filter(is_active=False)
+        users_page_number = self.request.GET.get("users_page", 1)
+        users_paginator = Paginator(users, 12)
+        users_page = users_paginator.get_page(users_page_number)
+        context["users"] = users
+        context["users_page"] = users_page
+        context["users_page_range"] = get_page_range(users_page)
+        return context
 
 # ---------------------------------Reservation------------------------------
 class ReservationList(LoginRequiredMixin, StaffAccessMixin, ViewReservationsAccessMixin, ListView):
     template_name = "account/admin/reservations/reservations_list.html"
     model = Reservation
-    paginate_by = 15
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        reservations = Reservation.objects.all()
+        reservations_page_number = self.request.GET.get("reservations_page", 1)
+        reservations_paginator = Paginator(reservations, 15)
+        reservations_page = reservations_paginator.get_page(reservations_page_number)
+        context["reservations"] = reservations
+        context["reservations_page"] = reservations_page
+        context["reservations_page_range"] = get_page_range(reservations_page)
+        return context
 
 
 class ReservationDetail(LoginRequiredMixin, StaffAccessMixin, ViewReservationsAccessMixin, DetailView):
@@ -599,9 +691,18 @@ class ReservationDelete(LoginRequiredMixin, StaffAccessMixin, DeleteReservations
     
 class ExtendList(StaffAccessMixin, ViewReservationsAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/admin/reservations/extends_list.html"
-    paginate_by = 15
     def get_queryset(self):
         return Reservation.objects.filter(Q(extend_request=True), Q(extend_sluts__gt=0), Q(status="تحویل داده شده"))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        reservations = Reservation.objects.filter(Q(extend_request=True), Q(extend_sluts__gt=0), Q(status="تحویل داده شده"))
+        reservations_page_number = self.request.GET.get("reservations_page", 1)
+        reservations_paginator = Paginator(reservations, 15)
+        reservations_page = reservations_paginator.get_page(reservations_page_number)
+        context["reservations"] = reservations
+        context["reservations_page"] = reservations_page
+        context["reservations_page_range"] = get_page_range(reservations_page)
+        return context
     
 
 @login_required
@@ -694,6 +795,16 @@ class ThemeUpdate(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, 
 class CommentList(StaffAccessMixin, ViewCommentsAccessMixin, LoginRequiredMixin, ListView):
     model = Comment
     template_name = "account/admin/comments/comments_list.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comments = Comment.objects.all()
+        comments_page_number = self.request.GET.get("comments_page", 1)
+        comments_paginator = Paginator(comments, 15)
+        comments_page = comments_paginator.get_page(comments_page_number)
+        context["comments"] = comments
+        context["comments_page"] = comments_page
+        context["comments_page_range"] = get_page_range(comments_page)
+        return context
 
 
 class CommentDetail(StaffAccessMixin, ViewCommentsAccessMixin, LoginRequiredMixin, DetailView):

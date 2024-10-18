@@ -61,7 +61,9 @@ $.body.classList.add("scroll-off")
 
 })
 
-
+  let prof=profileImage.style.backgroundImage
+  console.log(prof);
+  
 imginput.addEventListener("change",(event)=>{
      const file=event.target.files[0]
      const filesize=file.size/1024/1024;
@@ -119,7 +121,7 @@ editbtn2.addEventListener("click",()=>{
     $.body.classList.remove("scroll-off")
     editdiv.classList.add("hide")
     imginput.value=""
-    imgwatch.style.backgroundImage=""
+    profileImage.style.backgroundImage=prof
     $.body.classList.remove("no-interaction")
     editdiv.classList.remove("interaction")
 })

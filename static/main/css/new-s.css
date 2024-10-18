@@ -44,7 +44,7 @@ textarea{
     color: white;
     background-color: #01d28e;
     position: absolute;
-    top: 21%;
+    top: 17%;
     left: 37%;
     z-index: 3;
 }
@@ -124,7 +124,6 @@ textarea{
 }
 
 
-
 .search-value img{
     width: 29%;
     height: 100%;
@@ -179,10 +178,13 @@ padding: 0px !important;
 }
 .text-edit{
     inset: 0;
-    max-width: 655px;
+    max-width: 650px;
     height: 320px;
     /* border: solid; */
+    position: fixed;
+    top: 77px;
     letter-spacing: 50%;
+    left: 30%;
     z-index: 4;
     background: #01d28e;
     width: 37%;
@@ -193,8 +195,7 @@ padding: 0px !important;
     flex-wrap: wrap;
     border-radius: 20px;
     box-shadow: 0px 9px 23px -7px black;
-    margin: auto;
-    position: absolute;
+    
 }
 .text-edit h3{
     

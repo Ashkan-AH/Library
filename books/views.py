@@ -132,7 +132,6 @@ def get_page_range(page_obj):
 
 class BookList(ListView):
     template_name = "main/books/books.html"
-    paginate_by = 18
     def get_queryset(self):
         if "slug" in self.kwargs:
             slug = self.kwargs.get("slug")
@@ -143,6 +142,23 @@ class BookList(ListView):
         if "slug" in self.kwargs:
             slug = self.kwargs.get("slug")
             context["author_name"] = Author.objects.get(slug=slug).name
+            books = Books.objects.filter(author__slug=slug)
+            books_page_number = self.request.GET.get("books_page", 1)
+            books_paginator = Paginator(books, 18)
+            books_page = books_paginator.get_page(books_page_number)
+            context["books"] = books
+            context["books_page"] = books_page
+            context["books_page_range"] = get_page_range(books_page)
+            context["theme"] = PageTheme.objects.get(slug="books")
+            context["footer"] = PageTheme.objects.get(slug="footer")
+            return context
+        books = Books.objects.all()
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 18)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
         context["theme"] = PageTheme.objects.get(slug="books")
         context["footer"] = PageTheme.objects.get(slug="footer")
         return context
@@ -160,16 +176,6 @@ def index(request):
         "users_number": User.objects.all().count(),
     }
     return render(request, "main/index.html", context)
-    
-# class AuthorBookList(ListView):
-#     paginate_by = 18
-#     template_name = "main/books/books.html"
-#     def get_queryset(self):
-#         slug = self.kwargs.get("slug")
-#         return Books.objects.filter(author__slug=slug)
-        
-    
-
 
 
 class BookDetail(DetailView):
@@ -255,11 +261,17 @@ class CommentCreate(LoginRequiredMixin, CreateView):
 
 
 class CategoryList(ListView):
-    paginate_by = 12
     template_name = "main/books/categories.html"
     model = Category
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        categories = Category.objects.all()
+        categories_page_number = self.request.GET.get("categories_page", 1)
+        categories_paginator = Paginator(categories, 12)
+        categories_page = categories_paginator.get_page(categories_page_number)
+        context["categories"] = categories
+        context["categories_page"] = categories_page
+        context["categories_page_range"] = get_page_range(categories_page)
         context["theme"] = PageTheme.objects.get(slug="categories")
         context["footer"] = PageTheme.objects.get(slug="footer")
         return context
@@ -274,6 +286,13 @@ class CategoryBookList(ListView):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
         selected_category = get_object_or_404(Category, slug=slug)
+        books = selected_category.books.all()
+        books_page_number = self.request.GET.get("books_page", 1)
+        books_paginator = Paginator(books, 18)
+        books_page = books_paginator.get_page(books_page_number)
+        context["books"] = books
+        context["books_page"] = books_page
+        context["books_page_range"] = get_page_range(books_page)
         context["category"] = selected_category
         context["theme"] = PageTheme.objects.get(slug="books")
         context["footer"] = PageTheme.objects.get(slug="footer")

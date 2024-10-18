@@ -107,65 +107,6 @@
               </div>
               <!-- /.widget-user -->
             </div>
-            <!-- <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
-              <div class="card bg-light item">
-                <div class="card-header text-muted border-bottom-0">
-                  {{user.role}} 
-                </div>
-                <div class="card-body pt-0">
-                  <div class="row row2">
-                    
-                      <ul class="ml-4 mb-0 fa-ul text-muted">
-                        <li class="small"><span>تماس:</span> <section>{{user.sel_number}}</section></li>
-                     
-                      
-                        <li class="small"><span>کدملی</span> <section>{{user.national_code}}</section></li>
-                        
-                        {% if user.role == "استاد" %}
-                        <li class="small" style="justify-content: center;"><span> کد پرسنلی:</span><section>{{pro_id}}</section></li>
-                        <li class="small" style="justify-content: center;"><span> رشته آموزشی:</span><section>{{pro_major}}</section></li>
-                        <li class="small" style="justify-content: center;"><span> مقطع آموزشی:</span><section>{{pro_grade}}</section></li>
-                        {% elif user.role == "دانشجو" %}
-                        <li class="small" style="justify-content: center;"><span> کد دانشجویی:</span><section>{{st_id}}</section></li>
-                        <li class="small" style="justify-content: center;"><span> رشته تحصیلی:</span><section>{{st_major}}</section></li>
-                        <li class="small" style="justify-content: center;"><span> مقطع تحصیلی:</span><section>{{st_grade}}</section></li>
-                        {% elif user.role == "کارمند" %}
-                        <li class="small" style="justify-content: center;"><span> کد پرسنلی:</span><section>{{emp_id}}</section></li>
-                        <li class="small" style="justify-content: center;"><span> محل کار:</span><section>{{emp_unit}}</section></li>
-                        <li class="small" style="justify-content: center;"><span> سمت شغلی:</span><section>{{emp_grade}}</section></li>
-                      {% endif %}
-
-                        
-                      </ul>
-                   
-                      
-
-                      <p class="text-muted text-sm m-auto"><b>کد عضویت: </b>{{user.id}}</p>
-
-                       <h2 class="lead m-auto"><b>{% if user.get_full_name %}
-                        {{user.get_full_name}}
-                        {%else%}
-                        {{user.username}}
-                       {% endif %}</b></h2>
-
-                    <div class="col-5 text-center m-auto">
-                      <img src="{{user.picture.url}}
-                      " alt="{{user.get_full_name}}" class="img-circle img-fluid img-news">
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <div class="text-right">
-                    <a href="#" class="btn btn-sm bg-teal">
-                      افزودن به لیست سیاه
-                    </a>
-                    <a href="#" class="btn btn-sm btn-primary">
-                      <i class="fas fa-user"></i> مشاهده حساب  
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div> -->
             {% endfor %}
 
             
@@ -175,16 +116,15 @@
         <div class="card-footer">
           <nav aria-label="Contacts Page Navigation">
             <ul class="pagination justify-content-center m-0">
-              
-              {% if page_obj.has_previous %}
-              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+              {% if users_page.has_previous %}
+              <li class="page-item"><a style="border-top-left-radius: 0;border-bottom-left-radius: 0;border-top-right-radius: 3px;border-bottom-right-radius: 3px;" class="page-link" href="?users_page={{ users_page.previous_page_number }}">&lt;</a></li>
                   {% endif %}
-              {% for page_number in page_obj.paginator.page_range %}
+              {% for page_number in users_page_range%}
                 
-              <li class="page-item {% if page_obj.number == page_number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+              <li class="page-item {% if page_number == users_page.number %}active{% endif %}"><a style="border-radius: 0;" class="page-link" href="?users_page={{page_number}}">{{page_number}}</a></li>
               {% endfor %}
-              {% if page_obj.has_next %}
-              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+              {% if users_page.has_next %}
+              <li class="page-item"><a style="border-top-left-radius: 3px;border-bottom-left-radius: 3px;border-top-right-radius: 0;border-bottom-right-radius: 0;" class="page-link" href="?users_page={{ users_page.next_page_number }}">&gt;</a></li>
                   {% endif %}
             </ul>
           </nav>

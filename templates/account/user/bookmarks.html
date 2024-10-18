@@ -53,14 +53,15 @@
               <div class="col text-center">
                 <div class="block-27">
                   <ul>
-                    {% if page_obj.has_previous %}
-                    <li><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+                    
+                    {% if books_page.has_previous %}
+                    <li><a href="?books_page={{ books_page.previous_page_number }}">&lt;</a></li>
                     {% endif %}
-                    {% for page_number in page_obj.paginator.page_range %}
-                    <li class="{% if page_obj.number == page_number %}active{% endif %}"><a href="?page={{page_number}}">{{page_number}}</a></li>
+                    {% for page_number in books_page_range %}
+                    <li class="{% if page_number == books_page.number %}active{% endif %}"><a href="?books_page={{page_number}}">{{page_number}}</a></li>
                     {% endfor %}
-                    {% if page_obj.has_next %}
-                    <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+                    {% if books_page.has_next %}
+                    <li><a href="?books_page={{ books_page.next_page_number }}">&gt;</a></li>
                     {% endif %}
                   </ul>
                 </div>

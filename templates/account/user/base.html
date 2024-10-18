@@ -17,6 +17,8 @@
   <!-- Theme style -->
   <link rel="stylesheet" href=" {% static 'main/css/css/css/adminlte.min.css' %}">
   <link rel="stylesheet" href=" {% static 'main/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/responsive.css' %} ">
+  
   {% block style %}
     
   {% endblock style %}
@@ -35,7 +37,7 @@
 	    <div class="container">
 	      <a class="navbar-brand" href="{% url 'books:index' %}" style="color: black !important;">سرزمین <span>کتاب</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
+	        <span class="fa fa-navicon"></span> منو
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
@@ -263,7 +265,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> کل�
 <!-- AdminLTE for demo purposes -->
 <script src=" {% static 'user/dist/js/demo.js' %}"></script>
 <script src=" {% static 'main/js/newscript.js' %}"></script>
-<script src=" {% static 'main/js/star-rate.js' %}"></script>
 {% block script %}
   
 {% endblock script %}

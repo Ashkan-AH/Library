@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{% static 'main/css/icomoon.css' %} ">
     <link rel="stylesheet" href="{% static 'main/css/style.css' %} ">
     <link rel="stylesheet" href="{% static 'main/css/media-phone.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/responsive.css' %} ">
+    <link rel="stylesheet" href="{% static 'main/css/searchbar-responsive.css' %} ">
 	{% block style %}
 	  
 	{% endblock style %}
@@ -50,7 +52,7 @@
 	    <div class="container">
 	      <a class="navbar-brand" href="{% url 'books:index' %}">سرزمین <span>کتاب</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> منو
+	        <span class="fa fa-navicon"></span> منو
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">

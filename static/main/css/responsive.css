@@ -1,0 +1,197 @@
+@media only screen and (max-width:768px){
+*{
+    font-size: 16px !important;
+}
+    .author-block{
+        width: 100% !important;
+    }
+    .category-div{
+        max-width: 50%;
+        width: 45%;
+        height: 165px;
+    }
+    .tab-pane .user-prop{
+        flex-wrap: wrap !important;
+    } 
+ .hb-66{
+    margin-left: 0 !important;
+ }
+ .comment-section {
+    width: 300px;
+
+ }
+ .hb-67{
+    max-width: 100%;
+    width: 100%;
+ }
+ .sec-div{
+    width: 95%;
+ }
+ 
+.bookprop-table {
+    width: 100%;
+}
+ .sec-div a,h2,h3,p{
+    font-size: 10px;
+ }
+ .user-fa{
+    width: 50%;
+    height: 80px;
+ }
+ .user-prop label{
+font-size: 10px !important;
+ }
+.user-prop a{
+   
+    width: 45%;
+}
+
+.btn-fa{
+   
+    width: 45%;
+}
+
+
+.user-prop{
+    width: 98%;
+}
+
+.user-prop textarea{
+    height: 62px !important;
+}
+.form-newstyle{
+    width: 95% !important;
+    left: 10px !important;
+}
+.user-img-edit {
+    width: 260px;
+    height: 285px;
+}
+.alertion{
+    width:200px;
+    font-size: 13px;
+}
+.user-img-get{
+    width: 130px;
+    height: 130px;
+}
+
+.user-img-get button{
+    width: 33px;
+    height: 33px;
+}
+
+.user-img-edit section {
+    height: 150px;
+}
+.small-box{
+    width: 140px;
+
+}
+.userp-book-prop h1{
+    font-size: 2rem !important;
+}
+
+.text-edit{
+    width: 75%;
+    margin: auto;
+    position: absolute;
+    inset: 0;
+
+}
+
+.text-edit div{
+    width: 95%;
+}
+}
+
+@media only screen and (max-width:1300px){
+.car-details{
+    width: 95%;
+    margin: 16px;
+    box-shadow: 0px 3px 14px -2px;
+}
+.car-details label,a,h3,span{
+    font-size: 11px !important;
+}
+
+.car-details h3{
+    font-size: 15px !important;
+}
+
+.text-edit div{
+    width: 95%;
+}
+}
+
+@media only screen and (max-width:1100px){
+   .car-details{
+    margin-top: 12px !important;
+    flex-direction: column;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+   }
+   
+
+   .car-details .img{
+    width: 100% !important;
+    height: 250px;
+
+   }
+   
+   .car-details .col-0{
+    width: 100% !important;
+    height: 250px;
+
+   }
+   
+   .car-details .col-002{height: fit-content !important;
+
+   }
+   .car-details .bookday{
+    width: 100% !important;
+    height: 135px ;
+
+   }
+   .fa-221{
+    width: 100%;
+   }
+   .fa-220 div{
+    justify-content: end;
+   }
+   .rent-btn-style{
+    width: 99% !important;
+
+   }
+   .fa-220 label{
+    margin: 4px 5px 0px 5px;
+   }
+   .car-details .btn-lg{
+    margin-bottom: 0px !important;
+    height: 30px;
+    width: 100% !important;
+
+   }
+   
+   .car-details .text-col{
+    height: 13%;
+
+   }
+h3{
+    font-size: 15px !important;
+}
+.chart{
+    display: none;
+}
+   
+.small-box{
+    width: 140px !important;
+
+}
+.col-md-12{
+
+    max-width: 100% !important;
+}
+
+    }
