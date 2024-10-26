@@ -213,7 +213,10 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            {% link request 'admin-profile-update' 'ویرایش اطلاعات' "fas fa-edit" %}
+            {% link request 'admin-profile' 'پروفایل' "fas fa-address-card" %}
+          </li>
+          <li class="nav-item">
+            {% link request 'security' 'امنیت' "fas fa-lock" %}
           </li>
           <li class="nav-item">
             {% link request 'admin-bookmarks' 'ذخیره شده ها' "fas fa-bookmark" %}
@@ -308,7 +311,6 @@
 <!-- AdminLTE App -->
 <script src="{% static 'user/dist/js/adminlte.js' %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{% static 'user/dist/js/pages/dashboard.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'user/dist/js/demo.js' %}"></script>
 

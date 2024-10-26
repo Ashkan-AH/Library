@@ -75,7 +75,7 @@ class UpdateUserForm(forms.ModelForm):
         self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "address", "birth_number", "national_code", "fathers_name", "sel_number", "home_number", "emergency_number", "birth_date", "picture", "reservation_limit", "is_active", "is_staff", "is_superuser", "role", "st_id", "st_major", "st_grade", "emp_id", "emp_unit", "emp_grade", "pro_id", "pro_major", "pro_grade", "view_books", "view_authors", "view_reservations", "view_users", "view_categories", "update_books", "update_authors", "update_reservations", "update_users", "update_categories", "create_books", "create_authors", "create_reservations", "create_users", "create_categories", "delete_books", "delete_authors", "delete_reservations", "delete_users", "delete_categories",]
+        fields = ["username", "first_name", "last_name", "email", "address", "birth_number", "national_code", "fathers_name", "sel_number", "home_number", "emergency_number", "birth_date", "picture", "reservation_limit", "is_active", "is_staff", "is_superuser", "role", "st_id", "st_major", "st_grade", "emp_id", "emp_unit", "emp_grade", "pro_id", "pro_major", "pro_grade", "view_books", "view_authors", "view_reservations", "view_users", "view_categories", "update_books", "update_authors", "update_reservations", "update_users", "update_categories", "update_theme", "create_books", "create_authors", "create_reservations", "create_users", "create_categories", "delete_books", "delete_authors", "delete_reservations", "delete_users", "delete_categories",]
 
 class UpdateProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -83,6 +83,7 @@ class UpdateProfileForm(forms.ModelForm):
         self.fields["birth_date"] = JalaliDateField(label="تاریخ تولد", widget=AdminJalaliDateWidget)
     class Meta:
         model = User
+        exclude = ["is_superuser", "username"]
         fields = [ "first_name", "last_name", "address", "national_code", "sel_number", "home_number", "picture", "birth_date", "fathers_name", "birth_number", "emergency_number", "role", "st_id", "st_major", "st_grade", "emp_id", "emp_unit", "emp_grade", "pro_id", "pro_major", "pro_grade"]
 
 

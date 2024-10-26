@@ -63,6 +63,9 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
+          {% if request.user.is_superuser or request.user.is_staff or not request.user.is_authenticated %}
+          {%else%}
+          
           <div class="col-md-3">
 
             <!-- Profile Image -->
@@ -177,6 +180,7 @@
             </div>
             <!-- /.card -->
           </div>
+          {% endif %}
 
           {% block content %}
             

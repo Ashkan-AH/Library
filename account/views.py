@@ -1,5 +1,7 @@
 from django.db.models.base import Model as Model
 from datetime import timedelta
+
+from django.db.models.query import QuerySet
 from .forms import *
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView, TemplateView
 from django.db.models import Q
@@ -128,7 +130,7 @@ class UserProfileUpdate(UserAccessMixin, LoginRequiredMixin, UpdateView):
     model = User
     template_name = "account/user/update_profile.html"
     form_class = UpdateProfileForm
-    success_url = reverse_lazy("account:identifier")
+    success_url = reverse_lazy("account:user-index")
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
     def get_context_data(self, **kwargs):
@@ -341,7 +343,7 @@ class AdminProfileUpdate(StaffAccessMixin, LoginRequiredMixin, UpdateView):
     model = User
     template_name = "account/admin/users/user_update.html"
     form_class = UpdateUserForm
-    success_url = reverse_lazy("account:admin-index")
+    success_url = reverse_lazy("account:admin-profile")
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
     def get_context_data(self, **kwargs):
@@ -349,6 +351,16 @@ class AdminProfileUpdate(StaffAccessMixin, LoginRequiredMixin, UpdateView):
         context["user"] = User.objects.get(id=self.request.user.id)
         return context
     
+
+class AdminProfile(StaffAccessMixin, LoginRequiredMixin, DetailView):
+    template_name = "account/admin/users/user_detail.html"
+    def get_object(self):
+        return User.objects.get(id=self.request.user.id)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reservations"] = Reservation.objects.filter(Q(user=self.request.user.id)).order_by("status")
+        return context
+        
 
 class AdminBookmarkList(StaffAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/admin/bookmarks_list.html"
@@ -366,7 +378,6 @@ class AdminBookmarkList(StaffAccessMixin, LoginRequiredMixin, ListView):
         return context
         
     
-
 class WaitingList(StaffAccessMixin, LoginRequiredMixin, ListView):
     template_name = "account/admin/waiting_list.html"
     def get_queryset(self):
@@ -441,7 +452,9 @@ class BookUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateBooksAccessMixin, U
     model = Books
     form_class = BookForm
     template_name = "account/admin/books/book_update.html"
-    success_url = reverse_lazy("account:books")
+    def get_success_url(self):
+        slug = self.kwargs.get("slug")
+        return reverse_lazy("account:book-detail", kwargs={"slug": slug})
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
@@ -506,7 +519,9 @@ class CategoryUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateCategoriesAcces
     model = Category
     template_name = "account/admin/categories/category_update.html"
     form_class = CategoryForm
-    success_url = reverse_lazy("account:categories")
+    def get_success_url(self):
+        slug = self.kwargs.get("slug")
+        return reverse_lazy("account:category-detail", kwargs={"slug": slug})
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
@@ -572,7 +587,9 @@ class AuthorUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateAuthorsAccessMixi
     model = Author
     form_class = AuthorForm
     template_name = "account/admin/authors/author_update.html"
-    success_url = reverse_lazy("account:authors")
+    def get_success_url(self):
+        slug = self.kwargs.get("slug")
+        return reverse_lazy("account:author-detail", kwargs={"slug": slug})
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
@@ -588,10 +605,11 @@ class AuthorDelete(LoginRequiredMixin, StaffAccessMixin, DeleteAuthorsAccessMixi
 #----------------------------------Users----------------------------------------
 class UserList(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, ListView):
     template_name = "account/admin/users/users_list.html"
-    model = User
+    def get_queryset(self):
+        return User.objects.filter(~Q(id = self.request.user.id))
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        users = User.objects.all()
+        users = User.objects.filter(~Q(id = self.request.user.id))
         users_page_number = self.request.GET.get("users_page", 1)
         users_paginator = Paginator(users, 12)
         users_page = users_paginator.get_page(users_page_number)
@@ -602,7 +620,7 @@ class UserList(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, ListV
 
 
 class UserDetail(LoginRequiredMixin, StaffAccessMixin, ViewUsersAccessMixin, DetailView):
-    template_name = "account/users/user_detail.html"
+    template_name = "account/admin/users/user_detail.html"
     def get_object(self):
         global id
         id = self.kwargs.get('pk')
@@ -624,7 +642,9 @@ class UserUpdate(LoginRequiredMixin, StaffAccessMixin, UpdateUsersAccessMixin, U
     model = User
     template_name = "account/admin/users/user_update.html"
     form_class = UpdateUserForm
-    success_url = reverse_lazy("account:users")
+    def get_success_url(self):
+        pk = self.kwargs.get("pk")
+        return reverse_lazy("account:user-detail", kwargs={"pk": pk})
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get("pk")
@@ -781,16 +801,47 @@ class ThemeList(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, Li
 
     
 class ThemeUpdate(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, UpdateView):
-    model = PageTheme
     template_name = "account/admin/themes/theme_update.html"
+    model = PageTheme
     form_class = UpdateThemeForm
-    success_url = reverse_lazy("account:themes")
+    def get_success_url(self):
+        slug = self.kwargs.get("slug")
+        return reverse_lazy("account:theme-update", kwargs={"slug": slug})
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get("slug")
         context["theme"] = PageTheme.objects.get(slug=slug)
         return context
     
+
+class ThemeDetail(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, DetailView):
+    def get_object(self):
+        slug = self.kwargs.get("slug")
+        return PageTheme.objects.get(slug=slug)
+    
+    def get_template_names(self):
+        slug = self.kwargs.get("slug")
+        theme = PageTheme.objects.get(slug=slug)
+        if slug == "index":
+            return ["account/admin/themes/index.html"]
+        elif slug == "search-result":
+            return ["account/admin/themes/search_result.html"]
+        elif slug == "categories":
+            return ["account/admin/themes/categories.html"]
+        elif slug == "authors":
+            return ["account/admin/themes/authors.html"]
+        elif slug == "books":
+            return ["account/admin/themes/books.html"]
+        elif slug == "footer":
+            return ["account/admin/themes/footer.html"]
+        raise Http404("چنین صفحه ای یافت نشد.")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["theme"] = PageTheme.objects.get(slug=slug)
+        context["footer"] = PageTheme.objects.get(slug="footer")
+        return context
+
 #-------------------------------Comments-------------------------------------
 class CommentList(StaffAccessMixin, ViewCommentsAccessMixin, LoginRequiredMixin, ListView):
     model = Comment

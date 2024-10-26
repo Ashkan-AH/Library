@@ -84,7 +84,10 @@
             <div class="row">
               <div class="form-group col mb-0">{{form.is_active|as_crispy_field}}</div>
               <div class="form-group col mb-0">{{form.is_staff|as_crispy_field}}</div>
+              {% if request.user.is_superuser and request.resolver_match.url_name == "admin-profile-update" %}
+                
               <div class="form-group col mb-0">{{form.is_superuser|as_crispy_field}}</div>
+              {% endif %}
             </div>
             <div class="row">
               <div class="form-group col mb-0">{{form.role|as_crispy_field}}</div>
@@ -128,6 +131,7 @@
               <div class="form-group col mb-0">{{form.update_reservations|as_crispy_field}}</div>
               <div class="form-group col mb-0">{{form.update_users|as_crispy_field}}</div>
               <div class="form-group col mb-0">{{form.update_categories|as_crispy_field}}</div>
+              <div class="form-group col mb-0">{{form.update_theme|as_crispy_field}}</div>
             </div>
             <h4>دسترسی های ایجاد</h4>
             <hr>

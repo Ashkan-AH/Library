@@ -1,4 +1,4 @@
-
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,24 +10,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/main/css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="static/main/css/animate.css ">
-    <link rel="stylesheet" href="static/main/css/owl.carousel.min.css ">
-    <link rel="stylesheet" href="static/main/css/owl.theme.default.min.css ">
-    <link rel="stylesheet" href="static/main/css/magnific-popup.css ">
-    <link rel="stylesheet" href="static/main/css/aos.css ">
-    <link rel="stylesheet" href="static/main/css/ionicons.min.css ">
-    <link rel="stylesheet" href="static/main/css/bootstrap-datepicker.css ">
-    <link rel="stylesheet" href="static/main/css/jquery.timepicker.css ">
-    <link rel="stylesheet" href="static/main/css/categories.css ">
-    <link rel="stylesheet" href="static/main/css/flaticon.css ">
-    <link rel="stylesheet" href="static/main/css/icomoon.css ">
-    <link rel="stylesheet" href="static/main/css/style.css ">
-    <link rel="stylesheet" href="static/main/cssmedia-phone.css ">
-    <link rel="stylesheet" href="static/main/css/new-s.css">
+    <link rel="stylesheet" href="{% static 'main/css/open-iconic-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/animate.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/owl.carousel.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/owl.theme.default.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/magnific-popup.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/aos.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/ionicons.min.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/bootstrap-datepicker.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/jquery.timepicker.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/categories.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/flaticon.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/icomoon.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/style.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/cssmedia-phone.css ' %}">
+    <link rel="stylesheet" href="{% static 'main/css/new-s.css' %}">
     
-    <link rel="stylesheet" href="searchbar-responsive.css">
-    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="{% static 'main/css/searchbar-responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/responsive.css' %}">
 	
 	  
 	
@@ -54,25 +54,44 @@
   <body>
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="/">سرزمین <span>کتاب</span></a>
+	      <a class="navbar-brand" href="{% url 'books:index' %}">سرزمین <span>کتاب</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> منو
+	        <span class="fa fa-navicon"></span> منو
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-				<li class="nav-item 
+				<li class="nav-item {% if request.resolver_match.url_name == 'index' %}
 				active
-				"><a href="/" class="nav-link">خانه</a>
+				{% endif %}"><a href="{% url 'books:index' %}" class="nav-link">خانه</a>
 				</li>
-				<li class="nav-item "><a href="/books/" class="nav-link">کتاب ها</a></li>
-				<li class="nav-item "><a href="/authors/" class="nav-link">نویسندگان</a></li>
-				<li class="nav-item "><a href="/categories/" class="nav-link">دسته بندی</a></li>
+				<li class="nav-item {% if request.resolver_match.url_name == 'books' %}
+				active
+				{% endif %}"><a href="{% url 'books:books' %}" class="nav-link">کتاب ها</a></li>
+				<li class="nav-item {% if request.resolver_match.url_name == 'authors' %}
+				active
+				{% endif %}"><a href="{% url 'author:authors' %}" class="nav-link">نویسندگان</a></li>
+				<li class="nav-item {% if request.resolver_match.url_name == 'categories' %}
+				active
+				{% endif %}"><a href="{% url 'books:categories' %}" class="nav-link">دسته بندی</a></li>
+				{% if request.user.is_authenticated %}
+				  
+				<li class="nav-item {% if request.resolver_match.url_name == 'user-index' %}
+				active
+				{% endif %}"><a href="{% url 'account:identifier' %}" class="nav-link">ناحیه کاربری</a>
+				<li class="nav-item">
+				<form id="logout-form" method="post" action="{% url 'logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="logout-btn nav-link">خروج</button>
+				  </form></li>
 				
+				{% else %}
 				
-				<li class="nav-item "><a href="/login/?next=/" class="nav-link">ورود</a></li>
-				
+				<li class="nav-item {% if request.resolver_match.url_name == 'login' %}
+				active
+				{% endif %}"><a href="{% url 'login' %}?next={{request.path}}" class="nav-link">ورود</a></li>
+				{% endif %}
 				<li class="nav-item"><a class="nav-search"  id="nav-search" href="#"   >
-					<button class="search-btn img" style="background-image: url(static/main/images/Newfolder/icon/search-svgrepo-com.svg);background-size: cover; outline: none;"></button>
+					<button class="search-btn img" style="background-image: url({% static 'main/images/Newfolder/icon/search-svgrepo-com.svg' %});background-size: cover; outline: none;"></button>
 				</a>
 			</li>
 	        </ul>
@@ -88,70 +107,12 @@
 	
 	
   
-<div class="hero-wrap ftco-degree-bg" style="background-image: url(media/uploads/page_theme/galaxy-3840x2160-space-4k-19730_K99iy7m_jxgP4NT.jpg);" data-stellar-background-ratio="0.5">
+<div class="hero-wrap ftco-degree-bg" style="background-image: url({{object.image1.url}});" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
   <div class="container">
     <div class=" row no-gutters slider-text justify-content-start align-items-center justify-content-center">
-    	
-            <style>
-                .desc p{
-                    color: black !important;
-                }
-            </style>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script>
-                $(document).ready(function()
-            {
-                $("#search").keyup(function()
-            {
-                let query = $(this).val();
-                console.log(query);
-                $.ajax({
-                    url:'/search/', 
-                    data:{
-                        "q":query
-                    },
-                    dataType:"json", 
-                    success:function(data){
-                        $("#results").empty();
-                        if(data.length>0){
-                            for (let i = 0; i<data.length; i++){
-                                if(data[i].type == "book"){
-                                    let name = (data[i].name).slice(0, 15) + "..."
-                                    let description = (data[i].description).slice(0, 75) + "..."
-                                    $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/book/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${name}</h2>\n<div class="desc">${description}</div>\n</div>\n</a>`);}
-                                    else if(data[i].type == "author"){
-                                        let name = (data[i].name).slice(0, 15) + "..."
-                                        let description = (data[i].description).slice(0, 75) + "..."
-                                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/authors/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${name}</h2>\n<div class="desc">${description}</div>\n</div>\n</a>`);
-                                    }
-                                    else if(data[i].type == "category"){
-                                        $("#results").append(`<a href="${window.location.protocol}//${window.location.host}/category/${data[i].slug}/" class="author-block" style="width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="${data[i].picture}">\n<div class="left">\n<h2 itemprop="name" style="color: black;">${data[i].name}</h2>\n</div>\n</a>`);
-                                    }
-                                }}
-                                else if(query && data.length==0){
-                                    $("#results").append(`<a href="#" class="author-block" style="pointer-events: none;cursor: default;width: 97% !important; margin: 7px 0px 7px 0px;box-shadow: none;">\n<img itemprop="image" src="static/main/images/close.png">\n<div class="left">\n<h2 itemprop="name" style="color: black;">موردی یافت نشد!</h2>\n</div>\n</a>`);
-                                }
-                                else if(!query && data.length == 0){
-                                    $("#results").empty();}
-                            }
-                        });
-                    });
-                });
-                </script>
-                <form action="/search-result/" method="get">
-                    <div class="morepagesearch">
-                    <input type="text" id="search" name="search" placeholder="نویسنده، کتاب، دسته‌بندی، مترجم یا ناشر مورد نظرتان را جستجو کنید...">
-                <button class="img" type="submit"  id="search-btn">
-                    <img src="static/main/images/Newfolder/icon/search-svgrepo-com.svg" alt="">
-                </button>
-            </div>
-        </form>
-            <div id="results" class="result-container result-container2">
-                
-                  
-                
-            </div>
+      {% include "main/search_bar.html" %}
+
 
 
 
@@ -162,8 +123,8 @@
 
       <div class="col-lg-8 ftco-animate">
         <div class="textcontain-bgcolor text w-100 text-center mb-md-5 pb-md-5">
-          <h1 class="mb-4">دیدگاه خودت رو نسبت به جهان تغییر نده اگه خواستی :)</h1>
-          <p style="font-size: 18px;" >با سرزمین کتاب میتوانید به راحتی و در سریع ترین زمان ممکن کتاب مورد علاقه خود را پیدا کنید</p>
+          <h1 class="mb-4">{{object.text1}}</h1>
+          <p style="font-size: 18px;" >{{object.text2}}</p>
         </div>
       </div>
     </div>
@@ -185,14 +146,14 @@
           
           <div class="col-md-8 d-flex align-items-center hb-66" style="margin-left: 185px;text-align: center;">
             <div class="services-wrap rounded-right w-100" style="border-radius: 15px !important;">
-              <h3 class="heading-section mb-4">مزایا استفاده از پلتفرم سرزمین کتاب</h3>
+              <h3 class="heading-section mb-4">{{object.text3}}</h3>
               <div class="row d-flex mb-4">
                 <div class="col-md-4 d-flex align-self-stretch ftco-animate">
                   <div class="services w-100 text-center">
                     <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route">
                       <svg width="64px" height="64px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>clock</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set" sketch:type="MSLayerGroup" transform="translate(-412.000000, -359.000000)" fill="#1089ff"> <path d="M438,376 L440,376 L440,374 L438,374 L438,376 Z M428,389 C420.268,389 414,382.732 414,375 C414,367.269 420.268,361 428,361 C435.732,361 442,367.269 442,375 C442,382.732 435.732,389 428,389 L428,389 Z M428,359 C419.163,359 412,366.164 412,375 C412,383.837 419.163,391 428,391 C436.837,391 444,383.837 444,375 C444,366.164 436.837,359 428,359 L428,359 Z M434.076,367.273 L435.46,368.66 L436.844,367.273 L435.46,365.887 L434.076,367.273 L434.076,367.273 Z M433.783,381.778 L435.197,383.192 L436.611,381.778 L435.197,380.364 L433.783,381.778 L433.783,381.778 Z M428,363 C427.448,363 427,363.447 427,364 L427,374.023 L419,374.023 C418.447,374.023 418,374.472 418,375.024 C418,375.576 418.447,376.023 419,376.023 L428,376.023 C428.553,376.023 429,375.576 429,375.024 L429,364 C429,363.447 428.553,363 428,363 L428,363 Z M421.692,367.323 L420.278,365.909 L418.864,367.323 L420.278,368.737 L421.692,367.323 L421.692,367.323 Z M418.733,381.832 L420.117,383.219 L421.501,381.832 L420.117,380.445 L418.733,381.832 L418.733,381.832 Z M427,387 L429,387 L429,385 L427,385 L427,387 Z" id="clock" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg></span></div>
                     <div class="text w-100">
-                      <h3 class="heading mb-2">رزرو برخط</h3>
+                      <h3 class="heading mb-2">{{object.text4}}</h3>
                     </div>
                   </div>      
                 </div>
@@ -201,7 +162,7 @@
                     <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake">
                      </div>
                     <div class="text w-100">
-                      <h3 class="heading mb-2">ضمانت تحویل</h3>
+                      <h3 class="heading mb-2">{{object.text5}}</h3>
                     </div>
                   </div>      
                 </div>
@@ -212,12 +173,12 @@
                     </span>
                     </span></div>
                     <div class="text w-100">
-                      <h3 class="heading mb-2">صرفه جویی در زمان</h3>
+                      <h3 class="heading mb-2">{{object.text6}}</h3>
                     </div>
                   </div>      
                 </div>
               </div>
-              <p><a href="/books/" class="btn btn-primary py-3 px-4">کتاب مورد نیاز خود را رزرو کنید</a></p>
+              <p><a href="books/" class="btn btn-primary py-3 px-4">کتاب مورد نیاز خود را رزرو کنید</a></p>
             </div>
           </div>
         </div>
@@ -242,29 +203,29 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/The_Man_Who_Laughs.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/The_Man_Who_Laughs.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="#"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
             <div class="text">
-              <h2 class="mb-0"><a href="/book/the-man-who-laughs-4/">The Man Who Laughs</a></h2>
+              <h2 class="mb-0"><a href="#">The Man Who Laughs</a></h2>
               <div class="d-flex mb-3">
                 <span class="cat">
-                  <a href="/authors/%D9%88%DB%8C%DA%A9%D8%AA%D9%88%D8%B1-%D9%87%D9%88%DA%AF%D9%88/">ویکتور هوگو</a>, 
+                  <a href="#">ویکتور هوگو</a>, 
                 </span>
                 <p class="price ml-auto">1 <span>/تعداد</span></p>
               </div>
               <p class="d-flex mb-0 d-block">
               
 	
-		<a href="/login/?next=/" class="btn btn-primary py-2 mr-1">رزرو</a>
+		<a href="#" class="btn btn-primary py-2 mr-1">رزرو</a>
 	
 
-                <a href="/book/the-man-who-laughs-4/" class="btn btn-secondary py-2 ml-1">جزءیات</a></p>
+                <a href="#" class="btn btn-secondary py-2 ml-1">جزءیات</a></p>
             </div>
           </div>
         </div>
@@ -277,25 +238,25 @@
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="#"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
             <div class="text">
-              <h2 class="mb-0"><a href="/book/%D9%BE%D8%AF%D8%B1-%D9%BE%D9%88%D9%84%D8%AF%D8%A7%D8%B1-%D9%BE%D8%AF%D8%B1-%D8%A8%DB%8C-%D9%BE%D9%88%D9%84-14/">پدر پولدار، پدر بی‌ پول</a></h2>
+              <h2 class="mb-0"><a href="#">پدر پولدار، پدر بی‌ پول</a></h2>
               <div class="d-flex mb-3">
                 <span class="cat">
-                  <a href="/authors/%D8%B1%D8%A7%D8%A8%D8%B1%D8%AA-%DA%A9%DB%8C%D9%88%D8%B3%D8%A7%DA%A9%DB%8C/">رابرت کیوساکی</a>, 
+                  <a href="#">رابرت کیوساکی</a>, 
                 </span>
                 <p class="price ml-auto">88 <span>/تعداد</span></p>
               </div>
               <p class="d-flex mb-0 d-block">
               
 	
-		<a href="/login/?next=/" class="btn btn-primary py-2 mr-1">رزرو</a>
+		<a href="#" class="btn btn-primary py-2 mr-1">رزرو</a>
 	
 
-                <a href="/book/%D9%BE%D8%AF%D8%B1-%D9%BE%D9%88%D9%84%D8%AF%D8%A7%D8%B1-%D9%BE%D8%AF%D8%B1-%D8%A8%DB%8C-%D9%BE%D9%88%D9%84-14/" class="btn btn-secondary py-2 ml-1">جزءیات</a></p>
+                <a href="#" class="btn btn-secondary py-2 ml-1">جزءیات</a></p>
             </div>
           </div>
         </div>
@@ -304,11 +265,11 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/%D8%B3%DA%AF_%D9%88%D9%84%DA%AF%D8%B1%D8%AF.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/%D8%B3%DA%AF_%D9%88%D9%84%DA%AF%D8%B1%D8%AF.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="/login/?next=/"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
@@ -335,11 +296,11 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/%D9%85%D8%B1%DA%AF_%D8%AF%D8%B1_%D9%85%DB%8C%D8%B2%D9%86%D8%AF.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/%D9%85%D8%B1%DA%AF_%D8%AF%D8%B1_%D9%85%DB%8C%D8%B2%D9%86%D8%AF.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="/login/?next=/"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
@@ -366,11 +327,11 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/%D8%B4%D8%A7%D9%87_%D9%84%DB%8C%D8%B1.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/%D8%B4%D8%A7%D9%87_%D9%84%DB%8C%D8%B1.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="/login/?next=/"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
@@ -397,11 +358,11 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/%DA%AF%D9%88%DA%98%D9%BE%D8%B4%D8%AA_%D9%86%D8%AA%D8%B1%D8%AF%D8%A7%D9%85_%D9%86%D8%AA%D8%B1%D8%AF%D8%A7%D9%85_%D9%BE%D8%A7%D8%B1%DB%8C%D8%B3.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/%DA%AF%D9%88%DA%98%D9%BE%D8%B4%D8%AA_%D9%86%D8%AA%D8%B1%D8%AF%D8%A7%D9%85_%D9%86%D8%AA%D8%B1%D8%AF%D8%A7%D9%85_%D9%BE%D8%A7%D8%B1%DB%8C%D8%B3.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="/login/?next=/"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
@@ -428,11 +389,11 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/%D9%85%D9%84%DA%A9%D9%87_%D8%B3%D8%A7%DB%8C%D9%87%D9%87%D8%A7.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/%D9%85%D9%84%DA%A9%D9%87_%D8%B3%D8%A7%DB%8C%D9%87%D9%87%D8%A7.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="/login/?next=/"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
@@ -459,11 +420,11 @@
         
         <div class="item">
           <div class="car-wrap rounded ftco-animate">
-            <div class="img rounded d-flex align-items-end" style="background-image: url(media/uploads/books/%D9%81%D8%B1.jpg);">
+            <div class="img rounded d-flex align-items-end" style="background-image: url(/media/uploads/books/%D9%81%D8%B1.jpg);">
               
 <button class="unsave-btn">
     
-        <a href="/login/?next=/"> <img src="static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
+        <a href="/login/?next=/"> <img src="/static/main/images/Newfolder/icon/save-svgrepo-com.svg" alt=""></a>
     
 </button>
             </div>
@@ -496,7 +457,7 @@
 <section class="ftco-section ftco-about">
   <div class="container">
     <div class="row no-gutters">
-      <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(media/uploads/page_theme/abstract-nature-7680x4320-8k-21456_yJ0vnRD_uMFw29y.jpg);">
+      <div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(/media/uploads/page_theme/abstract-nature-7680x4320-8k-21456_yJ0vnRD_uMFw29y.jpg);">
       </div>
       <div class="col-md-6 wrap-about ftco-animate">
         <div class="heading-section heading-section-white pl-md-5" style="direction: rtl;text-align: right;">
@@ -526,7 +487,7 @@
        <a class="coll-211" href="/category/%D8%B9%D8%A7%D8%B4%D9%82%D8%A7%D9%86%D9%87/" >
         <div class="services services-2 w-100 text-center"> 
           <div class="categoryimg">
-            <img src="media/uploads/categories/-5945247353969686665_121_Sa98pKu.jpg" alt="عاشقانه‌">
+            <img src="/media/uploads/categories/-5945247353969686665_121_Sa98pKu.jpg" alt="عاشقانه‌">
           </div>
           <div class="text w-100">
             <h3 class="heading mb-2"> عاشقانه‌  </h3>
@@ -540,7 +501,7 @@
        <a class="coll-211" href="/category/%D8%B9%D9%84%D9%85%DB%8C/" >
         <div class="services services-2 w-100 text-center"> 
           <div class="categoryimg">
-            <img src="media/default.jpg" alt="علمی">
+            <img src="/media/default.jpg" alt="علمی">
           </div>
           <div class="text w-100">
             <h3 class="heading mb-2"> علمی  </h3>
@@ -554,7 +515,7 @@
        <a class="coll-211" href="/category/%D8%A7%D8%AF%D8%A8%DB%8C%D8%A7%D8%AA/" >
         <div class="services services-2 w-100 text-center"> 
           <div class="categoryimg">
-            <img src="media/default.jpg" alt="ادبیات">
+            <img src="/media/default.jpg" alt="ادبیات">
           </div>
           <div class="text w-100">
             <h3 class="heading mb-2"> ادبیات  </h3>
@@ -568,7 +529,7 @@
        <a class="coll-211" href="/category/%D8%AA%D8%AE%DB%8C%D9%84%DB%8C/" >
         <div class="services services-2 w-100 text-center"> 
           <div class="categoryimg">
-            <img src="media/default.jpg" alt="تخیلی">
+            <img src="/media/default.jpg" alt="تخیلی">
           </div>
           <div class="text w-100">
             <h3 class="heading mb-2"> تخیلی  </h3>
@@ -581,7 +542,7 @@
   </div>
 </section>
 
-<section class="ftco-section ftco-intro" style="background-image: url(media/uploads/page_theme/tree-3840x2160-sky-clouds-4k-19728_Bv39K3T_xfGVm8M.jpg); background-size: cover;">
+<section class="ftco-section ftco-intro" style="background-image: url(/media/uploads/page_theme/tree-3840x2160-sky-clouds-4k-19728_Bv39K3T_xfGVm8M.jpg); background-size: cover;">
   <div class="overlay"></div>
   <div class="container">
     <div class="row justify-content-end">
@@ -609,7 +570,7 @@
       
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%D9%88%DB%8C%D9%84%DB%8C%D8%A7%D9%85_%D8%B4%DA%A9%D8%B3%D9%BE%DB%8C%D8%B1.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%D9%88%DB%8C%D9%84%DB%8C%D8%A7%D9%85_%D8%B4%DA%A9%D8%B3%D9%BE%DB%8C%D8%B1.jpg)">
               </div>
               <style>
                 .special p{
@@ -637,7 +598,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%D9%BE%D8%A7%D8%A6%D9%88%D9%84%D8%A7_%D9%87%D8%A7%D9%88%DA%A9%DB%8C%D9%86%D8%B2.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%D9%BE%D8%A7%D8%A6%D9%88%D9%84%D8%A7_%D9%87%D8%A7%D9%88%DA%A9%DB%8C%D9%86%D8%B2.jpg)">
               </div>
               <style>
                 .special p{
@@ -665,7 +626,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%D8%A8%D8%B1%D8%A7%DB%8C%D8%A7%D9%86_%D8%AA%D8%B1%DB%8C%D8%B3%DB%8C.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%D8%A8%D8%B1%D8%A7%DB%8C%D8%A7%D9%86_%D8%AA%D8%B1%DB%8C%D8%B3%DB%8C.jpg)">
               </div>
               <style>
                 .special p{
@@ -693,7 +654,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/sadeq_hedayat.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/sadeq_hedayat.jpg)">
               </div>
               <style>
                 .special p{
@@ -721,7 +682,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%DA%AF%D8%A7%D8%A8%D8%B1%DB%8C%D9%84_%DA%AF%D8%A7%D8%B1%D8%B3%DB%8C%D8%A7_%D9%85%D8%A7%D8%B1%DA%A9%D8%B2.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%DA%AF%D8%A7%D8%A8%D8%B1%DB%8C%D9%84_%DA%AF%D8%A7%D8%B1%D8%B3%DB%8C%D8%A7_%D9%85%D8%A7%D8%B1%DA%A9%D8%B2.jpg)">
               </div>
               <style>
                 .special p{
@@ -749,7 +710,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%D8%B1%D8%A7%D8%A8%D8%B1%D8%AA_%DA%A9%DB%8C%D9%88%D8%B3%D8%A7%DA%A9%DB%8C.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%D8%B1%D8%A7%D8%A8%D8%B1%D8%AA_%DA%A9%DB%8C%D9%88%D8%B3%D8%A7%DA%A9%DB%8C.jpg)">
               </div>
               <style>
                 .special p{
@@ -777,7 +738,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%D8%B4%D8%A7%D9%85%D9%84%D9%88.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%D8%B4%D8%A7%D9%85%D9%84%D9%88.jpg)">
               </div>
               <style>
                 .special p{
@@ -805,7 +766,7 @@
         
           <div class="item">
             <div class="testimony-wrap rounded text-center py-4 pb-5">
-              <div class="user-img mb-2" style="background-image: url(media/uploads/author/%D9%81%D8%B1%D9%88%D8%BA_%D9%81%D8%B1%D8%AE%D8%B2%D8%A7%D8%AF.jpg)">
+              <div class="user-img mb-2" style="background-image: url(/media/uploads/author/%D9%81%D8%B1%D9%88%D8%BA_%D9%81%D8%B1%D8%AE%D8%B2%D8%A7%D8%AF.jpg)">
               </div>
               <style>
                 .special p{
@@ -879,94 +840,95 @@
 </section>	
 
 
-
+<form action="{% url 'account:theme-update' object.slug %}" method="post" id="form-update">
+  <button type="submit" id="form-update-btn">
+    تایید
+  </button>
+</form>
 
 
 
 
 
     
-    <footer class="ftco-footer ftco-bg-dark ftco-section" style="padding-left: 80px;padding-right: 80px; direction: rtl; text-align: right;">
-		<div class="container">
-		  <div class="row mb-5">
-			<div class="col-md">
-			  <div class="ftco-footer-widget mb-4">
-				<h2 class="ftco-heading-2"><a href="#" class="logo">سرزمین <span>کتاب</span></a></h2>
-				<p>اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم اختگی با تولید سادگی نامفهوم از صنعت چاپ، و با ورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
-				<ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-				  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-				  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-				  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-				</ul>
-			  </div>
-			</div>
-			<div class="col-md">
-			  <div class="ftco-footer-widget mb-4 ml-md-5">
-				<h2 class="ftco-heading-2">اطلاعات</h2>
-				<ul class="list-unstyled">
-				  <li><a href="#" class="py-2 d-block">درباره ما</a></li>
-				  <li><a href="#" class="py-2 d-block">خدمات</a></li>
-				  <li><a href="#" class="py-2 d-block">مجموعه های زیر نظر</a></li>
-				  <li><a href="#" class="py-2 d-block">قوانین و مقررات  </a></li>
-				  <li><a href="#" class="py-2 d-block">پشتیبانی &amp; کوکی ها </a></li>
-				</ul>
-			  </div>
-			</div>
-			<div class="col-md">
-			   <div class="ftco-footer-widget mb-4">
-				<h2 class="ftco-heading-2">Customer Support</h2>
-				<ul class="list-unstyled">
-				  <li><a href="#" class="py-2 d-block">سوالات متداول</a></li>
-				  <li><a href="#" class="py-2 d-block">گزارش مشکل</a></li>
-				  <li><a href="#" class="py-2 d-block"> حریم خصوصی</a></li>
-				  <li><a href="#" class="py-2 d-block">راهنمای عملکرد</a></li>
-				  <li><a href="#" class="py-2 d-block"> پیوستن به اعضا</a></li>
-				</ul>
-			  </div>
-			</div>
-			<div class="col-md">
-			  <div class="ftco-footer-widget mb-4">
-				  <h2 class="ftco-heading-2"> سوالی دارید ?</h2>
-				  <div class="block-23 mb-3">
-					<ul>
-					  <li><span class="icon icon-map-marker"></span><span class="text">زیر نظر جمخوری اسلامی ایران -کانون پرورش فکری نوجوانان</span></li>
-					  <li><a href="#"><span class="icon icon-phone"></span><span class="text">98 321 325 1263</span></a></li>
-					  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@admin.com</span></a></li>
-					</ul>
-				  </div>
-			  </div>
-			</div>
-		  </div>
-		  <div class="row">
-			<div class="col-md-12 text-center">
-			  <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-	Copyright &copy;<script>document.write(new Date().getFullYear());</script> کلیه حقوق طراحی متعلق به دانشکده میرزا کوچک صومعه سرا است و هرگونه کپی برداری پیگرد قانونی دارد <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="#" target="_blank">amt-group</a>
-	<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-			</div>
-		  </div>
-		</div>
-	  </footer>
+<footer class="ftco-footer ftco-bg-dark ftco-section" style="padding-left: 80px;padding-right: 80px; direction: rtl; text-align: right;">
+  <div class="container">
+    <div class="row mb-5">
+    <div class="col-md">
+      <div class="ftco-footer-widget mb-4">
+      <h2 class="ftco-heading-2"><a href="#" class="logo">سرزمین <span>کتاب</span></a></h2>
+      <p>{{footer.text1}} </p>
+      
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="ftco-footer-widget mb-4 ml-md-5">
+      <h2 class="ftco-heading-2">{{footer.text2}}</h2>
+      <ul class="list-unstyled">
+        <li><a href="#" class="py-2 d-block">{{footer.text3}}</a></li>
+        <li><a href="#" class="py-2 d-block">{{footer.text4}}</a></li>
+        <li><a href="#" class="py-2 d-block">{{footer.text5}}</a></li>
+        <li><a href="#" class="py-2 d-block">{{footer.text6}}  </a></li>
+        <li><a href="#" class="py-2 d-block">{{footer.text7}} </a></li>
+      </ul>
+      </div>
+    </div>
+    <div class="col-md">
+       <div class="ftco-footer-widget mb-4">
+      <h2 class="ftco-heading-2">{{footer.text8}}</h2>
+      <ul class="list-unstyled">
+        <li><a href="#" class="py-2 d-block">{{footer.text9}}</a></li>
+        <li><a href="#" class="py-2 d-block">{{footer.text10}}</a></li>
+        <li><a href="#" class="py-2 d-block"> {{footer.text11}}</a></li>
+        <li><a href="#" class="py-2 d-block">{{footer.text12}}</a></li>
+        <li><a href="#" class="py-2 d-block"> {{footer.text13}}</a></li>
+      </ul>
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="ftco-footer-widget mb-4">
+        <h2 class="ftco-heading-2"> {{footer.text14}}</h2>
+        <div class="block-23 mb-3">
+        <ul>
+          <li><span class="fa fa-flag" style="margin-left: 10px;"></span><span class="text">{{footer.text15}}</span></li>
+          <li><span class="fa fa-phone" style="margin-left: 10px;"></span><span class="text">{{footer.text16}}</span></li>
+          <li><span class="fa fa-envelope" style="margin-left: 10px;"></span><span class="text">{{footer.text17}}</span></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12 text-center">
+      <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright ©<script>document.write(new Date().getFullYear());</script>-2024 All rights reserved | This template is made with <i class="fas fa-heart" style="color: red;" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+         <p>Modified By <a href="#" style="font-weight: bold;">AMT-Group</a>.</p>
+    </div>
+    </div>
+  </div>
+  </footer>
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
   
-  <script src="static/main/js/jquery.min.js "></script>
-  <script src="static/main/js/jquery-migrate-3.0.1.min.js "></script>
-  <script src="static/main/js/popper.min.js "></script>
-  <script src="static/main/js/bootstrap.min.js "></script>
-  <script src="static/main/js/jquery.easing.1.3.js "></script>
-  <script src="static/main/js/jquery.waypoints.min.js "></script>
-  <script src="static/main/js/jquery.stellar.min.js "></script>
-  <script src="static/main/js/owl.carousel.min.js "></script>
-  <script src="static/main/js/jquery.magnific-popup.min.js "></script>
-  <script src="static/main/js/aos.js "></script>
-  <script src="static/main/js/jquery.animateNumber.min.js "></script>
-  <script src="static/main/js/bootstrap-datepicker.js "></script>
-  <script src="static/main/js/jquery.timepicker.min.js "></script>
-  <script src="static/main/js/scrollax.min.js "></script>
-  <script src="static/main/js/main.js "></script>
-  <script src="static/main/js/edit-code/edit-bg-index.js"></script> 
-  <script src="static/main/js/edit-code/object-edit.js"></script>
-  <script src="static/main/js/edit-code/index-text-edit.js"></script>
+  <script src="{% static 'main/js/jquery.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery-migrate-3.0.1.min.js' %} "></script>
+  <script src="{% static 'main/js/popper.min.js' %} "></script>
+  <script src="{% static 'main/js/bootstrap.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery.easing.1.3.js' %} "></script>
+  <script src="{% static 'main/js/jquery.waypoints.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery.stellar.min.js' %} "></script>
+  <script src="{% static 'main/js/owl.carousel.min.js' %} "></script>
+  <script src="{% static 'main/js/jquery.magnific-popup.min.js' %} "></script>
+  <script src="{% static 'main/js/aos.js' %} "></script>
+  <script src="{% static 'main/js/jquery.animateNumber.min.js' %} "></script>
+  <script src="{% static 'main/js/bootstrap-datepicker.js' %} "></script>
+  <script src="{% static 'main/js/jquery.timepicker.min.js' %} "></script>
+  <script src="{% static 'main/js/scrollax.min.js' %} "></script>
+  <script src="{% static 'main/js/main.js' %} "></script>
+  <script src="{% static 'main/js/edit-code/edit-bg-index.js' %}"></script> 
+  <script src="{% static 'main/js/edit-code/object-edit.js' %}"></script>
+  <script src="{% static 'main/js/edit-code/index-text-edit.js' %}"></script>
 
 
   

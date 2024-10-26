@@ -62,12 +62,14 @@ urlpatterns = [
     path("waiting-list/", views.WaitingList.as_view(), name="waiting-list"),
     path("user-profile-update/", views.UserProfileUpdate.as_view(), name="user-profile-update"),
     path("admin-profile-update/", views.AdminProfileUpdate.as_view(), name="admin-profile-update"),
-    path("themes/", views.ThemeList.as_view(), name="themes"),
-    path("themes/<str:slug>/", views.ThemeUpdate.as_view(), name="theme-update"),
+    path("admin-profile/", views.AdminProfile.as_view(), name="admin-profile"),
     path('security/', TemplateView.as_view(template_name="account/user/security.html"), name="security"),
     path("search/", views.search_item, name="search-item"),
     path("search-result/", views.search_result, name="search-result"),
 
+    path("themes/", views.ThemeList.as_view(), name="themes"),
+    path("themes/<str:slug>/", views.ThemeDetail.as_view(), name="theme-detail"),
+    path("themes/<str:slug>/update/", views.ThemeUpdate.as_view(), name="theme-update"),
     
     path('signup/', views.Registration.as_view(), name='signup'),
     path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate, name='activate'),

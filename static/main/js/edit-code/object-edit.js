@@ -23,7 +23,7 @@ function previewImage(input,imageId,e) {
     
     const file=e.target.files[0]
     const filesize=file.size/1024/1024;
-    if(filesize<50){
+    if(filesize<3){
      
   const file1 = input.files[0];
   if (file && file.type === 'image/jpeg') {
@@ -39,7 +39,7 @@ function previewImage(input,imageId,e) {
 }
 else{
     
-        alert("حجم تصویر باید زیر 50مگابایت باشد")
+        alert("حجم تصویر باید زیر 3 مگابایت باشد")
         input.value=""
     }
     }

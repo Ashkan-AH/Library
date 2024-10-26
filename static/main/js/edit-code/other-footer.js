@@ -73,7 +73,7 @@ function change(newtext, id) {
     show.textContent=newtext
    }
    else{
-    console.log("eror");
+    console.log("error");
     
    }
 

@@ -1,0 +1,635 @@
+{% extends "account/admin/base.html" %}
+{% load static %}
+{% block title %}
+  مشخصات "{% if object.get_full_name %}
+  {{object.get_full_name}}
+  {%else%}
+  {{object.username}}
+    
+  {% endif %}"
+{% endblock title %}
+  {% block content %}
+  <div class="content-wrapper" style="min-height: 1233.2px;margin-right: 0px !important;">
+    <!-- Content Header (Page header) -->
+    {% if request.resolver_match.url_name == "user-detail" %}
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-10">
+            <h1>مشخصات "{% if object.get_full_name %}
+              {{object.get_full_name}}
+              {%else%}
+              {{object.username}}
+              
+            {% endif %}"</h1>
+          </div>
+          <div class="col-sm-2">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">خانه</a></li>
+              <li class="breadcrumb-item active">اعضا</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    {% endif %}
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  {% if request.user.view_reservations or request.resolver_match.url_name == "admin-profile" %}
+                  <li class="nav-item"><a class="nav-link active" id="nav" href="#timeline" data-toggle="tab">شرح فعالیت</a></li>
+                  {% endif %}
+                  <li class="nav-item"><a class="nav-link" id="nav" href="#settings" data-toggle="tab">اطلاعات حساب</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  
+                 
+
+                  <!-- /.tab-pane -->
+                  {% if request.user.view_reservations or request.resolver_match.url_name == "admin-profile" %}
+                  <div id="tab" class="tab-pane" style="display: block;">
+                    <table class="table table-head-fixed" style="text-align: center;">
+                      <thead>
+                        <tr>
+                          <th>شماره رزرو</th>
+                          <th>کتاب</th>
+                          <th>کاربر</th>
+                          <th>تاریخ رزرو</th>
+                          <th>وضعیت</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for reservation in object.reservations.all %}
+                        
+                        <tr>
+                          <td>
+                            {% if request.user.view_reservations %}
+                            <a href="{% url 'account:reservation-detail' reservation.reservation_id %}">{{reservation.reservation_id}}</a>
+                            {%else%}
+                            {{reservation.reservation_id}}
+                            {% endif %}
+                          </td>
+                          {% if request.user.view_books %}
+                            <td><a href="{% url 'account:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
+                          {% else %}
+                            <td><a href="{% url 'books:book-detail' reservation.book.slug %}">{{reservation.book}}</a></td>
+                          {% endif %}
+                              {% if reservation.user.id == request.user.id or not request.user.view_users %}
+                              <td>{{reservation.user}}</td>
+                              {% else %}
+                              <td><a href="{% url 'account:user-detail' reservation.user.id %}">{{reservation.user}}</a></td>
+                              {% endif %}
+                          <td>{{reservation.persian_date_added}}</td>
+                          <td>{% if reservation.status == "رزرو شده" %}
+                                <span class="badge badge-info" style="font-size: 13px;">رزرو شده</span>
+                              {% elif reservation.status == "تحویل داده شده" %}
+                                <span class="badge badge-primary" style="font-size: 13px;">تحویل داده شده</span>
+                              {% elif reservation.status == "بازگردانده نشده" %}
+                                <span class="badge badge-danger" style="font-size: 13px;">بازگردانده نشده</span>
+                              {% elif reservation.status == "بازگردانده شده" %}
+                                <span class="badge badge-success" style="font-size: 13px;">بازگردانده شده</span>
+                              {% elif reservation.status == "لغو رزرو" %}
+                                <span class="badge badge-danger" style="font-size: 13px;">لغو رزرو</span>
+                              {% endif %}</td>
+                            {% if request.user.update_reservations %}
+                              <td>
+                                <a href="{% url 'account:reservation-delete' reservation.reservation_id %}" class="btn btn-danger btn-sm">حذف رزرو</a>
+                                {% if reservation.status == "رزرو شده" %}
+                                <a class="btn btn-primary btn-sm" href="{% url 'account:delivered-action' reservation.reservation_id %}">تحویل داده شد</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'account:cancel-action' reservation.reservation_id %}">لغو رزرو</a>
+                                {% elif reservation.status == "تحویل داده شده" or reservation.status == "بازگردانده نشده" %}
+                                <a class="btn btn-success btn-sm" href="{% url 'account:returned-action' reservation.reservation_id %}">بازگردانده شده</a>
+          
+                                {% endif %}
+                              </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  {% endif %}
+                  <!-- /.tab-pane -->
+
+                  <section class="ftco-section ftco-car-details" id="ftcosection">
+                    <div class="container">
+                      
+                      <div id="tab" class="tab-pane hide" style="text-align: center;">
+                          <section class="user-img-get">
+                            <img src="{{object.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 165px !important; height: 165px !important;object-fit: cover;">
+                          </section>
+                          <div class="profile-prop-name"> 
+                            <section id="prof-prop">
+                            <h3 class="fn-ln">
+                            {{object.first_name}}
+                            </h3>
+                            <h3 class="fn-ln">
+                              {{object.last_name}}
+
+                            </h3>
+                          </section>
+                            
+                            <div class="form-group " style="width: 100%;">
+                              <label for="inputSkills" class="col-sm-12 control-label inputName2 label-fa label-f"> کد عضویت </label>
+
+                              <div class="col-sm-12 inout-fa">
+
+                                <label for="inputName2" class="info-label"> {{object.id}}</label>
+                              </div>
+                            </div>
+                          </div>
+                                                    
+                            <div class="book-page-title">
+                           
+                              </div>
+                                <section class="ftco-section ftco-car-details" id="ftcosection">
+                                  <div class="container">
+                                    
+                                    <div class="tab-pane active" id="settings">
+                                      
+                                      <hr>
+                                        <div class="row user-prop" style="background:none;">
+                                        <div class="form-group user-fa col-sm-3" style="padding: 0;">
+                                          <label for="inputName2" class="col-sm-12 control-label inputName2 label-fa label-f">نام کاربری</label>
+
+                                          <div class="col-sm-12 inout-fa"> 
+
+                                            <label for="inputName2" class="info-label"> {{object.username}}</label>
+
+                                          </div>
+                                        </div>
+                                        <div class="form-group user-fa col-sm-3" style="padding: 0;">
+                                          <label for="inputName2" class="col-sm-12 control-label inputName2 label-fa label-f">ایمیل</label>
+
+                                          <div class="col-sm-12 inout-fa"> 
+
+                                            <label for="inputName2" class="info-label"> {{object.email}}</label>
+
+                                          </div>
+                                        </div>
+                                        <div class="form-group user-fa col-sm-3" style="padding: 0;">
+                                          <label for="inputName2" class="col-sm-12 control-label inputName2 label-fa label-f">کد ملی</label>
+
+                                          <div class="col-sm-12 inout-fa"> 
+
+                                            <label for="inputName2" class="info-label"> {{object.national_code}}</label>
+
+                                          </div>
+                                        </div>
+                                        
+                                        <div class="form-group user-fa col-sm-3" style="padding: 0;">
+                                          <label for="inputName2" class="col-sm-12 control-label inputName2 label-fa label-f">شماره شناسنامه  </label>
+
+                                          <div class="col-sm-12 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.birth_number}}</label>
+                                          </div>
+                                        </div>
+                                        
+                                        <div class="form-group col-sm-3" style="padding: 0;">
+                                          <label for="inputExperience" class="col-sm-12 control-label inputName2 label-fa label-f"> نام پدر  </label>
+  
+                                          <div class="col-sm-12">
+  
+                                            <label for="inputName2" class="info-label">    {{object.fathers_name}}    </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                      <hr>
+                                      <div class="row user-prop" style="background:none;">
+                                        
+                                        <div class="form-group user-fa col-sm-3">
+                                          <label for="inputName2" class="col-sm-12 control-label inputName2 label-fa label-f">تاریخ تولد</label>
+
+                                          <div class="col-sm-12 inout-fa">
+
+                                            <label for="inputName2" class="info-label">{{object.persian_birth_date|date:'Y/m/d'}}</label>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group user-fa col-sm-3">
+                                          <label for="inputSkills" class="col-sm-12 control-label inputName2 label-fa label-f">شماره تلفن همراه</label>
+
+                                          <div class="col-sm-12 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.sel_number}}</label>
+                                          </div>
+                                        </div>
+
+
+                                        
+                                        <div class="form-group user-fa col-sm-3">
+                                          <label for="inputSkills" class="col-sm-12 control-label inputName2 label-fa label-f">شماره تلفن همراه اضطراری</label>
+
+                                          <div class="col-sm-12 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.emergency_number}}</label>
+                                          </div>
+                                        </div>
+
+                                        
+                                        <div class="form-group user-fa col-sm-3">
+                                          <label for="inputSkills" class="col-sm-12 control-label inputName2 label-fa label-f">شماره تلفن  ثابت</label>
+
+                                          <div class="col-sm-12 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.home_number}}</label>
+                                          </div>
+                                        </div>
+                                        
+                                        
+                                      </div>
+                                      <hr>
+                                        
+                                      <div class="row user-prop" style="flex-wrap: nowrap; background:none;">
+                                        
+
+                                      
+
+
+                                      </div>
+                                        <div class="form-group" style="text-align: right;">
+                                          <label for="inputSkills" class="col-sm-12 control-label inputName2 label-f">ادرس محل سکونت</label>
+
+                                          <div class="col-sm-12">
+
+                                            <label for="inputName2" class="info-label"> {{object.address}}
+                                            </label> 
+                                          </div>
+                                        </div>
+                                        
+                                        <hr>
+
+
+                                        <div class="user-prop" style="flex-wrap: nowrap;background:none;">
+
+                                        <div class="form-group user-fa  user-fa">
+                                          <label for="inputSkills" class="col-sm-12 control-label inputName2 label-fa"> پست سازمانی </label>
+
+                                          <div class="col-sm-12 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {% if object.is_superuser %}
+                                              ابر ادمین
+                                              {% elif object.is_staff %}
+                                              ادمین
+                                              {% elif object.role %}
+                                              {{object.role}}
+                                            {% endif %}</label>
+                                          </div>
+                                        </div>
+
+                                        {% if object.role == "دانشجو" %}
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f"> کد دانشجویی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.st_id}}</label>
+                                          </div>
+                                        </div>
+
+
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">   رشته تحصیلی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label">{{object.st_major}}</label>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">    مقطع تحصیلی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label">     {{object.st_grade}}</label>
+                                          </div>
+                                        </div>
+                                        {% elif object.role == "استاد" %}
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f"> کد استادی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.pro_id}}</label>
+                                          </div>
+                                        </div>
+
+
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">   رشته آموزشی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label">   {{object.pro_major}}</label>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">    مقطع آموزشی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label">     {{object.pro_grade}}</label>
+                                          </div>
+                                        </div>
+                                        {% elif object.role == "کارمند" %}
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f"> کد پرسنلی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label"> {{object.emp_id}}</label>
+                                          </div>
+                                        </div>
+
+
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">   محل کار </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label">{{object.emp_unit}}</label>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group user-fa user-fa">
+                                          <label for="inputSkills" class="col-sm-2 control-label inputName2 label-fa label-f">    سمت شغلی </label>
+
+                                          <div class="col-sm-10 inout-fa">
+
+                                            <label for="inputName2" class="info-label">     {{object.emp_grade}}</label>
+                                          </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if object.is_superuser or object.is_staff %}
+                                        <h5 style="text-align: right;">دسترسی های مشاهده</h1>
+                                          <div class="row">
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.view_books %}
+                                              
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده کتاب ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده کتاب ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.view_authors %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده نویسندگان</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده نویسندگان</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.view_reservations %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده رزرو ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده رزرو ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.view_users %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده کاربران</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده کاربران</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.view_categories %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده دسته بندی ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده دسته بندی ها</span>
+                                              {% endif %}
+                                            </div>
+                                          
+                                            <div class="col-sm-4">
+                                              {% if object.view_comments %}
+                                            <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده نظرات</span>
+                                            {%else%}
+                                            <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">مشاهده نظرات</span>
+                                            {% endif %}
+                                          </div>
+                                          
+                                        </div>
+                                        <h5 style="text-align: right;margin-top: 25px;">دسترسی های حذف</h5>
+                                          <div class="row">
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.delete_books %}
+                                              
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">حذف کتاب ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">حذف کتاب ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.delete_authors %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">حذف نویسندگان</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">حذف نویسندگان</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.delete_reservations %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">حذف رزرو ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">حذف رزرو ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.delete_users %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">حذف کاربران</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">حذف کاربران</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.delete_categories %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">حذف دسته بندی ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">حذف دسته بندی ها</span>
+                                              {% endif %}
+                                            </div>
+                                          
+                                            <div class="col-sm-4">
+                                              {% if object.delete_comments %}
+                                            <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">حذف نظرات</span>
+                                            {%else%}
+                                            <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">حذف نظرات</span>
+                                            {% endif %}
+                                          </div>
+                                          
+                                        </div>
+                                        <h5 style="text-align: right;margin-top: 25px;">دسترسی های ویرایش</h5>
+                                          <div class="row">
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.update_books %}
+                                              
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش کتاب ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش کتاب ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.update_authors %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش نویسندگان</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش نویسندگان</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.update_reservations %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش رزرو ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش رزرو ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.update_users %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش کاربران</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش کاربران</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.update_categories %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش دسته بندی ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش دسته بندی ها</span>
+                                              {% endif %}
+                                            </div>
+                                          
+                                            <div class="col-sm-4">
+                                              {% if object.update_comments %}
+                                            <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش نظرات</span>
+                                            {%else%}
+                                            <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش نظرات</span>
+                                            {% endif %}
+                                          </div>
+                                            <div class="col-sm-4">
+                                              {% if object.update_theme %}
+                                            <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش تم سایت</span>
+                                            {%else%}
+                                            <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ویرایش تم سایت</span>
+                                            {% endif %}
+                                          </div>
+                                          
+                                        </div>
+                                        <h5 style="text-align: right;margin-top: 25px;">دسترسی های ایجاد</h5>
+                                          <div class="row">
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.create_books %}
+                                              
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد کتاب ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد کتاب ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.create_authors %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد نویسندگان</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد نویسندگان</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.create_reservations %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد رزرو ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد رزرو ها</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.create_users %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد کاربران</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد کاربران</span>
+                                              {% endif %}
+                                            </div>
+                                            
+                                            <div class="col-sm-4">
+                                              {% if object.create_categories %}
+                                              <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد دسته بندی ها</span>
+                                              {%else%}
+                                              <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد دسته بندی ها</span>
+                                              {% endif %}
+                                            </div>
+                                          
+                                            <div class="col-sm-4">
+                                              {% if object.create_comments %}
+                                            <span class="fa fa-check" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد نظرات</span>
+                                            {%else%}
+                                            <span class="fas fa-times" ></span><span style="font-weight: bold;margin-right: 8px;">ایجاد نظرات</span>
+                                            {% endif %}
+                                          </div>
+                                          
+                                        </div>
+                                        
+                                        {% endif %}
+                                      </div>
+                                      <hr>
+                                        <div class="form-group">
+                                          <div class="col-sm-offset-2 col-sm-12 ">
+                                            {% if request.resolver_match.url_name == 'user-detail' %}
+                                              
+                                            {% if request.user.update_users %}
+                                              
+                                            <a href="{% url 'account:user-update' object.id %}" class="btn btn-warning btn-fa float-left" style="margin: 0px 5px;">ویرایش
+                                            </a>
+                                            {% endif %}
+                                            {% if request.user.delete_users %}
+                                              
+                                            <a href="{% url 'account:user-delete' object.id %}" class="btn btn-danger btn-fa float-left" style="margin: 0px 5px;">حذف
+                                            </a>
+                                            {% endif %}
+                                            {% elif request.resolver_match.url_name == 'admin-profile' %}
+                                            <a href="{% url 'account:admin-profile-update' %}" class="btn btn-warning btn-fa float-left" style="margin: 0px 5px;">ویرایش
+                                            </a>
+                                            {% endif %}
+                                            
+                                          </div>
+                                        </div>
+                                  </div>
+                                </div></section>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </section></div>
+            <!-- /.nav-tabs-custom -->
+          </div>
+          <!-- /.col -->
+        </div></section>
+    <!-- /.content -->
+  </div>
+  {% endblock content %}
+  {% block script %}
+<script src="{% static 'user/dist/js/user-profile.js' %}"></script>
+    
+  {% endblock script %}
