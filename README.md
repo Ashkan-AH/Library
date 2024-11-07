@@ -2,4 +2,4 @@
 hi
 It's a Library website for university.
 
-The Backend is made with Django framework
+The Backend has been made by Django framework.
