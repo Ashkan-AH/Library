@@ -18,7 +18,7 @@
         <div class="signin-content">
             <div class="signin-image">
                 <figure><img src="{% static 'authentication/images/signin-image.jpg' %}" alt="sing up image"></figure>
-                
+                <a href="{% url 'account:signup' %}" class="signup-image-link">ایجاد حساب کار بری  </a>
             </div>
 
             <div class="signin-form">
@@ -51,13 +51,9 @@
                             {% endfor %}
                         </div>
                         {% endif %}
-                        <label for="id_password" style="padding-left: 7px;"><i class="zmdi zmdi-lock"></i></label>
+                        <label for="id_password" style="padding-bottom: 26px;"><i class="zmdi zmdi-lock"></i></label>
                         <input type="password" name="password" autocomplete="current-password" required="" id="id_password" placeholder="رمز عبور"/>
-                        
-                    </div>
-                    <div>
-                        <a href="{% url 'password_reset' %}" class="signup-image-link" style="color: #616161;font-size: 17px;font-weight: bold;text-decoration: none;margin-top: 20px;">فراموشی رمز؟</a>
-                        <a href="{% url 'account:signup' %}" class="signup-image-link" style="color: #616161;font-size: 17px;font-weight: bold;text-decoration: none;">ایجاد حساب کار بری  </a>
+                        <a href="{% url 'password_reset' %}" class="signup-image-link">فراموشی رمز؟</a>
                     </div>
 
                     <div class="form-group form-button" dir="rtl">
