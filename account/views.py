@@ -55,7 +55,7 @@ class Registration(CreateView):
                     mail_subject, message, to=[to_email]
         )
         email.send()
-        return HttpResponseRedirect(reverse_lazy("account:email-sent"))
+        return HttpResponse('لطفا با لینک ارسال شده ایمیلتان را تایید کنید تا فرایند ثبت نام تکمیل شود.')
 
 
 
@@ -801,11 +801,17 @@ class ThemeList(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, Li
 
     
 class ThemeUpdate(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, UpdateView):
+    template_name = "account/admin/themes/theme_update.html"
     model = PageTheme
     form_class = UpdateThemeForm
     def get_success_url(self):
         slug = self.kwargs.get("slug")
-        return reverse_lazy("account:theme-detail", kwargs={"slug": slug})
+        return reverse_lazy("account:theme-update", kwargs={"slug": slug})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get("slug")
+        context["theme"] = PageTheme.objects.get(slug=slug)
+        return context
     
 
 class ThemeDetail(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, DetailView):
@@ -815,6 +821,7 @@ class ThemeDetail(StaffAccessMixin, UpdateThemeAccessMixin, LoginRequiredMixin, 
     
     def get_template_names(self):
         slug = self.kwargs.get("slug")
+        theme = PageTheme.objects.get(slug=slug)
         if slug == "index":
             return ["account/admin/themes/index.html"]
         elif slug == "search-result":

@@ -74,7 +74,6 @@ urlpatterns = [
     path('signup/', views.Registration.as_view(), name='signup'),
     path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate, name='activate'),
     path('policy/', TemplateView.as_view(template_name="registration/policy.html"), name="policy"),
-    path('email-sent/', TemplateView.as_view(template_name="registration/email_sent.html"), name="email-sent"),
 
 
     path("create/", views.CreationView.as_view(), name="create"), 

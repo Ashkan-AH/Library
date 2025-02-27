@@ -105,7 +105,7 @@
 	
 	
 	
-<form action="{% url 'account:theme-update' object.slug %}" method="post" >
+	
   
 <div class="hero-wrap ftco-degree-bg" style="background-image: url({{object.image1.url}});" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
@@ -131,16 +131,13 @@
   </div>
 </div>
 
-<button type="submit" id="form-update-btn">
-  تایید
-</button>
-</form>
 <div class="alertion hide" id="alertion"> 
   <hr>
   <h6 id="alertion-text"></h6>
   <hr>
 
 </div>
+
  <section class="ftco-section ftco-no-pt bg-light">
   <div class="container">
     <div class="row no-gutters">
@@ -843,8 +840,11 @@
 </section>	
 
 
-
-
+<form action="{% url 'account:theme-update' object.slug %}" method="post" id="form-update">
+  <button type="submit" id="form-update-btn">
+    تایید
+  </button>
+</form>
 
 
 

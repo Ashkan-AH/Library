@@ -1,7 +1,7 @@
 {% extends "registration/base.html" %}
 {% load static %}
 {% block title %}
-فرایند کامل شد!
+  اکانت ساخته شد!
 {% endblock title %}
 {% block content %}
   
@@ -25,7 +25,9 @@
                 </div>
             <h1>ثبت نام شما با موفقیت انجام شد</h1>
 
-            <a href="{% url 'books:index' %}" class="form-submit">ادامه فرایند</a >
+            <a href="{% url 'books:index' %}" class="form-submit" style="
+margin-bottom: 10px; outline: none; border: none;
+font-size: 1.3rem;">ادامه فرایند</a >
             {% else %}
             <h1 >لینک وارد شده نا معتبر است.</h1>
         {% endif %}

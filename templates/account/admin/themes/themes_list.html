@@ -40,14 +40,14 @@
             ">
                      
         
-          <a href="{% url 'account:theme-detail' theme.slug %}">
+          <a href="{% url 'account:theme-update' theme.slug %}">
           <div class="card-body pt-0" style="width:270px;height: 150px; background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.8)), url('{{theme.thumbnail.url}}');border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;background-size: cover;">
             <h4 style="position: absolute;bottom: 45px;font-weight: bold;right: 10px;">{{theme.name|truncatewords:4}}</h3>
           </div>
         </a>
         <div class="card-footer" style="display: flex; padding: 0px;">
           
-          <a href="{% url 'account:theme-detail' theme.slug %}" class="btn btn-sm btn-primary" style="width: 100%; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
+          <a href="{% url 'account:theme-update' theme.slug %}" class="btn btn-sm btn-primary" style="width: 100%; border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border-top-left-radius: 0px;border-top-right-radius: 0px; height: 40px;font-size: 18px;font-weight: bold;">
             ویرایش   
         </a>
       </div>
