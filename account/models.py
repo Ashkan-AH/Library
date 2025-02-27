@@ -63,7 +63,7 @@ class User(AbstractUser):
     home_number = models.CharField(max_length=11, blank=True, verbose_name="تلفن ثابت")
     emergency_number = models.CharField(max_length=15, verbose_name="شماره اضطراری", blank=True)
     birth_date = models.DateField(verbose_name="تاریخ تولد", blank=True, null=True)
-    picture = models.ImageField(upload_to="uploads/profile/", verbose_name="تصویر", default="default.jpg")
+    picture = models.ImageField(upload_to="uploads/profile/", verbose_name="تصویر", default="default-user.jpg")
 
 
     reservation_limit = models.IntegerField(default=5, verbose_name="محدودیت رزرو")

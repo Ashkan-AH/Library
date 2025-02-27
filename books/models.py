@@ -11,9 +11,10 @@ from django.core.mail import send_mail
 class Category(models.Model):
     id = models.AutoField(primary_key=True, unique=True, blank=False)
     name = models.CharField(max_length=100, blank=False, verbose_name="نام دسته بندی")
+    llc = models.CharField(max_length=10, blank=True, verbose_name="رده بندی کنگره")
     date_created = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True, allow_unicode=True, blank=False, verbose_name="لینک")
-    picture = models.ImageField(upload_to="uploads/categories/", verbose_name="عکس دسته بندی", default="default.jpg", blank=False)
+    picture = models.ImageField(upload_to="uploads/categories/", verbose_name="عکس دسته بندی", default="default-category.jpg", blank=False)
 
     class Meta:
         verbose_name = 'دسته‌بندی'
@@ -47,25 +48,34 @@ class Books(models.Model):
             "ترکی":"ترکی",
         }
     }
-    name = models.CharField(max_length=255, verbose_name="نام کتاب", null=False, blank=False)
-    author = models.ManyToManyField(Author, related_name="books", blank=False ,verbose_name="نویسندگان")
+    title = models.CharField(max_length=255, verbose_name="عنوان", null=False, blank=True)
+    cover_title = models.CharField(max_length=255, verbose_name="عنوان جلد", default="-", blank=True)
+    volume = models.CharField(max_length=255, verbose_name="شماره جلد", default="-", blank=True)
+    author = models.ManyToManyField(Author, related_name="books", blank=True ,verbose_name="نویسندگان")
     publisher = models.CharField(max_length=255, verbose_name="ناشر", default="-", blank=True)
     translator = models.CharField(max_length=150, verbose_name="مترجم", default="-", blank=True)
-    number_of_pages = models.IntegerField(verbose_name="تعداد صفحات", default=0, blank=True)
+    nli = models.CharField(max_length=255, verbose_name="کتابخانه ملی ایران", default="-", blank=True)
+    ddc = models.CharField(max_length=255, verbose_name="رده بندی دهدهی دیوئی", default="-", blank=True)
+    location = models.CharField(max_length=255, verbose_name="جایگاه", default="-", blank=True)
+    isbn = models.CharField(max_length=255, verbose_name="شابک(ISBN)", default="-", blank=True)
+    pub_year = models.IntegerField(verbose_name="سال چاپ", default=0000, blank=True)
+    edition = models.CharField(max_length=255, verbose_name="سری چاپ", default="-", blank=True)
     in_stock_user = models.IntegerField(verbose_name="موجودی رزرو نشده", default=1, blank=True)
     in_stock = models.IntegerField(verbose_name="موجودی واقعی", default=1, blank=True)
-    category = models.ManyToManyField(Category, related_name="books", blank=False, verbose_name="دسته‌بندی‌ها")
-    pub_year = models.IntegerField(verbose_name="سال انتشار", default=0000, blank=True)
-    edition = models.IntegerField(verbose_name="سری چاپ", default=1, blank=True)
+    llc = models.CharField(max_length=255, verbose_name="رده بندی کنگره", default="-", blank=True)
+    
+    number_of_pages = models.IntegerField(verbose_name="تعداد صفحات", default=0, blank=True)
     language = models.CharField(max_length=25, choices=LANGUAGE_CHOICES, verbose_name="زبان", default="فارسی", blank=True)
-    picture = models.ImageField(upload_to="uploads/books/", verbose_name="عکس کتاب", blank=False)
     age_category = models.CharField(max_length=15, choices=AGE_CATEGORY_CHOICES,verbose_name="گروه سنی", blank=True, default="کودک")
+    
+    category = models.ManyToManyField(Category, related_name="books", blank=True, verbose_name="دسته‌بندی‌ها")
+    picture = models.ImageField(upload_to="uploads/books/", verbose_name="عکس کتاب", blank=True, default="default-book.jpg")
     description = RichTextField(verbose_name="توضیحات", blank=True)
     date_uploaded = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت")
     date_edited = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
     slug = models.SlugField(max_length=255, verbose_name="لینک", allow_unicode=True, unique=True)
     bookmarks = models.ManyToManyField(User, related_name="bookmarks", verbose_name="ذخیره شده ها", blank=True)
-    waiting_users = models.ManyToManyField(User, related_name="books", verbose_name="لیست انتظار")
+    waiting_users = models.ManyToManyField(User, related_name="books", verbose_name="لیست انتظار", blank=True)
     class Meta:
         verbose_name = "کتاب"
         verbose_name_plural = "کتاب ها"
@@ -76,8 +86,8 @@ class Books(models.Model):
         if book.in_stock_user > 0 and book.waiting_users != None:
             for user in book.waiting_users.all():
                 user = User.objects.get(id=user.id)
-                subject = f'افزایش موجودی {book.name}'
-                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.name} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/book/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری فرمایید.'
+                subject = f'افزایش موجودی {book.title}'
+                message = f'کتابخانه آنلاین دانشکده میرزا کوچک خان(سرزمین کتاب) \nسلام {user.username}، کتاب {book.title} در کتابخانه موجود شده است.\n برای ثبت درخواست رزرو، وارد لینک زیر بشوید:\nhttp://127.0.0.1:8000/book/{book.slug}/\n\nلطفا از پاسخ دادن این ایمیل خودداری فرمایید.'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [user.email, ]
                 send_mail( subject, message, email_from, recipient_list )
@@ -96,7 +106,7 @@ class Books(models.Model):
     category_str.short_description = "دسته‌بندی‌ها"
     
     def __str__(self) -> str:
-        return self.name
+        return self.title
     
     persian_date.short_description = "آخرین ویرایش"
     html_img.short_description = "تصویر"
@@ -109,8 +119,8 @@ class Comment(models.Model):
         "درحال بررسی":"درحال بررسی",
         "رد شده":"رد شده",
     }
-    book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name='comments', verbose_name="کتاب")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name="کاربر")
+    book = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name='comments', verbose_name="کتاب")
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='comments', verbose_name="کاربر")
     text = models.TextField(verbose_name="متن")
     rating = models.IntegerField(default=0, verbose_name="امتیاز")
     status = models.CharField(max_length=11, choices=STATUS_CHOICES, default="درحال بررسی", verbose_name="وضعیت")

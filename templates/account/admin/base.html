@@ -85,10 +85,10 @@
           <img src="{{request.user.picture.url}}" class="img-circle elevation-2" alt="User Image" style="width: 45px !important; height: 45px !important;object-fit: cover;">
         </div>
         <div class="info">
-          <a href="{% url 'account:admin-index' %}" class="d-block" >{% if user.get_full_name %}
-            {{user.get_full_name|truncatewords:3}}
+          <a href="{% url 'account:admin-index' %}" class="d-block" >{% if request.user.get_full_name %}
+            {{ request.user.get_full_name|truncatewords:3}}
             {%else%}
-            {{user.username|truncatechars:15}}
+            {{ request.user.username|truncatechars:15}}
           {% endif %}</a>
         </div>
       </div>
