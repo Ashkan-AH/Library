@@ -91,9 +91,3 @@ class UpdateThemeForm(forms.ModelForm):
     class Meta:
         model = PageTheme
         exclude = ["name", "slug", "thumbnail"]
-
-
-
-
-class ImportForm(forms.Form):
-    file = forms.FileField()
