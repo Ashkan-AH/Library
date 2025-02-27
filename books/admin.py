@@ -3,10 +3,10 @@ from .models import Books, Category, Comment
 # Register your models here.
 @admin.register(Books)
 class BooksAdmin(admin.ModelAdmin):
-    prepopulated_fields={"slug": ["name", "author"]}
-    list_display = ("html_img", "name", "translator", "persian_date", "category_str")
+    prepopulated_fields={"slug": ["title", "author"]}
+    list_display = ("html_img", "title", "translator", "persian_date", "category_str")
     list_filter = ["language", "age_category"]
-    search_fields = ["name", "author", "translator"]
+    search_fields = ["title", "author", "translator"]
     ordering = ["-date_edited"]
     
 

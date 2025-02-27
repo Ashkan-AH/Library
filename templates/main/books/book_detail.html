@@ -139,9 +139,13 @@
 					</div>
 					<input type="hidden" name="rating" id="rating" value="0">
 				<textarea style="border-radius: 5px;padding: 6px;" type="text" name="text" placeholder="نظر خود را در اینجا بنویسید" maxlength="250" minlength="3" id="textarea" required></textarea>
+				<div class="cf-turnstile" 
+         data-sitekey="{{ CLOUDFLARE_TURNSTILE_SITE_KEY }}">
+    </div>
 				<div style="
 				display: flex;
 				justify-content: center;">
+
 				<button class="rate-btn rent-btn" type="submit" >ثبت نظر</button>
 				<button class="rate-btn rent-btn" type="button" style="background: red !important;" id="cancel-ratebtn">لغو</button>
 			  </div>
@@ -567,5 +571,6 @@
 {% block script %}
 <script src="{% static 'main/js/booksingle.js' %}"></script>
 <script src=" {% static 'main/js/star-rate.js' %}"></script>
-  
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 {% endblock script %}
